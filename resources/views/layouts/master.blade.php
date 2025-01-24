@@ -9,6 +9,7 @@
     <meta name="description" content="Annual Meeting KMI 2025" />
     <meta name="keywords" content="Annual Meeting" />
     <meta name="author" content="Rosyid Eko Nugroho" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Title -->
     <title>Annual Meeting KMI 2025</title>
@@ -138,6 +139,8 @@
     <script src="{{ asset('assets/js/grained.js') }}"></script>
     {{-- <script src="js/scripts.js"></script> --}}
     <script src="{{ asset('assets/js/scripts.js') }}"></script>
+
+    @include('sweetalert::alert')
 
 </body>
 

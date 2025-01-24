@@ -8,15 +8,21 @@
             &copy; 2025 KMI. All Rights Reserved.
         </div>
         <div class="soc">
-            <a target="_blank" href="https://www.pinterest.com/">
-                <span class="icon fab fa-pinterest" style="color: #f1f1de"></span>
+            <a target="_blank" href="https://id.linkedin.com/company/pt-kalbe-morinaga-indonesia">
+                <span class="icon fab fa-linkedin-in" style="color: #f1f1de"></span>
             </a>
-            <a target="_blank" href="https://www.instagram.com/">
+            <a target="_blank" href="https://www.instagram.com/one.kmi">
                 <span class="icon fab fa-instagram" style="color: #f1f1de"></span>
             </a>
-            <a target="_blank" href="https://dribbble.com/">
-                <span class="icon fab fa-dribbble" style="color: #f1f1de"></span>
-            </a>
+            @auth
+                <a href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span class="icon fas fa-sign-out-alt" style="color: #f1f1de"></span>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            @endauth
         </div>
     </div>
     <div class="clear"></div>

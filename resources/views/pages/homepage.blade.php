@@ -154,12 +154,9 @@
                     </div>
 
                     <div class="h-subtitle typing-subtitle">
-                        <p><span style="color: #f1f1de">PREPARE FOR THE</span> <strong style="color: #F22121"> NEXT
-                                MISSION</strong></p>
-                        <p><span style="color: #f1f1de">"SMILE"</span> <br> <strong style="color: #F22121">
-                                SMART-AGILE-BEYOND</strong></p>
-                        <p><span style="color: #f1f1de">ANNUAL MEETING KMI</span> <strong style="color: #F22121">
-                                2025</strong>
+                        <p><span style="color: #f1f1de">PREPARE FOR THE</span> <strong style="color: #F22121"> NEXT MISSION</strong></p>
+                        <p><span style="color: #f1f1de">"SMILE"</span> <br> <strong style="color: #F22121"> SMART-AGILE-BEYOND</strong></p>
+                        <p><span style="color: #f1f1de">ANNUAL MEETING KMI</span> <strong style="color: #F22121"> 2025</strong>
                         </p>
                     </div>
                     <span class="typed-subtitle"></span>

@@ -1,0 +1,852 @@
+@extends('layouts.master')
+
+<style>
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .modal.show {
+        display: flex;
+        opacity: 1;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .quiz-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    .quiz-container h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .quiz-container p {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .quiz-container .divider {
+        width: 60%;
+        height: 2px;
+        background-color: #d3d3d3;
+        margin: 10px auto 20px;
+    }
+
+    .quiz-container button {
+        padding: 10px 20px;
+        background-color: #f1f1de !important;
+        border: none;
+        border-radius: 5px;
+        color: #000 !important;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+    .quiz-container .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .question .option {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 10px;
+        margin-left: 50px;
+    }
+
+    .question .option input {
+        margin-right: 10px;
+        /* Membuat jarak antara radio button dan label */
+    }
+
+    .question .option label {
+        font-size: 16px;
+        color: #333;
+    }
+
+    .question p {
+        text-align: center;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+</style>
+
+@section('content')
+    <div class="section started" id="section-started">
+
+        <!-- Background -->
+        <div id="started-video-bg" class="video-bg media-bg jarallax-video video-mobile-bg"
+            data-jarallax-video="mp4:{{ asset('assets/videos/background.mp4') }}">
+            <div class="video-bg-mask"></div>
+            <div class="video-bg-texture" id="grained_container"></div>
+        </div>
+
+        <div class="centrize full-width">
+            <div class="vertical-center">
+                <div class="started-content">
+                    <div class="h-title"></div>
+                    <div class="h-subtitle typing-subtitle">
+                        <a href="#" id="openModal"
+                            style="display: inline-block; padding: 1px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">
+                            Start Survey
+                        </a>
+                    </div>
+                    <span class="typed-subtitle"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Initial Modal -->
+    <div id="initialModal" class="modal">
+        <div class="quiz-container">
+            <div class="close-btn">&times;</div>
+            <h1>Welcome to the Survey</h1>
+            <div class="divider"></div>
+            <p>Thank you for participating in our survey. Please click "Proceed" to start answering the questions.</p>
+            <button id="proceed-btn">Proceed</button>
+        </div>
+    </div>
+
+    <!-- Quiz Modal -->
+    {{-- <div id="quizModal" class="modal">
+        <div class="quiz-container">
+            <div class="close-btn">&times;</div>
+            <h1>Survey</h1>
+            <div class="divider"></div>
+            <div id="question-container">
+                <!-- Questions will be injected dynamically -->
+            </div>
+            <button id="back-btn" style="display: none;">Back</button>
+            <button id="next-btn" style="display: none;">Next</button>
+            <button id="submit-btn" style="display: none;">Submit</button>
+        </div>
+    </div> --}}
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="modal">
+        <div class="quiz-container">
+            <div class="close-btn">&times;</div>
+            <h1>Survey</h1>
+            <div class="divider"></div>
+
+            <!-- Form untuk menyimpan jawaban -->
+            <form id="survey-form" action="{{ route('survey.submit') }}" method="POST">
+                @csrf
+                <div id="question-container">
+                    <!-- Questions will be injected dynamically -->
+                </div>
+
+                <!-- Hidden input untuk menyimpan jawaban -->
+                <input type="hidden" name="answers" id="answers-input">
+
+                <button type="button" id="back-btn" style="display: none;">Back</button>
+                <button type="button" id="next-btn" style="display: none;">Next</button>
+                <button type="submit" id="submit-btn" style="display: none;">Submit</button>
+            </form>
+        </div>
+    </div>
+
+
+    {{-- <script>
+        const questions = [{
+                id: 1,
+                text: "What is 2 + 2?",
+                options: ["3", "4", "5", "6"],
+                answer: "4"
+            },
+            {
+                id: 2,
+                text: "What is the capital of France?",
+                options: ["Paris", "London", "Rome", "Berlin"],
+                answer: "Paris"
+            },
+            {
+                id: 3,
+                text: "Which planet is known as the Red Planet?",
+                options: ["Earth", "Mars", "Jupiter", "Saturn"],
+                answer: "Mars"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        const initialModal = document.getElementById("initialModal");
+        const quizModal = document.getElementById("quizModal");
+        const openModalButton = document.getElementById("openModal");
+        const proceedBtn = document.getElementById("proceed-btn");
+        const closeInitialModalBtn = initialModal.querySelector(".close-btn");
+        const closeQuizModalBtn = quizModal.querySelector(".close-btn");
+        const questionContainer = document.getElementById("question-container");
+        const backBtn = document.getElementById("back-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const submitBtn = document.getElementById("submit-btn");
+
+        // Open initial modal
+        openModalButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            initialModal.classList.add("show");
+        });
+
+        // Proceed to quiz modal
+        proceedBtn.addEventListener("click", function() {
+            initialModal.classList.remove("show");
+            quizModal.classList.add("show");
+            loadQuestion(currentQuestionIndex);
+        });
+
+        // Close initial modal
+        closeInitialModalBtn.addEventListener("click", function() {
+            initialModal.classList.remove("show");
+        });
+
+        // Close quiz modal
+        closeQuizModalBtn.addEventListener("click", function() {
+            quizModal.classList.remove("show");
+        });
+
+        // Load question
+        function loadQuestion(index) {
+            const question = questions[index];
+            questionContainer.innerHTML = `
+                <div class="question">
+                    <p><strong>${index + 1}. ${question.text}</strong></p>
+                    ${question.options
+                      .map((option, i) => `<div><input type="radio" id="option${i}" name="answer" value="${option}">
+                                                  <label for="option${i}">${option}</label></div>`)
+                      .join("")}
+                </div>
+            `;
+
+            backBtn.style.display = index > 0 ? "inline-block" : "none";
+            nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
+            submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
+        }
+
+        // Navigate to next question
+        nextBtn.addEventListener("click", function() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        // Navigate to previous question
+        backBtn.addEventListener("click", function() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        // Submit answers
+        submitBtn.addEventListener("click", function() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) {
+                alert("Please select an answer!");
+                return;
+            }
+            alert("Quiz submitted! Thank you.");
+            quizModal.classList.remove("show");
+        });
+    </script> --}}
+
+    {{-- <script>
+        // Mengambil data pertanyaan dan jawaban dari server
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null); // Array untuk menyimpan jawaban pengguna
+
+        const initialModal = document.getElementById("initialModal");
+        const quizModal = document.getElementById("quizModal");
+        const openModalButton = document.getElementById("openModal");
+        const proceedBtn = document.getElementById("proceed-btn");
+        const closeInitialModalBtn = initialModal.querySelector(".close-btn");
+        const closeQuizModalBtn = quizModal.querySelector(".close-btn");
+        const questionContainer = document.getElementById("question-container");
+        const backBtn = document.getElementById("back-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const submitBtn = document.getElementById("submit-btn");
+
+        // Membuka modal awal
+        openModalButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            initialModal.classList.add("show");
+        });
+
+        // Melanjutkan ke kuis
+        proceedBtn.addEventListener("click", () => {
+            initialModal.classList.remove("show");
+            quizModal.classList.add("show");
+            loadQuestion(currentQuestionIndex);
+        });
+
+        // Menutup modal awal
+        closeInitialModalBtn.addEventListener("click", () => {
+            initialModal.classList.remove("show");
+        });
+
+        // Menutup modal kuis
+        closeQuizModalBtn.addEventListener("click", () => {
+            quizModal.classList.remove("show");
+        });
+
+        // Mengambil soal dan jawaban dari API
+        function loadQuestionsFromAPI() {
+            fetch('/survey') // Panggil API untuk mengambil soal dan jawaban
+                .then(response => response.json())
+                .then(data => {
+                    questions = data.map(question => ({
+                        id: question.intQuestion_ID,
+                        text: question.txtQuestion,
+                        options: question.answers.map(answer => answer.txtAnswer),
+                        answer: question.answers.find(answer => answer.isCorrect)
+                            .txtAnswer // Menyimpan jawaban yang benar
+                    }));
+                    userAnswers = new Array(questions.length).fill(null); // Reset array jawaban pengguna
+                    loadQuestion(currentQuestionIndex); // Memuat pertanyaan pertama
+                })
+                .catch(error => {
+                    console.error("Error fetching questions:", error);
+                });
+        }
+
+        // Memuat pertanyaan berdasarkan indeks
+        function loadQuestion(index) {
+            const question = questions[index];
+            questionContainer.innerHTML = `
+        <div class="question">
+            <p><strong>${index + 1}. ${question.text}</strong></p>
+            ${question.options
+                .map(
+                    (option, i) =>
+                        `<div class="option">
+                                <input
+                                    type="radio"
+                                    id="option${i}"
+                                    name="answer"
+                                    value="${option}"
+                                    ${userAnswers[index] === option ? "checked" : ""}
+                                >
+                                <label for="option${i}">${option}</label>
+                            </div>`
+                )
+                .join("")}
+        </div>
+    `;
+
+            backBtn.style.display = index > 0 ? "inline-block" : "none";
+            nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
+            submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
+        }
+
+        // Menyimpan jawaban pengguna
+        function saveAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                userAnswers[currentQuestionIndex] = selectedOption.value;
+            }
+        }
+
+        // Validasi jawaban sebelum melanjutkan
+        function validateAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) {
+                alert("Please select an answer before proceeding!");
+                return false;
+            }
+            saveAnswer();
+            return true;
+        }
+
+        // Tombol "Next"
+        nextBtn.addEventListener("click", () => {
+            if (validateAnswer()) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        // Tombol "Back"
+        backBtn.addEventListener("click", () => {
+            saveAnswer();
+            currentQuestionIndex--;
+            loadQuestion(currentQuestionIndex);
+        });
+
+        // Tombol "Submit"
+        submitBtn.addEventListener("click", () => {
+            if (validateAnswer()) {
+                // Menghitung skor
+                let score = 0;
+                questions.forEach((question, index) => {
+                    if (userAnswers[index] === question.answer) {
+                        score++;
+                    }
+                });
+
+                // Menampilkan hasil
+                alert(`Quiz submitted! Your score is ${score}/${questions.length}.`);
+
+                // Menyimpan jawaban pengguna ke server
+                submitAnswersToServer();
+                quizModal.classList.remove("show");
+            }
+        });
+
+        // Menyimpan jawaban ke server
+        function submitAnswersToServer() {
+            const answers = questions.map((question, index) => ({
+                question_id: question.id,
+                answer_id: question.options.indexOf(userAnswers[index]) + 1 // Mengambil ID jawaban yang dipilih
+            }));
+
+            fetch('/survey/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        answers
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Answers saved:', data);
+                })
+                .catch(error => {
+                    console.error("Error saving answers:", error);
+                });
+        }
+
+        // Memanggil fungsi untuk memuat soal saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', loadQuestionsFromAPI);
+    </script> --}}
+
+    {{-- <script>
+        // Mengambil data pertanyaan dan jawaban dari server
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null); // Array untuk menyimpan jawaban pengguna
+
+        const initialModal = document.getElementById("initialModal");
+        const quizModal = document.getElementById("quizModal");
+        const openModalButton = document.getElementById("openModal");
+        const proceedBtn = document.getElementById("proceed-btn");
+        const closeInitialModalBtn = initialModal.querySelector(".close-btn");
+        const closeQuizModalBtn = quizModal.querySelector(".close-btn");
+        const questionContainer = document.getElementById("question-container");
+        const backBtn = document.getElementById("back-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const submitBtn = document.getElementById("submit-btn");
+
+        // Membuka modal awal
+        openModalButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            initialModal.classList.add("show");
+        });
+
+        // Melanjutkan ke kuis
+        proceedBtn.addEventListener("click", () => {
+            initialModal.classList.remove("show");
+            quizModal.classList.add("show");
+            loadQuestion(currentQuestionIndex);
+        });
+
+        // Menutup modal awal
+        closeInitialModalBtn.addEventListener("click", () => {
+            initialModal.classList.remove("show");
+        });
+
+        // Menutup modal kuis
+        closeQuizModalBtn.addEventListener("click", () => {
+            quizModal.classList.remove("show");
+        });
+
+        // Mengambil soal dan jawaban dari API
+        function loadQuestionsFromAPI() {
+            fetch('/survey') // Panggil API untuk mengambil soal dan jawaban
+                .then(response => response.json())
+                .then(data => {
+                    questions = data.map(question => {
+                        if (question.answers && question.answers.length > 0) {
+                            const correctAnswer = question.answers.find(answer => answer.isCorrect);
+                            return {
+                                id: question.intQuestion_ID,
+                                text: question.txtQuestion,
+                                options: question.answers.map(answer => ({
+                                    id: answer.intAnswer_ID,
+                                    text: answer.txtAnswer
+                                })),
+                                answer: correctAnswer ? correctAnswer.intAnswer_ID :
+                                    null // Menyimpan ID jawaban yang benar
+                            };
+                        }
+                        return null; // Pastikan tidak ada soal tanpa jawaban
+                    }).filter(question => question !== null); // Menghapus soal yang tidak valid
+
+                    userAnswers = new Array(questions.length).fill(null); // Reset array jawaban pengguna
+                    loadQuestion(currentQuestionIndex); // Memuat pertanyaan pertama
+                })
+                .catch(error => {
+                    console.error("Error fetching questions:", error);
+                });
+        }
+
+        // Memuat pertanyaan berdasarkan indeks
+        function loadQuestion(index) {
+            const question = questions[index];
+            if (!question) return; // Pastikan soal ada sebelum mencoba memuatnya
+
+            questionContainer.innerHTML = `
+                <div class="question">
+                    <p><strong>${index + 1}. ${question.text}</strong></p>
+                    ${question.options
+                        .map(
+                            (option, i) =>
+                                `<div class="option">
+                                            <input
+                                                type="radio"
+                                                id="option${i}"
+                                                name="answer"
+                                                value="${option.id}"
+                                                ${userAnswers[index] === option.id ? "checked" : ""}
+                                            >
+                                            <label for="option${i}">${option.text}</label>
+                                        </div>`
+                        )
+                        .join("")}
+                </div>
+            `;
+
+            backBtn.style.display = index > 0 ? "inline-block" : "none";
+            nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
+            submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
+        }
+
+        // Menyimpan jawaban pengguna
+        function saveAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                userAnswers[currentQuestionIndex] = selectedOption.value;
+            }
+        }
+
+        // Validasi jawaban sebelum melanjutkan
+        function validateAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) {
+                alert("Please select an answer before proceeding!");
+                return false;
+            }
+            saveAnswer();
+            return true;
+        }
+
+        // Tombol "Next"
+        nextBtn.addEventListener("click", () => {
+            if (validateAnswer()) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        // Tombol "Back"
+        backBtn.addEventListener("click", () => {
+            saveAnswer();
+            currentQuestionIndex--;
+            loadQuestion(currentQuestionIndex);
+        });
+
+        // Tombol "Submit"
+        submitBtn.addEventListener("click", () => {
+            if (validateAnswer()) {
+                // Menghitung skor
+                let score = 0;
+                questions.forEach((question, index) => {
+                    if (userAnswers[index] === question.answer) {
+                        score++;
+                    }
+                });
+
+                // Menampilkan hasil
+                alert(`Quiz submitted! Your score is ${score}/${questions.length}.`);
+
+                // Menyimpan jawaban pengguna ke server
+                submitAnswersToServer();
+                quizModal.classList.remove("show");
+            }
+        });
+
+        // Menyimpan jawaban ke server
+        function submitAnswersToServer() {
+            const answers = questions.map((question, index) => ({
+                question_id: question.id,
+                answer_id: userAnswers[index] // ID jawaban yang dipilih
+            }));
+
+            fetch('/survey/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({
+                        answers
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Answers saved:', data);
+
+                })
+                .catch(error => {
+                    console.error("Error saving answers:", error);
+                });
+        }
+
+        // Memanggil fungsi untuk memuat soal saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', loadQuestionsFromAPI);
+    </script> --}}
+
+    <script>
+        // Mengambil data pertanyaan dan jawaban dari server
+        let questions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null); // Array untuk menyimpan jawaban pengguna
+
+        const initialModal = document.getElementById("initialModal");
+        const quizModal = document.getElementById("quizModal");
+        const openModalButton = document.getElementById("openModal");
+        const proceedBtn = document.getElementById("proceed-btn");
+        const closeInitialModalBtn = initialModal.querySelector(".close-btn");
+        const closeQuizModalBtn = quizModal.querySelector(".close-btn");
+        const questionContainer = document.getElementById("question-container");
+        const backBtn = document.getElementById("back-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const submitBtn = document.getElementById("submit-btn");
+
+        // Membuka modal awal
+        openModalButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            initialModal.classList.add("show");
+        });
+
+        // Melanjutkan ke kuis
+        proceedBtn.addEventListener("click", () => {
+            initialModal.classList.remove("show");
+            quizModal.classList.add("show");
+            loadQuestion(currentQuestionIndex);
+        });
+
+        // Menutup modal awal
+        closeInitialModalBtn.addEventListener("click", () => {
+            initialModal.classList.remove("show");
+        });
+
+        // Menutup modal kuis
+        closeQuizModalBtn.addEventListener("click", () => {
+            quizModal.classList.remove("show");
+        });
+
+        // Mengambil soal dan jawaban dari API
+        function loadQuestionsFromAPI() {
+            fetch('/survey') // Panggil API untuk mengambil soal dan jawaban
+                .then(response => response.json())
+                .then(data => {
+                    questions = data.map(question => {
+                        if (question.answers && question.answers.length > 0) {
+                            const correctAnswer = question.answers.find(answer => answer.isCorrect);
+                            return {
+                                id: question.intQuestion_ID,
+                                text: question.txtQuestion,
+                                options: question.answers.map(answer => ({
+                                    id: answer.intAnswer_ID,
+                                    text: answer.txtAnswer
+                                })),
+                                answer: correctAnswer ? correctAnswer.intAnswer_ID :
+                                    null // Menyimpan ID jawaban yang benar
+                            };
+                        }
+                        return null; // Pastikan tidak ada soal tanpa jawaban
+                    }).filter(question => question !== null); // Menghapus soal yang tidak valid
+
+                    userAnswers = new Array(questions.length).fill(null); // Reset array jawaban pengguna
+                    loadQuestion(currentQuestionIndex); // Memuat pertanyaan pertama
+                })
+                .catch(error => {
+                    console.error("Error fetching questions:", error);
+                });
+        }
+
+        // Memuat pertanyaan berdasarkan indeks
+        function loadQuestion(index) {
+            const question = questions[index];
+            if (!question) return; // Pastikan soal ada sebelum mencoba memuatnya
+
+            questionContainer.innerHTML = `
+                <div class="question">
+                    <p><strong>${index + 1}. ${question.text}</strong></p>
+                    ${question.options
+                        .map(
+                            (option, i) =>
+                                `<div class="option">
+                                                                                <input
+                                                                                    type="radio"
+                                                                                    id="option${i}"
+                                                                                    name="answer"
+                                                                                    value="${option.id}"
+                                                                                    ${userAnswers[index] === option.id ? "checked" : ""}
+                                                                                >
+                                                                                <label for="option${i}">${option.text}</label>
+                                                                            </div>`
+                        )
+                        .join("")}
+                </div>
+            `;
+
+            backBtn.style.display = index > 0 ? "inline-block" : "none";
+            nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
+            submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
+        }
+
+        // Menyimpan jawaban pengguna
+        function saveAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                userAnswers[currentQuestionIndex] = selectedOption.value;
+            }
+        }
+
+        // Validasi jawaban sebelum melanjutkan
+        function validateAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) {
+                alert("Please select an answer before proceeding!");
+                return false;
+            }
+            saveAnswer();
+            return true;
+        }
+
+        // Tombol "Next"
+        nextBtn.addEventListener("click", () => {
+            if (validateAnswer()) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+            }
+        });
+
+        // Tombol "Back"
+        backBtn.addEventListener("click", () => {
+            saveAnswer();
+            currentQuestionIndex--;
+            loadQuestion(currentQuestionIndex);
+        });
+
+        // Tombol "Submit"
+        submitBtn.addEventListener("click", () => {
+            if (validateAnswer()) {
+                // Menghitung skor
+                let score = 0;
+                questions.forEach((question, index) => {
+                    if (userAnswers[index] === question.answer) {
+                        score++;
+                    }
+                });
+
+                // Menampilkan hasil
+                alert(`Quiz submitted! Your score is ${score}/${questions.length}.`);
+
+                // Menyimpan jawaban pengguna ke server
+                submitAnswersToServer();
+                quizModal.classList.remove("show");
+            }
+        });
+
+        // Menyimpan jawaban ke server
+        // function submitAnswersToServer() {
+        //     const answers = questions.map((question, index) => ({
+        //         question_id: question.id,
+        //         answer_id: userAnswers[index] // ID jawaban yang dipilih
+        //     }));
+
+        //     fetch('/survey/submit', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        //             },
+        //             body: JSON.stringify({
+        //                 answers
+        //             })
+        //         })
+        //         .then(response => {
+        //             console.log('HTTP Status Code:', response.status); // Menampilkan status kode
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             console.log('Answers saved:', data);
+        //         })
+        //         .catch(error => {
+        //             console.error("Error saving answers:", error);
+        //         });
+
+        // }
+
+
+        function submitAnswersToServer() {
+            // Map userAnswers ke format yang sesuai
+            const answers = questions.map((question, index) => ({
+                question_id: question.id,
+                answer_id: userAnswers[index] // ID jawaban yang dipilih
+            }));
+
+            // Masukkan jawaban ke input hidden di form
+            document.getElementById('answers-input').value = JSON.stringify(answers);
+
+            // Kirimkan form
+            document.getElementById('survey-form').submit();
+        }
+        // Memanggil fungsi untuk memuat soal saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', loadQuestionsFromAPI);
+    </script>
+@endsection

@@ -85,19 +85,6 @@
             </a>
         </div>
 
-        <!-- Tombol logout -->
-        @if (Auth::check())
-            <div class="logout-btn">
-                <a href="{{ route('logout') }}"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    Logout
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-            </div>
-        @endif
-
         <!-- Logo kanan -->
         <div class="logo-right">
             <a href="#">

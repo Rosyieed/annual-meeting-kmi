@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\Auth\LoginController;
 
 /*
@@ -20,7 +21,14 @@ use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/', function () {
     return view('pages.homepage');
-});
+})->name('home');
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/question', function () {
+    return view('pages.quizpage');
+});
+
+Route::get('/survey', [SurveyController::class, 'showSurvey'])->name('survey.show');
+Route::post('/survey/submit', [SurveyController::class, 'storeUserAnswers'])->name('survey.submit');
