@@ -181,469 +181,6 @@
         </div>
     </div>
 
-
-    {{-- <script>
-        const questions = [{
-                id: 1,
-                text: "What is 2 + 2?",
-                options: ["3", "4", "5", "6"],
-                answer: "4"
-            },
-            {
-                id: 2,
-                text: "What is the capital of France?",
-                options: ["Paris", "London", "Rome", "Berlin"],
-                answer: "Paris"
-            },
-            {
-                id: 3,
-                text: "Which planet is known as the Red Planet?",
-                options: ["Earth", "Mars", "Jupiter", "Saturn"],
-                answer: "Mars"
-            }
-        ];
-
-        let currentQuestionIndex = 0;
-
-        const initialModal = document.getElementById("initialModal");
-        const quizModal = document.getElementById("quizModal");
-        const openModalButton = document.getElementById("openModal");
-        const proceedBtn = document.getElementById("proceed-btn");
-        const closeInitialModalBtn = initialModal.querySelector(".close-btn");
-        const closeQuizModalBtn = quizModal.querySelector(".close-btn");
-        const questionContainer = document.getElementById("question-container");
-        const backBtn = document.getElementById("back-btn");
-        const nextBtn = document.getElementById("next-btn");
-        const submitBtn = document.getElementById("submit-btn");
-
-        // Open initial modal
-        openModalButton.addEventListener("click", function(event) {
-            event.preventDefault();
-            initialModal.classList.add("show");
-        });
-
-        // Proceed to quiz modal
-        proceedBtn.addEventListener("click", function() {
-            initialModal.classList.remove("show");
-            quizModal.classList.add("show");
-            loadQuestion(currentQuestionIndex);
-        });
-
-        // Close initial modal
-        closeInitialModalBtn.addEventListener("click", function() {
-            initialModal.classList.remove("show");
-        });
-
-        // Close quiz modal
-        closeQuizModalBtn.addEventListener("click", function() {
-            quizModal.classList.remove("show");
-        });
-
-        // Load question
-        function loadQuestion(index) {
-            const question = questions[index];
-            questionContainer.innerHTML = `
-                <div class="question">
-                    <p><strong>${index + 1}. ${question.text}</strong></p>
-                    ${question.options
-                      .map((option, i) => `<div><input type="radio" id="option${i}" name="answer" value="${option}">
-                                                  <label for="option${i}">${option}</label></div>`)
-                      .join("")}
-                </div>
-            `;
-
-            backBtn.style.display = index > 0 ? "inline-block" : "none";
-            nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
-            submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
-        }
-
-        // Navigate to next question
-        nextBtn.addEventListener("click", function() {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                loadQuestion(currentQuestionIndex);
-            }
-        });
-
-        // Navigate to previous question
-        backBtn.addEventListener("click", function() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                loadQuestion(currentQuestionIndex);
-            }
-        });
-
-        // Submit answers
-        submitBtn.addEventListener("click", function() {
-            const selectedOption = document.querySelector('input[name="answer"]:checked');
-            if (!selectedOption) {
-                alert("Please select an answer!");
-                return;
-            }
-            alert("Quiz submitted! Thank you.");
-            quizModal.classList.remove("show");
-        });
-    </script> --}}
-
-    {{-- <script>
-        // Mengambil data pertanyaan dan jawaban dari server
-        let questions = [];
-        let currentQuestionIndex = 0;
-        let userAnswers = new Array(questions.length).fill(null); // Array untuk menyimpan jawaban pengguna
-
-        const initialModal = document.getElementById("initialModal");
-        const quizModal = document.getElementById("quizModal");
-        const openModalButton = document.getElementById("openModal");
-        const proceedBtn = document.getElementById("proceed-btn");
-        const closeInitialModalBtn = initialModal.querySelector(".close-btn");
-        const closeQuizModalBtn = quizModal.querySelector(".close-btn");
-        const questionContainer = document.getElementById("question-container");
-        const backBtn = document.getElementById("back-btn");
-        const nextBtn = document.getElementById("next-btn");
-        const submitBtn = document.getElementById("submit-btn");
-
-        // Membuka modal awal
-        openModalButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            initialModal.classList.add("show");
-        });
-
-        // Melanjutkan ke kuis
-        proceedBtn.addEventListener("click", () => {
-            initialModal.classList.remove("show");
-            quizModal.classList.add("show");
-            loadQuestion(currentQuestionIndex);
-        });
-
-        // Menutup modal awal
-        closeInitialModalBtn.addEventListener("click", () => {
-            initialModal.classList.remove("show");
-        });
-
-        // Menutup modal kuis
-        closeQuizModalBtn.addEventListener("click", () => {
-            quizModal.classList.remove("show");
-        });
-
-        // Mengambil soal dan jawaban dari API
-        function loadQuestionsFromAPI() {
-            fetch('/survey') // Panggil API untuk mengambil soal dan jawaban
-                .then(response => response.json())
-                .then(data => {
-                    questions = data.map(question => ({
-                        id: question.intQuestion_ID,
-                        text: question.txtQuestion,
-                        options: question.answers.map(answer => answer.txtAnswer),
-                        answer: question.answers.find(answer => answer.isCorrect)
-                            .txtAnswer // Menyimpan jawaban yang benar
-                    }));
-                    userAnswers = new Array(questions.length).fill(null); // Reset array jawaban pengguna
-                    loadQuestion(currentQuestionIndex); // Memuat pertanyaan pertama
-                })
-                .catch(error => {
-                    console.error("Error fetching questions:", error);
-                });
-        }
-
-        // Memuat pertanyaan berdasarkan indeks
-        function loadQuestion(index) {
-            const question = questions[index];
-            questionContainer.innerHTML = `
-        <div class="question">
-            <p><strong>${index + 1}. ${question.text}</strong></p>
-            ${question.options
-                .map(
-                    (option, i) =>
-                        `<div class="option">
-                                <input
-                                    type="radio"
-                                    id="option${i}"
-                                    name="answer"
-                                    value="${option}"
-                                    ${userAnswers[index] === option ? "checked" : ""}
-                                >
-                                <label for="option${i}">${option}</label>
-                            </div>`
-                )
-                .join("")}
-        </div>
-    `;
-
-            backBtn.style.display = index > 0 ? "inline-block" : "none";
-            nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
-            submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
-        }
-
-        // Menyimpan jawaban pengguna
-        function saveAnswer() {
-            const selectedOption = document.querySelector('input[name="answer"]:checked');
-            if (selectedOption) {
-                userAnswers[currentQuestionIndex] = selectedOption.value;
-            }
-        }
-
-        // Validasi jawaban sebelum melanjutkan
-        function validateAnswer() {
-            const selectedOption = document.querySelector('input[name="answer"]:checked');
-            if (!selectedOption) {
-                alert("Please select an answer before proceeding!");
-                return false;
-            }
-            saveAnswer();
-            return true;
-        }
-
-        // Tombol "Next"
-        nextBtn.addEventListener("click", () => {
-            if (validateAnswer()) {
-                currentQuestionIndex++;
-                loadQuestion(currentQuestionIndex);
-            }
-        });
-
-        // Tombol "Back"
-        backBtn.addEventListener("click", () => {
-            saveAnswer();
-            currentQuestionIndex--;
-            loadQuestion(currentQuestionIndex);
-        });
-
-        // Tombol "Submit"
-        submitBtn.addEventListener("click", () => {
-            if (validateAnswer()) {
-                // Menghitung skor
-                let score = 0;
-                questions.forEach((question, index) => {
-                    if (userAnswers[index] === question.answer) {
-                        score++;
-                    }
-                });
-
-                // Menampilkan hasil
-                alert(`Quiz submitted! Your score is ${score}/${questions.length}.`);
-
-                // Menyimpan jawaban pengguna ke server
-                submitAnswersToServer();
-                quizModal.classList.remove("show");
-            }
-        });
-
-        // Menyimpan jawaban ke server
-        function submitAnswersToServer() {
-            const answers = questions.map((question, index) => ({
-                question_id: question.id,
-                answer_id: question.options.indexOf(userAnswers[index]) + 1 // Mengambil ID jawaban yang dipilih
-            }));
-
-            fetch('/survey/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        answers
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Answers saved:', data);
-                })
-                .catch(error => {
-                    console.error("Error saving answers:", error);
-                });
-        }
-
-        // Memanggil fungsi untuk memuat soal saat halaman dimuat
-        window.addEventListener('DOMContentLoaded', loadQuestionsFromAPI);
-    </script> --}}
-
-    {{-- <script>
-        // Mengambil data pertanyaan dan jawaban dari server
-        let questions = [];
-        let currentQuestionIndex = 0;
-        let userAnswers = new Array(questions.length).fill(null); // Array untuk menyimpan jawaban pengguna
-
-        const initialModal = document.getElementById("initialModal");
-        const quizModal = document.getElementById("quizModal");
-        const openModalButton = document.getElementById("openModal");
-        const proceedBtn = document.getElementById("proceed-btn");
-        const closeInitialModalBtn = initialModal.querySelector(".close-btn");
-        const closeQuizModalBtn = quizModal.querySelector(".close-btn");
-        const questionContainer = document.getElementById("question-container");
-        const backBtn = document.getElementById("back-btn");
-        const nextBtn = document.getElementById("next-btn");
-        const submitBtn = document.getElementById("submit-btn");
-
-        // Membuka modal awal
-        openModalButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            initialModal.classList.add("show");
-        });
-
-        // Melanjutkan ke kuis
-        proceedBtn.addEventListener("click", () => {
-            initialModal.classList.remove("show");
-            quizModal.classList.add("show");
-            loadQuestion(currentQuestionIndex);
-        });
-
-        // Menutup modal awal
-        closeInitialModalBtn.addEventListener("click", () => {
-            initialModal.classList.remove("show");
-        });
-
-        // Menutup modal kuis
-        closeQuizModalBtn.addEventListener("click", () => {
-            quizModal.classList.remove("show");
-        });
-
-        // Mengambil soal dan jawaban dari API
-        function loadQuestionsFromAPI() {
-            fetch('/survey') // Panggil API untuk mengambil soal dan jawaban
-                .then(response => response.json())
-                .then(data => {
-                    questions = data.map(question => {
-                        if (question.answers && question.answers.length > 0) {
-                            const correctAnswer = question.answers.find(answer => answer.isCorrect);
-                            return {
-                                id: question.intQuestion_ID,
-                                text: question.txtQuestion,
-                                options: question.answers.map(answer => ({
-                                    id: answer.intAnswer_ID,
-                                    text: answer.txtAnswer
-                                })),
-                                answer: correctAnswer ? correctAnswer.intAnswer_ID :
-                                    null // Menyimpan ID jawaban yang benar
-                            };
-                        }
-                        return null; // Pastikan tidak ada soal tanpa jawaban
-                    }).filter(question => question !== null); // Menghapus soal yang tidak valid
-
-                    userAnswers = new Array(questions.length).fill(null); // Reset array jawaban pengguna
-                    loadQuestion(currentQuestionIndex); // Memuat pertanyaan pertama
-                })
-                .catch(error => {
-                    console.error("Error fetching questions:", error);
-                });
-        }
-
-        // Memuat pertanyaan berdasarkan indeks
-        function loadQuestion(index) {
-            const question = questions[index];
-            if (!question) return; // Pastikan soal ada sebelum mencoba memuatnya
-
-            questionContainer.innerHTML = `
-                <div class="question">
-                    <p><strong>${index + 1}. ${question.text}</strong></p>
-                    ${question.options
-                        .map(
-                            (option, i) =>
-                                `<div class="option">
-                                            <input
-                                                type="radio"
-                                                id="option${i}"
-                                                name="answer"
-                                                value="${option.id}"
-                                                ${userAnswers[index] === option.id ? "checked" : ""}
-                                            >
-                                            <label for="option${i}">${option.text}</label>
-                                        </div>`
-                        )
-                        .join("")}
-                </div>
-            `;
-
-            backBtn.style.display = index > 0 ? "inline-block" : "none";
-            nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
-            submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
-        }
-
-        // Menyimpan jawaban pengguna
-        function saveAnswer() {
-            const selectedOption = document.querySelector('input[name="answer"]:checked');
-            if (selectedOption) {
-                userAnswers[currentQuestionIndex] = selectedOption.value;
-            }
-        }
-
-        // Validasi jawaban sebelum melanjutkan
-        function validateAnswer() {
-            const selectedOption = document.querySelector('input[name="answer"]:checked');
-            if (!selectedOption) {
-                alert("Please select an answer before proceeding!");
-                return false;
-            }
-            saveAnswer();
-            return true;
-        }
-
-        // Tombol "Next"
-        nextBtn.addEventListener("click", () => {
-            if (validateAnswer()) {
-                currentQuestionIndex++;
-                loadQuestion(currentQuestionIndex);
-            }
-        });
-
-        // Tombol "Back"
-        backBtn.addEventListener("click", () => {
-            saveAnswer();
-            currentQuestionIndex--;
-            loadQuestion(currentQuestionIndex);
-        });
-
-        // Tombol "Submit"
-        submitBtn.addEventListener("click", () => {
-            if (validateAnswer()) {
-                // Menghitung skor
-                let score = 0;
-                questions.forEach((question, index) => {
-                    if (userAnswers[index] === question.answer) {
-                        score++;
-                    }
-                });
-
-                // Menampilkan hasil
-                alert(`Quiz submitted! Your score is ${score}/${questions.length}.`);
-
-                // Menyimpan jawaban pengguna ke server
-                submitAnswersToServer();
-                quizModal.classList.remove("show");
-            }
-        });
-
-        // Menyimpan jawaban ke server
-        function submitAnswersToServer() {
-            const answers = questions.map((question, index) => ({
-                question_id: question.id,
-                answer_id: userAnswers[index] // ID jawaban yang dipilih
-            }));
-
-            fetch('/survey/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        answers
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Answers saved:', data);
-
-                })
-                .catch(error => {
-                    console.error("Error saving answers:", error);
-                });
-        }
-
-        // Memanggil fungsi untuk memuat soal saat halaman dimuat
-        window.addEventListener('DOMContentLoaded', loadQuestionsFromAPI);
-    </script> --}}
-
     <script>
         // Mengambil data pertanyaan dan jawaban dari server
         let questions = [];
@@ -715,31 +252,65 @@
         }
 
         // Memuat pertanyaan berdasarkan indeks
+        // function loadQuestion(index) {
+        //     const question = questions[index];
+        //     if (!question) return; // Pastikan soal ada sebelum mencoba memuatnya
+
+        //     questionContainer.innerHTML = `
+    //         <div class="question">
+    //             <p><strong>${index + 1}. ${question.text}</strong></p>
+    //             ${question.options
+    //                 .map(
+    //                     (option, i) =>
+    //                         `<div class="option">
+        //                                                                         <input
+        //                                                                             type="radio"
+        //                                                                             id="option${i}"
+        //                                                                             name="answer"
+        //                                                                             value="${option.id}"
+        //                                                                             ${userAnswers[index] === option.id ? "checked" : ""}
+        //                                                                         >
+        //                                                                         <label for="option${i}">${option.text}</label>
+        //                                                                     </div>`
+    //                 )
+    //                 .join("")}
+    //         </div>
+    //     `;
+
+        //     backBtn.style.display = index > 0 ? "inline-block" : "none";
+        //     nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
+        //     submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
+        // }
+
         function loadQuestion(index) {
             const question = questions[index];
             if (!question) return; // Pastikan soal ada sebelum mencoba memuatnya
 
             questionContainer.innerHTML = `
-                <div class="question">
-                    <p><strong>${index + 1}. ${question.text}</strong></p>
-                    ${question.options
-                        .map(
-                            (option, i) =>
-                                `<div class="option">
-                                                                                <input
-                                                                                    type="radio"
-                                                                                    id="option${i}"
-                                                                                    name="answer"
-                                                                                    value="${option.id}"
-                                                                                    ${userAnswers[index] === option.id ? "checked" : ""}
-                                                                                >
-                                                                                <label for="option${i}">${option.text}</label>
-                                                                            </div>`
-                        )
-                        .join("")}
-                </div>
-            `;
+        <div class="question">
+            <p><strong>${index + 1}. ${question.text}</strong></p>
+            ${question.options
+                .map(
+                    (option, i) => {
+                        const isChecked = userAnswers[index] === option.id.toString(); // Cek jika jawaban yang disimpan sama dengan ID opsi
+                        return `
+                                            <div class="option">
+                                                <input
+                                                    type="radio"
+                                                    id="option${i}"
+                                                    name="answer"
+                                                    value="${option.id}"
+                                                    ${isChecked ? "checked" : ""}>
+                                                <label for="option${i}">${option.text}</label>
+                                            </div>
+                                        `;
+                    }
+                )
+                .join("")}
+        </div>
+    `;
 
+            // Tampilkan tombol "Back", "Next", dan "Submit"
             backBtn.style.display = index > 0 ? "inline-block" : "none";
             nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
             submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
@@ -750,6 +321,7 @@
             const selectedOption = document.querySelector('input[name="answer"]:checked');
             if (selectedOption) {
                 userAnswers[currentQuestionIndex] = selectedOption.value;
+                console.log(userAnswers); // Debugging: Periksa isi array userAnswers
             }
         }
 
@@ -790,48 +362,11 @@
                     }
                 });
 
-                // Menampilkan hasil
-                alert(`Quiz submitted! Your score is ${score}/${questions.length}.`);
-
                 // Menyimpan jawaban pengguna ke server
                 submitAnswersToServer();
                 quizModal.classList.remove("show");
             }
         });
-
-        // Menyimpan jawaban ke server
-        // function submitAnswersToServer() {
-        //     const answers = questions.map((question, index) => ({
-        //         question_id: question.id,
-        //         answer_id: userAnswers[index] // ID jawaban yang dipilih
-        //     }));
-
-        //     fetch('/survey/submit', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        //             },
-        //             body: JSON.stringify({
-        //                 answers
-        //             })
-        //         })
-        //         .then(response => {
-        //             console.log('HTTP Status Code:', response.status); // Menampilkan status kode
-        //             if (!response.ok) {
-        //                 throw new Error('Network response was not ok');
-        //             }
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             console.log('Answers saved:', data);
-        //         })
-        //         .catch(error => {
-        //             console.error("Error saving answers:", error);
-        //         });
-
-        // }
-
 
         function submitAnswersToServer() {
             // Map userAnswers ke format yang sesuai
