@@ -28,7 +28,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/question', function () {
     return view('pages.quizpage');
-});
+})->name('question');
 
 Route::get('/survey', [SurveyController::class, 'showSurvey'])->name('survey.show');
 Route::post('/survey/submit', [SurveyController::class, 'storeUserAnswers'])->name('survey.submit');
