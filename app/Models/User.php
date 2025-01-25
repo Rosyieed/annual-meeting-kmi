@@ -35,4 +35,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class, 'intDepartment_ID');
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'mGroupMembers', 'intUser_ID', 'intGroup_ID')
+            ->withPivot('intVotes', 'boolIsLeader', 'boolHasVoted' , 'txtInsertedBy', 'dtmInserted', 'txtUpdatedBy', 'dtmUpdated')
+            ->withTimestamps();
+    }
 }

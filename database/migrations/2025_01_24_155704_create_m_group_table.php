@@ -11,21 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mUsers', function (Blueprint $table) {
-            $table->id('intUser_ID');
-            $table->foreignId('intDepartment_ID')->constrained('mDepartments', 'intDepartment_ID');
-            $table->string('txtName', 100);
-            $table->string('txtEmail', 100)->unique();
-            $table->string('txtNIK', 100)->unique();
-            $table->string('txtPassword', 100);
-            $table->enum('txtGender', ['L', 'P']);
-            $table->tinyInteger('intProcessStep')->default(0);
+        Schema::create('mGroups', function (Blueprint $table) {
+            $table->id('intGroup_ID');
+            $table->string('txtGroupName', 100);
+            $table->foreignId('intLeader_ID')->nullable(); // Tambahkan nullable terlebih dahulu
             $table->string('txtInsertedBy', 100);
             $table->dateTime('dtmInserted');
             $table->string('txtUpdatedBy', 100)->nullable();
             $table->dateTime('dtmUpdated')->nullable();
             $table->tinyInteger('bitActive')->default(1);
             $table->timestamps();
+
+            $table->foreign('intLeader_ID')->references('intUser_ID')->on('mUsers');
         });
     }
 
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mUsers');
+        Schema::dropIfExists('mGroups');
     }
 };

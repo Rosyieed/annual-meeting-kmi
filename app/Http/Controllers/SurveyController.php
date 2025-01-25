@@ -48,6 +48,6 @@ class SurveyController extends Controller
         }
 
         toast('Survey has been submitted successfully!', 'success')->timerProgressBar();
-        return redirect()->route('home');
+        return redirect()->route('congratulations');
     }
 }
