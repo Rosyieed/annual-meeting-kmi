@@ -14,8 +14,23 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Admin
         User::create([
             'intDepartment_ID' => 1, // ID Department IT
+            'intRole_ID' => 1, // ID Role Admin
+            'txtName' => 'Admin',
+            'txtEmail' => 'admin@gmail.com',
+            'txtNIK' => '0',
+            'txtPassword' => Hash::make('kalbemorinaga'),
+            'txtGender' => 'L',
+            'txtInsertedBy' => 'admin',
+            'dtmInserted' => now(),
+        ]);
+
+        // User
+        User::create([
+            'intDepartment_ID' => 1, // ID Department IT
+            'intRole_ID' => 2, // ID Role User
             'txtName' => 'John Doe',
             'txtEmail' => 'johndoe@example.com',
             'txtNIK' => '1',
@@ -27,6 +42,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'intDepartment_ID' => 2, // ID Department HR
+            'intRole_ID' => 2, // ID Role User
             'txtName' => 'Jane Smith',
             'txtEmail' => 'janesmith@example.com',
             'txtNIK' => '2',
@@ -39,6 +55,7 @@ class UserSeeder extends Seeder
         // Tambahan untuk Department ID 1 (IT)
         User::create([
             'intDepartment_ID' => 1,
+            'intRole_ID' => 2,
             'txtName' => 'Alice Johnson',
             'txtEmail' => 'alicejohnson@example.com',
             'txtNIK' => '3',
@@ -50,6 +67,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'intDepartment_ID' => 1,
+            'intRole_ID' => 2,
             'txtName' => 'Bob Williams',
             'txtEmail' => 'bobwilliams@example.com',
             'txtNIK' => '4',
@@ -61,6 +79,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'intDepartment_ID' => 1,
+            'intRole_ID' => 2,
             'txtName' => 'Charlie Brown',
             'txtEmail' => 'charliebrown@example.com',
             'txtNIK' => '5',
@@ -72,6 +91,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'intDepartment_ID' => 1,
+            'intRole_ID' => 2,
             'txtName' => 'Diana Prince',
             'txtEmail' => 'dianaprince@example.com',
             'txtNIK' => '6',
@@ -84,6 +104,7 @@ class UserSeeder extends Seeder
         // Tambahan untuk Department ID 2 (HR)
         User::create([
             'intDepartment_ID' => 2,
+            'intRole_ID' => 2,
             'txtName' => 'Ethan Hunt',
             'txtEmail' => 'ethanhunt@example.com',
             'txtNIK' => '7',
@@ -95,6 +116,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'intDepartment_ID' => 2,
+            'intRole_ID' => 2,
             'txtName' => 'Fiona Gallagher',
             'txtEmail' => 'fionagallagher@example.com',
             'txtNIK' => '8',
@@ -106,6 +128,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'intDepartment_ID' => 2,
+            'intRole_ID' => 2,
             'txtName' => 'George Michael',
             'txtEmail' => 'georgemichael@example.com',
             'txtNIK' => '9',
@@ -117,6 +140,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'intDepartment_ID' => 2,
+            'intRole_ID' => 2,
             'txtName' => 'Hannah Baker',
             'txtEmail' => 'hannahbaker@example.com',
             'txtNIK' => '10',

@@ -62,7 +62,7 @@
  <![endif]-->
 
     {{-- <link rel="shortcut icon" href="images/favicons/favicon.ico"> --}}
-    <link rel="shortcut icon" href="{{ asset('assets/images/logo/Logo.png') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo/logo annual meeting.png') }}">
 
 </head>
 

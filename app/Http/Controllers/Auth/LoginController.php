@@ -33,9 +33,17 @@ class LoginController extends Controller
             // Login user
             Auth::login($user);
 
-            // Redirect ke halaman utama setelah login sukses
-            toast('Login success!', 'success')->timerProgressBar();
-            return redirect()->intended('/question');
+            // Periksa apakah proses user
+            if ($user->intProcessStep == 0) {
+                toast('Login success!', 'success')->timerProgressBar();
+                return redirect()->route('question');
+            } elseif ($user->intProcessStep == 1) {
+                toast('Login success!', 'success')->timerProgressBar();
+                return redirect()->route('congratulations');
+            } elseif ($user->intProcessStep == 2) {
+                toast('Login success!', 'success')->timerProgressBar();
+                return redirect()->route('home');
+            }
         }
 
         // Jika login gagal, kembali ke halaman login dengan error message
@@ -46,7 +54,7 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        
+
         toast('Logout success!', 'success')->timerProgressBar();
         return redirect()->route('home');
     }

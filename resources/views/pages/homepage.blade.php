@@ -147,9 +147,14 @@
                 <div class="started-content">
                     <div class="h-title">
                         <div class="button-container">
-                            <a href="#" id="openModal"
-                                style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Get
-                                Started</a>
+                            @if (Auth::user() && Auth::user()->intProcessStep == 2)
+                                <a href="#" id="openModal"
+                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Group Check</a>
+                            @else
+                                <a href="#" id="openModal"
+                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Get
+                                    Started</a>
+                            @endif
                         </div>
                     </div>
 

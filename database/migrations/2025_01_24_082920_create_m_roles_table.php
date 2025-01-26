@@ -11,16 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mUsers', function (Blueprint $table) {
-            $table->id('intUser_ID');
-            $table->foreignId('intDepartment_ID')->constrained('mDepartments', 'intDepartment_ID');
-            $table->foreignId('intRole_ID')->constrained('mRoles', 'intRole_ID');
-            $table->string('txtName', 100);
-            $table->string('txtEmail', 100)->unique();
-            $table->string('txtNIK', 100)->unique();
-            $table->string('txtPassword', 100);
-            $table->enum('txtGender', ['L', 'P']);
-            $table->tinyInteger('intProcessStep')->default(0);
+        Schema::create('mRoles', function (Blueprint $table) {
+            $table->id('intRole_ID');
+            $table->string('txtRole', 100);
             $table->string('txtInsertedBy', 100);
             $table->dateTime('dtmInserted');
             $table->string('txtUpdatedBy', 100)->nullable();
@@ -35,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mUsers');
+        Schema::dropIfExists('m_roles');
     }
 };

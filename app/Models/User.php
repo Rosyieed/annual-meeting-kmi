@@ -17,11 +17,13 @@ class User extends Authenticatable
     protected $primaryKey = 'intUser_ID';
     protected $fillable = [
         'intDepartment_ID',
+        'intRole_ID',
         'txtName',
         'txtEmail',
         'txtNIK',
         'txtPassword',
         'txtGender',
+        'intProcessStep',
         'txtInsertedBy',
         'dtmInserted',
         'txtUpdatedBy',
@@ -41,5 +43,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class, 'mGroupMembers', 'intUser_ID', 'intGroup_ID')
             ->withPivot('intVotes', 'boolIsLeader', 'boolHasVoted' , 'txtInsertedBy', 'dtmInserted', 'txtUpdatedBy', 'dtmUpdated')
             ->withTimestamps();
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'intRole_ID', 'intRole_ID');
     }
 }

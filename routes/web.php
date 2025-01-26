@@ -17,51 +17,51 @@ use App\Http\Controllers\Auth\LoginController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// Route Auth(Login, Logout)
+Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+// HomePage
 Route::get('/', function () {
     return view('pages.homepage');
 })->name('home');
 
-Route::post('/login', [LoginController::class, 'login'])->name('login');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
+    Route::get('/question', function () {
+        return view('pages.quizpage');
+    })->name('question')->middleware('checkprocess');
 
-Route::get('/question', function () {
-    return view('pages.quizpage');
-})->name('question');
+    // Congatulations Page
+    Route::get('/congratulations', function () {
+        $user = auth()->user();
 
-// Congatulations Page
-Route::get('/congratulations', function () {
-    $user = auth()->user();
+        // Ambil nama grup pertama yang terkait dengan user
+        $groupName = $user->groups->first()->txtGroupName;
+        $userName = $user->txtName;
 
-    // Ambil nama grup pertama yang terkait dengan user
-    $groupName = $user->groups->first()->txtGroupName;
-    $userName = $user->txtName;
+        // Dapatkan user yang sedang login
+        $userId = User::find(auth()->id());
 
-    // Dapatkan user yang sedang login
-    $userId = User::find(auth()->id());
+        // Cari grup tempat user saat ini tergabung
+        $group = $userId->groups()->first();
 
-    // Cari grup tempat user saat ini tergabung
-    $group = $userId->groups()->first();
+        // dd($group);
 
-    // dd($group);
+        // Jika user tidak tergabung dalam grup mana pun
+        if (!$group) {
+            return redirect()->back()->with('error', 'You are not part of any group.');
+        }
 
-    // Jika user tidak tergabung dalam grup mana pun
-    if (!$group) {
-        return redirect()->back()->with('error', 'You are not part of any group.');
-    }
+        // Ambil anggota grup kecuali user itu sendiri
+        $members = $group->members->where('intUser_ID', '!=', $user->intUser_ID);
 
-    // Ambil anggota grup kecuali user itu sendiri
-    $members = $group->members->where('intUser_ID', '!=', $user->intUser_ID);
+        return view('pages.congratulations', compact('userName', 'groupName', 'group', 'members'));
+    })->name('congratulations')->middleware('checkprocess');
 
-    return view('pages.congratulations', compact('userName', 'groupName', 'group', 'members'));
-})->name('congratulations');
+    Route::get('/survey', [SurveyController::class, 'showSurvey'])->name('survey.show');
+    Route::post('/survey/submit', [SurveyController::class, 'storeUserAnswers'])->name('survey.submit');
 
-Route::get('/survey', [SurveyController::class, 'showSurvey'])->name('survey.show');
-Route::post('/survey/submit', [SurveyController::class, 'storeUserAnswers'])->name('survey.submit');
-
-// Vote Group Leader Page
-Route::get('/vote', [GroupController::class, 'votePage'])->name('vote');
-Route::post('/group/{groupId}/vote', [GroupController::class, 'vote'])->name('groups.vote');
+    // Vote Group Leader Page
+    Route::get('/vote', [GroupController::class, 'votePage'])->name('vote')->middleware('auth', 'checkrole:admin');
+    Route::post('/group/{groupId}/vote', [GroupController::class, 'vote'])->name('groups.vote');
+});
