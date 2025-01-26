@@ -54,41 +54,20 @@
     }
 </style>
 
-{{-- <header class="header">
-    <div class="head-top" style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
-
-        <!-- Logo kiri -->
-        <div class="logo-left">
-            <a href="#">
-                <img src="{{ asset('assets/images/logo/logo kmi.png') }}" alt="Logo Kiri" class="responsive-logo">
-            </a>
-        </div>
-
-        <!-- Logo kanan -->
-        <div class="logo-right">
-            <a href="#">
-                <img src="{{ asset('assets/images/logo/Logo.png') }}" alt="Logo Kanan"
-                    class="responsive-logo">
-            </a>
-        </div>
-
-    </div>
-</header> --}}
-
 <header class="header">
     <div class="head-top" style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
 
         <!-- Logo kiri -->
         <div class="logo-left">
             <a href="#">
-                <img src="{{ asset('assets/images/logo/logo kmi.png') }}" alt="Logo Kiri" class="responsive-logo">
+                <img src="{{ asset('user-assets/images/logo/logo kmi.png') }}" alt="Logo Kiri" class="responsive-logo">
             </a>
         </div>
 
         <!-- Logo kanan -->
         <div class="logo-right">
             <a href="#">
-                <img src="{{ asset('assets/images/logo/Logo.png') }}" alt="Logo Kanan" class="responsive-logo">
+                <img src="{{ asset('user-assets/images/logo/Logo.png') }}" alt="Logo Kanan" class="responsive-logo">
             </a>
         </div>
 
