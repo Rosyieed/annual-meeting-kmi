@@ -26,23 +26,23 @@
 
     <!-- Styles -->
     {{-- <link rel="stylesheet" href="css/basic.css"/> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/basic.css') }}" />
+    <link rel="stylesheet" href="{{ asset('user-assets/css/basic.css') }}" />
     {{-- <link rel="stylesheet" href="css/layout.css" /> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/layout.css') }}" />
+    <link rel="stylesheet" href="{{ asset('user-assets/css/layout.css') }}" />
     {{-- <link rel="stylesheet" href="css/magnific-popup.css" /> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css') }}" />
+    <link rel="stylesheet" href="{{ asset('user-assets/css/magnific-popup.css') }}" />
     {{-- <link rel="stylesheet" href="css/animate.css" /> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}" />
+    <link rel="stylesheet" href="{{ asset('user-assets/css/animate.css') }}" />
     {{-- <link rel="stylesheet" href="css/jarallax.css" /> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/jarallax.css') }}" />
+    <link rel="stylesheet" href="{{ asset('user-assets/css/jarallax.css') }}" />
     {{-- <link rel="stylesheet" href="css/swiper.css" /> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/swiper.css') }}" />
+    <link rel="stylesheet" href="{{ asset('user-assets/css/swiper.css') }}" />
     {{-- <link rel="stylesheet" href="css/fontawesome.css" /> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.css') }}" />
+    <link rel="stylesheet" href="{{ asset('user-assets/css/fontawesome.css') }}" />
     {{-- <link rel="stylesheet" href="css/brands.css" /> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/brands.css') }}" />
+    <link rel="stylesheet" href="{{ asset('user-assets/css/brands.css') }}" />
     {{-- <link rel="stylesheet" href="css/solid.css" /> --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/solid.css') }}" />
+    <link rel="stylesheet" href="{{ asset('user-assets/css/solid.css') }}" />
     <!-- Theme Colors
  <link rel="stylesheet" href="css/theme-colors/blue.css" />
  <link rel="stylesheet" href="css/theme-colors/green.css" />
@@ -62,7 +62,7 @@
  <![endif]-->
 
     {{-- <link rel="shortcut icon" href="images/favicons/favicon.ico"> --}}
-    <link rel="shortcut icon" href="{{ asset('assets/images/logo/logo annual meeting.png') }}">
+    <link rel="shortcut icon" href="{{ asset('user-assets/images/logo/logo annual meeting.png') }}">
 
 </head>
 
@@ -114,31 +114,31 @@
 
     <!-- Scripts -->
     {{-- <script src="js/jquery.min.js"></script> --}}
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('user-assets/js/jquery.min.js') }}"></script>
     {{-- <script src="js/jquery.validate.js"></script> --}}
-    <script src="{{ asset('assets/js/jquery.validate.js') }}"></script>
+    <script src="{{ asset('user-assets/js/jquery.validate.js') }}"></script>
     {{-- <script src="js/magnific-popup.js"></script> --}}
-    <script src="{{ asset('assets/js/magnific-popup.js') }}"></script>
+    <script src="{{ asset('user-assets/js/magnific-popup.js') }}"></script>
     {{-- <script src="js/simpleParallax.js"></script> --}}
-    <script src="{{ asset('assets/js/simpleParallax.js') }}"></script>
+    <script src="{{ asset('user-assets/js/simpleParallax.js') }}"></script>
     {{-- <script src="js/typed.js"></script> --}}
-    <script src="{{ asset('assets/js/typed.js') }}"></script>
+    <script src="{{ asset('user-assets/js/typed.js') }}"></script>
     {{-- <script src="js/jarallax.js"></script> --}}
-    <script src="{{ asset('assets/js/jarallax.js') }}"></script>
+    <script src="{{ asset('user-assets/js/jarallax.js') }}"></script>
     {{-- <script src="js/jarallax-video.js"></script> --}}
-    <script src="{{ asset('assets/js/jarallax-video.js') }}"></script>
+    <script src="{{ asset('user-assets/js/jarallax-video.js') }}"></script>
     {{-- <script src="js/jarallax-element.js"></script> --}}
-    <script src="{{ asset('assets/js/jarallax-element.js') }}"></script>
+    <script src="{{ asset('user-assets/js/jarallax-element.js') }}"></script>
     {{-- <script src="js/imagesloaded.pkgd.js"></script> --}}
-    <script src="{{ asset('assets/js/imagesloaded.pkgd.js') }}"></script>
+    <script src="{{ asset('user-assets/js/imagesloaded.pkgd.js') }}"></script>
     {{-- <script src="js/isotope.pkgd.js"></script> --}}
-    <script src="{{ asset('assets/js/isotope.pkgd.js') }}"></script>
+    <script src="{{ asset('user-assets/js/isotope.pkgd.js') }}"></script>
     {{-- <script src="js/swiper.js"></script> --}}
-    <script src="{{ asset('assets/js/swiper.js') }}"></script>
+    <script src="{{ asset('user-assets/js/swiper.js') }}"></script>
     {{-- <script src="js/grained.js"></script> --}}
-    <script src="{{ asset('assets/js/grained.js') }}"></script>
+    <script src="{{ asset('user-assets/js/grained.js') }}"></script>
     {{-- <script src="js/scripts.js"></script> --}}
-    <script src="{{ asset('assets/js/scripts.js') }}"></script>
+    <script src="{{ asset('user-assets/js/scripts.js') }}"></script>
 
     @include('sweetalert::alert')
 
