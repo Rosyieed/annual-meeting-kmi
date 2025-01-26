@@ -30,7 +30,7 @@ Route::get('/', function () {
 
     // If the user is not logged in, redirect to the login page
     if (!$user) {
-        return view('pages.homepage');
+        return view('pages.user.homepage');
     }
 
     // Fetch the group(s) associated with the user
@@ -44,12 +44,12 @@ Route::get('/', function () {
     // Fetch the group with its members and leader
     $group = Group::with(['members', 'leader'])->find($group->intGroup_ID);
 
-    return view('pages.homepage', compact('group'));
+    return view('pages.user.homepage', compact('group'));
 })->name('home');
 
 Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
     Route::get('/question', function () {
-        return view('pages.quizpage');
+        return view('pages.user.quizpage');
     })->name('question')->middleware('checkprocess');
 
     // Congatulations Page
@@ -86,3 +86,7 @@ Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
     Route::get('/vote', [GroupController::class, 'votePage'])->name('vote')->middleware('auth', 'checkrole:admin');
     Route::post('/group/{groupId}/vote', [GroupController::class, 'vote'])->name('groups.vote');
 });
+
+Route::get('/admin', function () {
+    return view('pages.admin.dashboard');
+})->name('admin.dashboard')->middleware('auth', 'checkrole:admin');

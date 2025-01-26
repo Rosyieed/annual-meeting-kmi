@@ -9,27 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
-    public function votePage()
-    {
-        // Dapatkan user yang sedang login
-        $user = User::find(auth()->id());
-
-        // Cari grup tempat user saat ini tergabung
-        $group = $user->groups()->first();
-
-        // dd($group);
-
-        // Jika user tidak tergabung dalam grup mana pun
-        if (!$group) {
-            return redirect()->back()->with('error', 'You are not part of any group.');
-        }
-
-        // Ambil anggota grup kecuali user itu sendiri
-        $members = $group->members->where('intUser_ID', '!=', $user->intUser_ID);
-
-        return view('pages.groups.vote', compact('group', 'members'));
-    }
-
     // Melakukan voting untuk memilih ketua grup
     public function vote(Request $request, $groupId)
     {
@@ -96,13 +75,5 @@ class GroupController extends Controller
 
         toast('Your vote has been counted!', 'success');
         return redirect()->route('home');
-    }
-
-    // Menampilkan hasil voting dan ketua yang terpilih
-    public function showResults($groupId)
-    {
-        $group = Group::with('members')->find($groupId);
-        $leader = $group->leader; // Ambil ketua yang terpilih
-        return view('groups.results', compact('group', 'leader'));
     }
 }
