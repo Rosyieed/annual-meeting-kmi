@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Question;
+use App\Models\User;
 use App\Models\UserAnswer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -35,6 +36,7 @@ class SurveyController extends Controller
 
         $user = Auth::user();  // Ambil user yang sedang login
 
+
         // Menyimpan jawaban pengguna
         foreach ($request->answers as $answer) {
             UserAnswer::create([
@@ -46,6 +48,10 @@ class SurveyController extends Controller
                 'bitActive' => 1,
             ]);
         }
+
+
+        // update process step user
+        User::where('intUser_ID', $user->intUser_ID)->update(['intProcessStep' => 1]);
 
         toast('Survey has been submitted successfully!', 'success')->timerProgressBar();
         return redirect()->route('congratulations');

@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use App\Models\Group;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SurveyController;
@@ -23,7 +25,26 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // HomePage
 Route::get('/', function () {
-    return view('pages.homepage');
+    // Get the current logged-in user
+    $user = Auth::user();
+
+    // If the user is not logged in, redirect to the login page
+    if (!$user) {
+        return view('pages.homepage');
+    }
+
+    // Fetch the group(s) associated with the user
+    $group = $user->groups->first(); // Get the first group associated with the user
+
+    // If the user doesn't belong to any group, handle it
+    if (!$group) {
+        return redirect()->back()->with('error', 'User is not assigned to any group!');
+    }
+
+    // Fetch the group with its members and leader
+    $group = Group::with(['members', 'leader'])->find($group->intGroup_ID);
+
+    return view('pages.homepage', compact('group'));
 })->name('home');
 
 Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {

@@ -121,11 +121,63 @@
         /* Ensure the close button stays on top */
     }
 
+    .login-container .close-btn-group {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 8000;
+        /* Ensure the close button stays on top */
+    }
+
     .login-container .divider {
         width: 60%;
         height: 2px;
         background-color: #d3d3d3;
         margin: 10px auto 20px;
+    }
+
+    .group-info {
+        margin-bottom: 20px;
+    }
+
+    .group-info label {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .group-info p,
+    .group-info ul {
+        font-size: 15px;
+        color: #555;
+        line-height: 1.6;
+    }
+
+    .group-info ul {
+        padding-left: 0;
+        margin: 0;
+        list-style-type: none;
+    }
+
+    .group-info ul li {
+        padding: 8px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .group-info ul li:hover {
+        background-color: #f1f1de;
+    }
+
+    .group-info .no-leader {
+        font-style: italic;
+        color: #888;
     }
 </style>
 
@@ -147,9 +199,18 @@
                 <div class="started-content">
                     <div class="h-title">
                         <div class="button-container">
-                            @if (Auth::user() && Auth::user()->intProcessStep == 2)
-                                <a href="#" id="openModal"
-                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Group Check</a>
+                            @if (Auth::user() && Auth::user()->intProcessStep == 0)
+                                <a href="{{ route('question') }}"
+                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Survey
+                                    Page</a>
+                            @elseif (Auth::user() && Auth::user()->intProcessStep == 1)
+                                <a href="{{ route('congratulations') }}"
+                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">congratulations
+                                    Page</a>
+                            @elseif (Auth::user() && Auth::user()->intProcessStep == 2)
+                                <a href="#" id="openModalGroup"
+                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Group
+                                    Information</a>
                             @else
                                 <a href="#" id="openModal"
                                     style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Get
@@ -194,40 +255,112 @@
         </div>
     </div>
 
+    @if (Auth::user() && Auth::user()->intProcessStep == 2)
+        <div id="groupCheckModal" class="modal">
+            <div class="login-container">
+                <div class="close-btn-group">&times;</div>
+                <h1>Group Information</h1>
+                <div class="divider"></div>
+
+                <!-- Group Name -->
+                <div class="group-info">
+                    <label for="group_name">Group Name</label>
+                    <p id="group_name">{{ $group->txtGroupName }}</p>
+                </div>
+
+                <!-- Group Members -->
+                <div class="group-info">
+                    <label for="group_members">Group Members</label>
+                    <ul id="group_members">
+                        @foreach ($group->members as $member)
+                            <li>{{ $member->txtName }}</li> <!-- Display member's name -->
+                        @endforeach
+                    </ul>
+                </div>
+
+                <!-- Leader -->
+                <div class="group-info">
+                    <label for="leader_id">Leader</label>
+                    @if ($group->leader->intUser_ID == Auth::user()->intUser_ID)
+                        <p id="leader_name">{{ $group->leader->txtName }} (You)</p> <!-- Display leader's name -->
+                    @elseif($group->leader)
+                        <p id="leader_name">{{ $group->leader->txtName }}</p> <!-- Display leader's name -->
+                    @else
+                        <p id="leader_name" class="no-leader">No Leader</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endif
+
     {{-- Javascript Loader --}}
     <script>
         // Get modal and buttons
-        const modal = document.getElementById("loginModal");
+        const loginModal = document.getElementById("loginModal");
+        const groupCheckModal = document.getElementById("groupCheckModal");
         const openModalButton = document.getElementById("openModal");
+        const openModalGroupButton = document.getElementById("openModalGroup");
         const closeBtn = document.querySelector(".close-btn");
-        //
+        const closeBtnGroup = document.querySelector(".close-btn-group");
 
-        // Open modal when the button is clicked
-        openModalButton.addEventListener("click", function(event) {
-            event.preventDefault();
-            modal.classList.add("show");
-            openModalButton.style.display = "none";
-        });
+
+        if (openModalGroupButton) {
+            openModalGroupButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                groupCheckModal.classList.add("show");
+                openModalGroupButton.style.display = "none";
+            });
+        }
+
+        if (openModalButton) {
+            openModalButton.addEventListener("click", function(event) {
+                event.preventDefault();
+                loginModal.classList.add("show");
+                openModalButton.style.display = "none";
+            });
+        }
 
         // Close modal when the close button is clicked
         closeBtn.addEventListener("click", function() {
-            modal.classList.remove("show");
-            modal.classList.add("hide");
+            loginModal.classList.remove("show");
+            loginModal.classList.add("hide");
             setTimeout(function() {
-                modal.classList.remove("hide");
+                loginModal.classList.remove("hide");
             }, 300);
             openModalButton.style.display = "inline-block";
         });
 
+        // Close modal when the close button is clicked
+        closeBtnGroup.addEventListener("click", function() {
+            groupCheckModal.classList.remove("show");
+            groupCheckModal.classList.add("hide");
+            setTimeout(function() {
+                groupCheckModal.classList.remove("hide");
+            }, 300);
+            openModalGroupButton.style.display = "inline-block";
+        });
+
         // Close modal if clicked outside the modal content
         window.addEventListener("click", function(event) {
-            if (event.target === modal) {
-                modal.classList.remove("show");
-                modal.classList.add("hide");
+            if (event.target === loginModal) {
+                loginModal.classList.remove("show");
+                loginModal.classList.add("hide");
                 setTimeout(function() {
-                    modal.classList.remove("hide");
+                    loginModal.classList.remove("hide");
                 }, 300);
                 openModalButton.style.display = "inline-block";
+            }
+        });
+
+        // Close modal if clicked outside the modal content
+        window.addEventListener("click", function(event) {
+            if (event.target === groupCheckModal) {
+                groupCheckModal.classList.remove("show");
+                groupCheckModal.classList.add("hide");
+                setTimeout(function() {
+                    groupCheckModal.classList.remove("hide");
+                }, 300);
+                openModalGroupButton.style.display = "inline-block";
             }
         });
     </script>

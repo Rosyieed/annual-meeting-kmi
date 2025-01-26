@@ -91,9 +91,11 @@ class GroupController extends Controller
             $group->update(['intLeader_ID' => $newLeader->intUser_ID]);
         }
 
-        toast('Your vote has been counted!', 'success');
+        // update process step user
+        User::where('intUser_ID', $user->intUser_ID)->update(['intProcessStep' => 2]);
 
-        return redirect()->route('groups.show', $groupId)->with('success', 'Your vote has been counted!');
+        toast('Your vote has been counted!', 'success');
+        return redirect()->route('home');
     }
 
     // Menampilkan hasil voting dan ketua yang terpilih

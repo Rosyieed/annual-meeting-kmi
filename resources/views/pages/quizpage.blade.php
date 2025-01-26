@@ -105,6 +105,43 @@
     }
 </style>
 
+{{-- <script>
+        // Get modal and buttons
+        const modal = document.getElementById("loginModal");
+        const openModalButton = document.getElementById("openModal");
+        const closeBtn = document.querySelector(".close-btn");
+        //
+
+        // Open modal when the button is clicked
+        openModalButton.addEventListener("click", function(event) {
+            event.preventDefault();
+            modal.classList.add("show");
+            openModalButton.style.display = "none";
+        });
+
+        // Close modal when the close button is clicked
+        closeBtn.addEventListener("click", function() {
+            modal.classList.remove("show");
+            modal.classList.add("hide");
+            setTimeout(function() {
+                modal.classList.remove("hide");
+            }, 300);
+            openModalButton.style.display = "inline-block";
+        });
+
+        // Close modal if clicked outside the modal content
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                modal.classList.remove("show");
+                modal.classList.add("hide");
+                setTimeout(function() {
+                    modal.classList.remove("hide");
+                }, 300);
+                openModalButton.style.display = "inline-block";
+            }
+        });
+    </script> --}}
+
 @section('content')
     <div class="section started" id="section-started">
 
