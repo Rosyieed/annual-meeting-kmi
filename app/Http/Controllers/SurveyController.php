@@ -58,4 +58,23 @@ class SurveyController extends Controller
         toast('Survey has been submitted successfully!', 'success')->timerProgressBar();
         return redirect()->route('congratulations');
     }
+
+    public function resetProcessStep($id)
+    {
+        $user = User::find($id);
+
+        // // Jika Process Step > 1, maka tidak bisa direset
+        if ($user->intProcessStep > 1) {
+            toast('Process step cannot be reset!', 'error')->timerProgressBar();
+            return redirect()->route('master.users.index');
+        }
+
+        // Hapus jawaban pengguna
+        UserAnswer::where('intUser_ID', $user->intUser_ID)->delete();
+        // Reset process step user
+        User::where('intUser_ID', $user->intUser_ID)->update(['intProcessStep' => 0]);
+
+        toast('Process step has been reset successfully!', 'success')->timerProgressBar();
+        return redirect()->route('master.users.index');
+    }
 }

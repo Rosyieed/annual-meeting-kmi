@@ -107,6 +107,7 @@ Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function 
         Route::put('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('master.users.reset-password');
         Route::get('users-restore', [UserController::class, 'restorePage'])->name('master.users.restore-index');
         Route::put('users/{user}/restore', [UserController::class, 'restoreUser'])->name('master.users.restore-user');
+        Route::put('users/{user}/reset-process-step', [SurveyController::class, 'resetProcessStep'])->name('master.users.reset-process-step');
 
         // Groups
         Route::get('groups', [GroupController::class, 'index'])->name('master.groups.index');

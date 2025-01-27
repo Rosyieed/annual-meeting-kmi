@@ -103,12 +103,20 @@
                                                                 <span>Edit</span>
                                                             </a>
                                                         </li>
-                                                        {{-- <li>
-                                                            <a class="dropdown-item printBTN" href="javascript:void(0)">
-                                                                <i class="feather feather-printer me-3"></i>
-                                                                <span>Print</span>
-                                                            </a>
+                                                        <li>
+                                                            <form
+                                                                action="{{ route('master.users.reset-process-step', $user->intUser_ID) }}"
+                                                                method="POST" class="d-inline">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <button type="submit" class="dropdown-item"
+                                                                    data-confirm-reset="true">
+                                                                    <i class="feather feather-alert-octagon me-3"></i>
+                                                                    <span>Reset Process Step</span>
+                                                                </button>
+                                                            </form>
                                                         </li>
+                                                        {{--
                                                         <li>
                                                             <a class="dropdown-item" href="javascript:void(0)">
                                                                 <i class="feather feather-clock me-3"></i>
