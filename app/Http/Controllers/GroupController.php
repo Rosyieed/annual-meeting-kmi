@@ -9,6 +9,107 @@ use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
+    public function index()
+    {
+        $groups = Group::where('bitActive', 1)->get();
+        return view('pages.user.group.index', compact('groups'));
+    }
+
+    public function create()
+    {
+        return view('pages.user.group.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'txtGroupName' => 'required|string|max:255|unique:mgroups,txtGroupName',
+        ], [
+            'txtGroupName.required' => 'Group name is required!',
+            'txtGroupName.string' => 'Group name must be a string!',
+            'txtGroupName.max' => 'Group name must not exceed 255 characters!',
+            'txtGroupName.unique' => 'Group name has already been taken!',
+        ]);
+
+        $validatedData['txtInsertedBy'] = auth()->user()->txtName;
+        $validatedData['dtmInserted'] = now();
+        $validatedData['bitActive'] = 1;
+
+        Group::create($validatedData);
+
+        toast('Group created successfully!', 'success');
+        return redirect()->route('master.groups.index');
+    }
+
+    public function show(Group $group)
+    {
+        $group->load('members', 'leader');
+        return view('pages.user.group.show', compact('group'));
+    }
+
+    public function edit($groupId)
+    {
+        $group = Group::findOrFail($groupId);
+        return view('pages.user.group.edit', compact('group'));
+    }
+
+    public function update(Request $request, $groupId)
+    {
+        $group = Group::findOrFail($groupId);
+
+        $validatedData = $request->validate([
+            'txtGroupName' => 'required|string|max:255|unique:mgroups,txtGroupName,' . $group->intGroup_ID . ',intGroup_ID',
+        ], [
+            'txtGroupName.required' => 'Group name is required!',
+            'txtGroupName.string' => 'Group name must be a string!',
+            'txtGroupName.max' => 'Group name must not exceed 255 characters!',
+            'txtGroupName.unique' => 'Group name has already been taken!',
+        ]);
+
+        $validatedData['txtUpdatedBy'] = auth()->user()->txtName;
+        $validatedData['dtmUpdated'] = now();
+
+        $group->update($validatedData);
+
+        toast('Group updated successfully!', 'success');
+        return redirect()->route('master.groups.index');
+    }
+
+    public function delete($groupId)
+    {
+        $group = Group::findOrFail($groupId);
+        $group->update([
+            'bitActive' => 0,
+            'txtUpdatedBy' => auth()->user()->txtName,
+            'dtmUpdated' => now(),
+        ]);
+
+        // Delete all members of the group
+        $group->members()->detach();
+
+        toast('Group deleted successfully!', 'success');
+        return redirect()->route('master.groups.index');
+    }
+
+    public function restorePage()
+    {
+        $groups = Group::where('bitActive', 0)->get();
+        return view('pages.user.group.restore', compact('groups'));
+    }
+
+    public function restoreGroup($groupId)
+    {
+        $group = Group::findOrFail($groupId);
+        $group->update([
+            'bitActive' => 1,
+            'txtUpdatedBy' => auth()->user()->txtName,
+            'dtmUpdated' => now(),
+        ]);
+
+        toast('Group restored successfully!', 'success');
+        return redirect()->route('master.groups.restore-index');
+    }
+
     // Melakukan voting untuk memilih ketua grup
     public function vote(Request $request, $groupId)
     {

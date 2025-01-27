@@ -106,5 +106,16 @@ Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function 
         Route::put('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('master.users.reset-password');
         Route::get('users-restore', [UserController::class, 'restorePage'])->name('master.users.restore-index');
         Route::put('users/{user}/restore', [UserController::class, 'restoreUser'])->name('master.users.restore-user');
+
+        // Groups
+        Route::get('groups', [GroupController::class, 'index'])->name('master.groups.index');
+        Route::get('groups/create', [GroupController::class, 'create'])->name('master.groups.create');
+        Route::post('groups/store', [GroupController::class, 'store'])->name('master.groups.store');
+        Route::get('groups/{group}', [GroupController::class, 'show'])->name('master.groups.show');
+        Route::get('groups/{group}/edit', [GroupController::class, 'edit'])->name('master.groups.edit');
+        Route::put('groups/{group}', [GroupController::class, 'update'])->name('master.groups.update');
+        Route::put('groups/{group}/delete', [GroupController::class, 'delete'])->name('master.groups.delete');
+        Route::get('groups-restore', [GroupController::class, 'restorePage'])->name('master.groups.restore-index');
+        Route::put('groups/{group}/restore', [GroupController::class, 'restoreGroup'])->name('master.groups.restore-group');
     });
 });
