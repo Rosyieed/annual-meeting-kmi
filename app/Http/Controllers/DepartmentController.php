@@ -23,8 +23,8 @@ class DepartmentController extends Controller
 
         $request->validate(
             [
-                'txtDepartment' => 'required|string|max:255',
-                'txtShortName' => 'required|string|max:50',
+                'txtDepartment' => 'required|string|max:255|unique:mdepartments,txtDepartment',
+                'txtShortName' => 'required|string|max:50|unique:mdepartments,txtShortName',
             ],
             [
                 'txtDepartment.required' => 'Department name is required!',
@@ -33,6 +33,7 @@ class DepartmentController extends Controller
                 'txtShortName.max' => 'Short name should not exceed 50 characters!',
                 'txtDepartment.string' => 'Department name should be a string!',
                 'txtShortName.string' => 'Short name should be a string!',
+                'txtDepartment.unique' => 'Department name already exists!',
             ]
         );
 
@@ -57,8 +58,8 @@ class DepartmentController extends Controller
     {
         $request->validate(
             [
-                'txtDepartment' => 'required|string|max:255',
-                'txtShortName' => 'required|string|max:50',
+                'txtDepartment' => 'required|string|max:255|unique:mdepartments,txtDepartment,' . $department->id,
+                'txtShortName' => 'required|string|max:50|unique:mdepartments,txtShortName,' . $department->id,
             ],
             [
                 'txtDepartment.required' => 'Department name is required!',
@@ -67,6 +68,8 @@ class DepartmentController extends Controller
                 'txtShortName.max' => 'Short name should not exceed 50 characters!',
                 'txtDepartment.string' => 'Department name should be a string!',
                 'txtShortName.string' => 'Short name should be a string!',
+                'txtDepartment.unique' => 'Department name already exists!',
+                'txtShortName.unique' => 'Short name already exists!',
             ]
         );
 

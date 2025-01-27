@@ -53,7 +53,7 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'txtRole' => 'required|string|max:255',
+            'txtRole' => 'required|string|max:255|unique:mroles,txtRole,' . $id . ',intRole_ID',
         ], [
             'txtRole.required' => 'Role name is required',
             'txtRole.string' => 'Role name must be a string',
