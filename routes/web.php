@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\Auth\LoginController;
@@ -87,6 +88,23 @@ Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
     Route::post('/group/{groupId}/vote', [GroupController::class, 'vote'])->name('groups.vote');
 });
 
-Route::get('/admin', function () {
-    return view('pages.admin.dashboard');
-})->name('admin.dashboard')->middleware('auth', 'checkrole:admin');
+Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('pages.admin.dashboard');
+    })->name('admin.dashboard')->middleware('auth', 'checkrole:admin');
+
+    // Master Data
+    Route::prefix('/master-data')->group(function () {
+        // Users
+        Route::get('users', [UserController::class, 'index'])->name('master.users.index');
+        Route::get('users/create', [UserController::class, 'create'])->name('master.users.create');
+        Route::post('users/store', [UserController::class, 'store'])->name('master.users.store');
+        Route::get('users/{user}', [UserController::class, 'show'])->name('master.users.show');
+        Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('master.users.edit');
+        Route::put('users/{user}', [UserController::class, 'update'])->name('master.users.update');
+        Route::put('users/{user}/delete', [UserController::class, 'delete'])->name('master.users.delete');
+        Route::put('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('master.users.reset-password');
+        Route::get('users-restore', [UserController::class, 'restorePage'])->name('master.users.restore-index');
+        Route::put('users/{user}/restore', [UserController::class, 'restoreUser'])->name('master.users.restore-user');
+    });
+});

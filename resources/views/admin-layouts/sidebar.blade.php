@@ -3,7 +3,8 @@
         <div class="m-header">
             <a href="#" class="b-brand">
                 <!-- ========   change your logo hear   ============ -->
-                <img src="{{ asset('user-assets/images/logo/Logo.png') }}" alt="" class="logo logo-lg" width="70px" />
+                <img src="{{ asset('user-assets/images/logo/Logo.png') }}" alt="" class="logo logo-lg"
+                    width="70px" />
                 <img src="{{ asset('user-assets/images/logo/Logo.png') }}" alt="" class="logo logo-sm" />
             </a>
         </div>
@@ -12,20 +13,21 @@
                 <li class="nxl-item nxl-caption">
                     <label>Navigation</label>
                 </li>
-                <li class="nxl-item nxl-hasmenu">
-                    <a href="#" class="nxl-link">
+                <li class="nxl-item nxl-hasmenu {{ Request::is('admin/dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('admin.dashboard') }}" class="nxl-link">
                         <span class="nxl-micon"><i class="feather-airplay"></i></span>
                         <span class="nxl-mtext">Dashboard</span>
                     </a>
                 </li>
-                <li class="nxl-item nxl-hasmenu">
+                <li class="nxl-item nxl-hasmenu {{ Request::is('admin/master-data/*') ? 'active' : '' }}">
                     <a href="javascript:void(0);" class="nxl-link">
                         <span class="nxl-micon"><i class="feather-database"></i></span>
                         <span class="nxl-mtext">Master Data</span><span class="nxl-arrow"><i
                                 class="feather-chevron-right"></i></span>
                     </a>
                     <ul class="nxl-submenu">
-                        <li class="nxl-item"><a class="nxl-link" href="#">User Data</a></li>
+                        <li class="nxl-item {{ Request::is('admin/master-data/users/*') ? 'active' : '' }}"><a
+                                class="nxl-link" href="{{ route('master.users.index') }}">User Data</a></li>
                         <li class="nxl-item"><a class="nxl-link" href="#">Group Data</a></li>
                         <li class="nxl-item"><a class="nxl-link" href="#">Question and Answer Data</a></li>
                         <li class="nxl-item"><a class="nxl-link" href="#">Department Data</a>

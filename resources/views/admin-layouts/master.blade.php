@@ -10,7 +10,7 @@
     <meta name="author" content="WRAPCODERS" />
     <!--! The above 6 meta tags *must* come first in the head; any other head content must come *after* these tags !-->
     <!--! BEGIN: Apps Title-->
-    <title>Duralux || Dashboard</title>
+    <title>@yield('title') | Annual Meeting KMI 2025</title>
     <!--! END:  Apps Title-->
     <!--! BEGIN: Favicon-->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('user-assets/images/logo/Logo.png') }}" />
@@ -20,7 +20,10 @@
     <!--! END: Bootstrap CSS-->
     <!--! BEGIN: Vendors CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/vendors/css/vendors.min.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/vendors/css/daterangepicker.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/vendors/js/dataTables.bs5.min.js') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/vendors/css/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/vendors/css/select2-theme.min.css') }}">
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/vendors/css/daterangepicker.min.css') }}" /> --}}
     <!--! END: Vendors CSS-->
     <!--! BEGIN: Custom CSS-->
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/theme.min.css') }}" />
@@ -31,6 +34,17 @@
    <script src="https:oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
    <script src="https:oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
+    <style>
+        .dataTables_filter {
+            float: right;
+        }
+
+        .dataTables_paginate {
+            float: right;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -54,18 +68,7 @@
     <main class="nxl-container">
         <div class="nxl-content">
             <!-- [ page-header ] start -->
-            <div class="page-header">
-                <div class="page-header-left d-flex align-items-center">
-                    <div class="page-header-title">
-                        <h5 class="m-b-10">@yield('title-breadcumb')</h5>
-                    </div>
-                    <ul class="breadcrumb">
-                        {{-- <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item">Dashboard</li> --}}
-                        @yield('breadcrumb')
-                    </ul>
-                </div>
-            </div>
+            @yield('page-header')
             <!-- [ page-header ] end -->
 
             <!-- [ Main Content ] start -->
@@ -1326,7 +1329,7 @@
     <!--! ================================================================ !-->
     <!--! BEGIN: Theme Customizer !-->
     <!--! ================================================================ !-->
-    <div class="theme-customizer">
+    {{-- <div class="theme-customizer">
         <div class="customizer-handle">
             <a href="javascript:void(0);" class="cutomizer-open-trigger bg-primary">
                 <i class="feather-settings"></i>
@@ -1586,7 +1589,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!--! ================================================================ !-->
     <!--! [End] Theme Customizer !-->
     <!--! ================================================================ !-->
@@ -1596,6 +1599,10 @@
     <!--! BEGIN: Vendors JS !-->
     <script src="{{ asset('admin-assets/vendors/js/vendors.min.js') }}"></script>
     <!-- vendors.min.js {always must need to be top} -->
+    <script src="{{ asset('admin-assets/vendors/js/dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/vendors/js/dataTables.bs5.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/vendors/js/select2.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/vendors/js/select2-active.min.js') }}"></script>
     <script src="{{ asset('admin-assets/vendors/js/daterangepicker.min.js') }}"></script>
     <script src="{{ asset('admin-assets/vendors/js/apexcharts.min.js') }}"></script>
     <script src="{{ asset('admin-assets/vendors/js/circle-progress.min.js') }}"></script>
@@ -1603,6 +1610,7 @@
     <!--! BEGIN: Apps Init  !-->
     <script src="{{ asset('admin-assets/js/common-init.min.js') }}"></script>
     <script src="{{ asset('admin-assets/js/dashboard-init.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/js/leads-init.min.js') }}"></script>
     <!--! END: Apps Init !-->
     <!--! BEGIN: Theme Customizer  !-->
     <script src="{{ asset('admin-assets/js/theme-customizer-init.min.js') }}"></script>
