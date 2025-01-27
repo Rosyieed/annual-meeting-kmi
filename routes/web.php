@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\QuestionAnswerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,5 +118,16 @@ Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function 
         Route::put('groups/{group}/delete', [GroupController::class, 'delete'])->name('master.groups.delete');
         Route::get('groups-restore', [GroupController::class, 'restorePage'])->name('master.groups.restore-index');
         Route::put('groups/{group}/restore', [GroupController::class, 'restoreGroup'])->name('master.groups.restore-group');
+
+        // Questions and Answers
+        Route::get('questions', [QuestionAnswerController::class, 'index'])->name('master.questions.index');
+        Route::get('questions/create', [QuestionAnswerController::class, 'create'])->name('master.questions.create');
+        Route::post('questions/store', [QuestionAnswerController::class, 'store'])->name('master.questions.store');
+        Route::get('questions/{question}/edit', [QuestionAnswerController::class, 'edit'])->name('master.questions.edit');
+        Route::put('questions/{question}', [QuestionAnswerController::class, 'update'])->name('master.questions.update');
+        Route::put('questions/{question}/delete', [QuestionAnswerController::class, 'delete'])->name('master.questions.delete');
+        Route::get('questions-restore', [QuestionAnswerController::class, 'restorePage'])->name('master.questions.restore-index');
+        Route::put('questions/{question}/restore', [QuestionAnswerController::class, 'restore'])->name('master.questions.restore');
+        Route::get('questions/{question}', [QuestionAnswerController::class, 'show'])->name('master.questions.show');
     });
 });

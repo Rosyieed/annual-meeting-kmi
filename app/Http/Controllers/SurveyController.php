@@ -13,7 +13,9 @@ class SurveyController extends Controller
 {
     public function showSurvey()
     {
-        $questions = Question::with('answers')->get();  // Mengambil semua pertanyaan dengan jawabannya
+        $questions = Question::with('answers')
+            ->where('bitActive', 1)
+            ->get();  // Mengambil semua pertanyaan dengan jawabannya
         return response()->json($questions);
     }
 

@@ -19,13 +19,7 @@
                         <span class="nxl-mtext">Dashboard</span>
                     </a>
                 </li>
-                <li
-                    class="nxl-item nxl-hasmenu {{ Request::is('admin/master-data/*') ||
-                    Request::is('admin/master-data/users-restore') ||
-                    Request::is('admin/master-data/groups/*') ||
-                    Request::is('admin/master-data/groups-restore')
-                        ? 'active'
-                        : '' }}">
+                <li class="nxl-item nxl-hasmenu {{ Request::is('admin/master-data/*') ? 'active' : '' }}">
                     <a href="javascript:void(0);" class="nxl-link">
                         <span class="nxl-micon"><i class="feather-database"></i></span>
                         <span class="nxl-mtext">Master Data</span><span class="nxl-arrow"><i
@@ -40,7 +34,11 @@
                             class="nxl-item {{ Request::is('admin/master-data/groups/*') || Request::is('admin/master-data/groups-restore') ? 'active' : '' }}">
                             <a class="nxl-link" href="{{ route('master.groups.index') }}">Group Data</a>
                         </li>
-                        <li class="nxl-item"><a class="nxl-link" href="#">Question and Answer Data</a></li>
+                        <li
+                            class="nxl-item {{ Request::is('admin/master-data/questions/*') || Request::is('admin/master-data/questions-restore') ? 'active' : '' }}">
+                            <a class="nxl-link" href="{{ route('master.questions.index') }}">Question and Answer
+                                Data</a>
+                        </li>
                         <li class="nxl-item"><a class="nxl-link" href="#">Department Data</a>
                         <li class="nxl-item"><a class="nxl-link" href="#">Role Data</a>
                         </li>
