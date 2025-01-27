@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\QuestionAnswerController;
 
 /*
@@ -130,5 +131,16 @@ Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function 
         Route::get('questions-restore', [QuestionAnswerController::class, 'restorePage'])->name('master.questions.restore-index');
         Route::put('questions/{question}/restore', [QuestionAnswerController::class, 'restore'])->name('master.questions.restore');
         Route::get('questions/{question}', [QuestionAnswerController::class, 'show'])->name('master.questions.show');
+
+        // Department
+        Route::get('departments', [DepartmentController::class, 'index'])->name('master.departments.index');
+        Route::get('departments/create', [DepartmentController::class, 'create'])->name('master.departments.create');
+        Route::post('departments/store', [DepartmentController::class, 'store'])->name('master.departments.store');
+        Route::get('departments/{department}/edit', [DepartmentController::class, 'edit'])->name('master.departments.edit');
+        Route::put('departments/{department}', [DepartmentController::class, 'update'])->name('master.departments.update');
+        Route::put('departments/{department}/delete', [DepartmentController::class, 'delete'])->name('master.departments.delete');
+        Route::get('departments-restore', [DepartmentController::class, 'restorePage'])->name('master.departments.restore-index');
+        Route::put('departments/{department}/restore', [DepartmentController::class, 'restoreDepartment'])->name('master.departments.restore-department');
+        Route::get('departments/{department}', [DepartmentController::class, 'show'])->name('master.departments.show');
     });
 });

@@ -39,7 +39,9 @@
                             <a class="nxl-link" href="{{ route('master.questions.index') }}">Question and Answer
                                 Data</a>
                         </li>
-                        <li class="nxl-item"><a class="nxl-link" href="#">Department Data</a>
+                        <li
+                            class="nxl-item {{ Request::is('admin/master-data/departments/*') || Request::is('admin/master-data/departments-restore') ? 'active' : '' }}">
+                            <a class="nxl-link" href="{{ route('master.departments.index') }}">Department Data</a>
                         <li class="nxl-item"><a class="nxl-link" href="#">Role Data</a>
                         </li>
                     </ul>
