@@ -12,12 +12,12 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::where('bitActive', 1)->get();
-        return view('pages.user.group.index', compact('groups'));
+        return view('pages.admin.group.index', compact('groups'));
     }
 
     public function create()
     {
-        return view('pages.user.group.create');
+        return view('pages.admin.group.create');
     }
 
     public function store(Request $request)
@@ -44,13 +44,13 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         $group->load('members', 'leader');
-        return view('pages.user.group.show', compact('group'));
+        return view('pages.admin.group.show', compact('group'));
     }
 
     public function edit($groupId)
     {
         $group = Group::findOrFail($groupId);
-        return view('pages.user.group.edit', compact('group'));
+        return view('pages.admin.group.edit', compact('group'));
     }
 
     public function update(Request $request, $groupId)
@@ -94,7 +94,7 @@ class GroupController extends Controller
     public function restorePage()
     {
         $groups = Group::where('bitActive', 0)->get();
-        return view('pages.user.group.restore', compact('groups'));
+        return view('pages.admin.group.restore', compact('groups'));
     }
 
     public function restoreGroup($groupId)

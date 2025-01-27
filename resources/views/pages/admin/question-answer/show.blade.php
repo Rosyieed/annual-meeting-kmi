@@ -10,7 +10,7 @@
             </div>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Master Data</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('master.questions.index') }}">Question Data</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('master.questions.index') }}">Question and Answer Data</a></li>
                 <li class="breadcrumb-item">Question Information</li>
             </ul>
         </div>

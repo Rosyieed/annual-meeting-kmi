@@ -17,12 +17,12 @@ class QuestionAnswerController extends Controller
             ->where('bitActive', 1)
             ->get();
 
-        return view('pages.user.question-answer.index', compact('questions'));
+        return view('pages.admin.question-answer.index', compact('questions'));
     }
     public function create()
     {
         // dd('create');
-        return view('pages.user.question-answer.create');
+        return view('pages.admin.question-answer.create');
     }
 
     public function store(Request $request)
@@ -69,7 +69,7 @@ class QuestionAnswerController extends Controller
     public function edit($id)
     {
         $question = Question::with('answers')->findOrFail($id);
-        return view('pages.user.question-answer.edit', compact('question'));
+        return view('pages.admin.question-answer.edit', compact('question'));
     }
 
     public function update(Request $request, $id)
@@ -144,7 +144,7 @@ class QuestionAnswerController extends Controller
             ->where('bitActive', 0)
             ->get();
 
-        return view('pages.user.question-answer.restore', compact('questions'));
+        return view('pages.admin.question-answer.restore', compact('questions'));
     }
 
     public function restore($id)
@@ -167,6 +167,6 @@ class QuestionAnswerController extends Controller
         // Ambil pertanyaan dengan jawaban terkait
         $question = Question::with('answers')->findOrFail($id);
 
-        return view('pages.user.question-answer.show', compact('question'));
+        return view('pages.admin.question-answer.show', compact('question'));
     }
 }

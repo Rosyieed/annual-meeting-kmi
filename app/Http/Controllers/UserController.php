@@ -22,7 +22,7 @@ class UserController extends Controller
 
         $departments = Department::where('bitActive', 1);
 
-        return view('pages.user.user.index', compact('users', 'roles', 'departments'));
+        return view('pages.admin.user.index', compact('users', 'roles', 'departments'));
     }
 
     public function create()
@@ -31,7 +31,7 @@ class UserController extends Controller
         $departments = Department::where('bitActive', 1)->get();
         $groups = Group::where('bitActive', 1)->get();
 
-        return view('pages.user.user.create', compact('roles', 'departments', 'groups'));
+        return view('pages.admin.user.create', compact('roles', 'departments', 'groups'));
     }
 
     public function store(Request $request)
@@ -92,7 +92,7 @@ class UserController extends Controller
 
         // dd($user);
 
-        return view('pages.user.user.show', compact('user'));
+        return view('pages.admin.user.show', compact('user'));
     }
 
     public function edit($id)
@@ -102,7 +102,7 @@ class UserController extends Controller
         $departments = Department::where('bitActive', 1)->get();
         $groups = Group::where('bitActive', 1)->get();
 
-        return view('pages.user.user.edit', compact('user', 'roles', 'departments', 'groups', 'user'));
+        return view('pages.admin.user.edit', compact('user', 'roles', 'departments', 'groups', 'user'));
     }
 
     public function update(Request $request, User $user)
@@ -230,7 +230,7 @@ class UserController extends Controller
 
         $departments = Department::where('bitActive', 1);
 
-        return view('pages.user.user.restore', compact('users', 'roles', 'departments'));
+        return view('pages.admin.user.restore', compact('users', 'roles', 'departments'));
     }
 
     public function restoreUser(User $user)
