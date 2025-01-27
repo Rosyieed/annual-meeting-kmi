@@ -80,7 +80,7 @@
                                                         <li>
                                                             <form
                                                                 action="{{ route('master.questions.restore', $question->intQuestion_ID) }}"
-                                                                method="POST" class="d-inline">
+                                                                method="POST" class="d-inline restore-form">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <button type="submit" class="dropdown-item"
@@ -121,6 +121,28 @@
         document.addEventListener('DOMContentLoaded', function() {
             const table = document.getElementById('questionTable');
             const dataTable = new DataTable(table);
+
+            // Add SweetAlert2 delete confirmation
+            const restoreForm = document.querySelectorAll('.restore-form');
+
+            restoreForm.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: `Are you sure you want to delete?`,
+                        text: "This action cannot be undone.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'No, cancel',
+                    }).then((result) => {
+                        if (result.value === true) {
+                            form.submit();
+                        } else {}
+                    });
+                });
+            });
         });
     </script>
 

@@ -97,7 +97,7 @@
                                                         <li>
                                                             <form
                                                                 action="{{ route('master.users.restore-user', $user->intUser_ID) }}"
-                                                                method="POST" class="d-inline">
+                                                                method="POST" class="d-inline restore-form">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <button type="submit" class="dropdown-item"
@@ -138,6 +138,27 @@
         document.addEventListener('DOMContentLoaded', function() {
             const table = document.getElementById('userTable');
             const dataTable = new DataTable(table);
+
+            const restoreForm = document.querySelectorAll('.restore-form');
+
+            restoreForm.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: `Are you sure you want to restore?`,
+                        text: "This action cannot be undone.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, restore it!',
+                        cancelButtonText: 'No, cancel',
+                    }).then((result) => {
+                        if (result.value === true) {
+                            form.submit();
+                        } else {}
+                    });
+                });
+            });
         });
     </script>
 

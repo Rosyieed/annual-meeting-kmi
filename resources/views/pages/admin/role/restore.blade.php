@@ -57,7 +57,7 @@
                                                         <li>
                                                             <form
                                                                 action="{{ route('master.roles.restore-role', $role->intRole_ID) }}"
-                                                                method="POST" class="d-inline">
+                                                                method="POST" class="d-inline delete-form">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <button type="submit" class="dropdown-item"
@@ -85,6 +85,29 @@
         document.addEventListener('DOMContentLoaded', function() {
             const table = document.getElementById('roleTable');
             const dataTable = new DataTable(table);
+
+            // Add SweetAlert2 delete confirmation
+            const deleteForms = document.querySelectorAll('.delete-form');
+
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const roleName = form.closest('tr').querySelector('td:nth-child(2)').innerText;
+
+                    Swal.fire({
+                        title: `Are you sure you want to restore the role "${roleName}"?`,
+                        text: "This action cannot be undone.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'No, cancel',
+                    }).then((result) => {
+                        if (result.value === true) {
+                            form.submit();
+                        } else {}
+                    });
+                });
+            });
         });
     </script>
 

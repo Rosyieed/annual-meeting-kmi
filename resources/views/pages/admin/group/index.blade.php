@@ -111,7 +111,7 @@
                                                         <li>
                                                             <form
                                                                 action="{{ route('master.groups.delete', $group->intGroup_ID) }}"
-                                                                method="POST" class="d-inline">
+                                                                method="POST" class="d-inline delete-form">
                                                                 @csrf
                                                                 @method('put')
                                                                 <button type="submit" class="dropdown-item delete-btn">
@@ -138,6 +138,28 @@
         document.addEventListener('DOMContentLoaded', function() {
             const table = document.getElementById('userTable');
             const dataTable = new DataTable(table);
+
+            // Add SweetAlert2 delete confirmation
+            const deleteForms = document.querySelectorAll('.delete-form');
+
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: `Are you sure you want to delete?`,
+                        text: "This action cannot be undone.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'No, cancel',
+                    }).then((result) => {
+                        if (result.value === true) {
+                            form.submit();
+                        } else {}
+                    });
+                });
+            });
         });
     </script>
 

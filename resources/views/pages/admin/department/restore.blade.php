@@ -73,7 +73,7 @@
                                                         <li>
                                                             <form
                                                                 action="{{ route('master.departments.restore-department', $department->intDepartment_ID) }}"
-                                                                method="POST" class="d-inline">
+                                                                method="POST" class="d-inline delete-form">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <button type="submit" class="dropdown-item"
@@ -101,6 +101,28 @@
         document.addEventListener('DOMContentLoaded', function() {
             const table = document.getElementById('departmentTable');
             const dataTable = new DataTable(table);
+
+            // Add SweetAlert2 delete confirmation
+            const deleteForms = document.querySelectorAll('.delete-form');
+
+            deleteForms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: `Are you sure you want to restore the group?`,
+                        text: "This action cannot be undone.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, restore it!',
+                        cancelButtonText: 'No, cancel',
+                    }).then((result) => {
+                        if (result.value === true) {
+                            form.submit();
+                        } else {}
+                    });
+                });
+            });
         });
     </script>
 

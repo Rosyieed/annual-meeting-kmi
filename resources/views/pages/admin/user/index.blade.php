@@ -106,7 +106,7 @@
                                                         <li>
                                                             <form
                                                                 action="{{ route('master.users.reset-process-step', $user->intUser_ID) }}"
-                                                                method="POST" class="d-inline">
+                                                                method="POST" class="d-inline reset-process-step-form">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <button type="submit" class="dropdown-item"
@@ -133,7 +133,7 @@
                                                         <li>
                                                             <form
                                                                 action="{{ route('master.users.reset-password', $user->intUser_ID) }}"
-                                                                method="POST" class="d-inline">
+                                                                method="POST" class="d-inline reset-password-form">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <button type="submit" class="dropdown-item"
@@ -147,7 +147,7 @@
                                                         <li>
                                                             <form
                                                                 action="{{ route('master.users.delete', $user->intUser_ID) }}"
-                                                                method="POST" class="d-inline">
+                                                                method="POST" class="d-inline delete-form">
                                                                 @csrf
                                                                 @method('put')
                                                                 <button type="submit" class="dropdown-item delete-btn">
@@ -174,6 +174,70 @@
         document.addEventListener('DOMContentLoaded', function() {
             const table = document.getElementById('userTable');
             const dataTable = new DataTable(table);
+        });
+
+        // Add SweetAlert2 delete confirmation
+        const deleteForms = document.querySelectorAll('.delete-form');
+
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: `Are you sure you want to delete the user?`,
+                    text: "This action cannot be undone.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel',
+                }).then((result) => {
+                    if (result.value === true) {
+                        form.submit();
+                    } else {}
+                });
+            });
+        });
+
+        const resetProcessForm = document.querySelectorAll('.reset-process-step-form');
+
+        resetProcessForm.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: `Are you sure you want to reset process?`,
+                    text: "This action cannot be undone.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, reset it!',
+                    cancelButtonText: 'No, cancel',
+                }).then((result) => {
+                    if (result.value === true) {
+                        form.submit();
+                    } else {}
+                });
+            });
+        });
+
+        const resetPasswordForm = document.querySelectorAll('.reset-password-form');
+
+        resetPasswordForm.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: `Are you sure you want to reset password?`,
+                    text: "This action cannot be undone.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, reset it!',
+                    cancelButtonText: 'No, cancel',
+                }).then((result) => {
+                    if (result.value === true) {
+                        form.submit();
+                    } else {}
+                });
+            });
         });
     </script>
 
