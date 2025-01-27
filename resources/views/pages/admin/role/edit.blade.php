@@ -1,0 +1,79 @@
+@extends('admin-layouts.master')
+
+@section('title', 'Edit Role')
+
+@section('page-header')
+    <div class="page-header">
+        <div class="page-header-left d-flex align-items-center">
+            <div class="page-header-title">
+                <h5 class="m-b-10">Edit Role</h5>
+            </div>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Master Data</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('master.roles.index') }}">Role Data</a></li>
+                <li class="breadcrumb-item">Edit Role</li>
+            </ul>
+        </div>
+        <div class="page-header-right ms-auto">
+            <div class="page-header-right-items">
+                <div class="d-flex d-md-none">
+                    <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                        <i class="feather-arrow-left me-2"></i>
+                        <span>Back</span>
+                    </a>
+                </div>
+            </div>
+            <div class="d-md-none d-flex align-items-center">
+                <a href="javascript:void(0)" class="page-header-right-open-toggle">
+                    <i class="feather-align-right fs-20"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('content')
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card border-top-0">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="profileTab" role="tabpanel">
+                        <div class="card-body personal-info">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <h5 class="fw-bold mb-0 me-4">
+                                    <span class="d-block mb-2">Edit Role</span>
+                                    <span class="fs-12 fw-normal text-muted text-truncate-1-line">Please modify the details
+                                        below:</span>
+                                </h5>
+                                <a href="javascript:void(0);" class="btn btn-sm btn-light-brand">Edit Role</a>
+                            </div>
+                            <form action="{{ route('master.roles.update', $role->intRole_ID) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <div class="row align-items-center mb-4">
+                                    <div class="col-lg-4">
+                                        <label for="txtRole" class="fw-semibold">Role Name: </label>
+                                        @error('txtRole')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <div class="input-group-text"><i class="feather-shield"></i></div>
+                                            <input type="text" class="form-control" id="txtRole" name="txtRole"
+                                                placeholder="Role Name" value="{{ old('txtRole', $role->txtRole) }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="reset" class="btn btn-secondary me-2">Clear</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SurveyController;
@@ -142,5 +143,16 @@ Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function 
         Route::get('departments-restore', [DepartmentController::class, 'restorePage'])->name('master.departments.restore-index');
         Route::put('departments/{department}/restore', [DepartmentController::class, 'restoreDepartment'])->name('master.departments.restore-department');
         Route::get('departments/{department}', [DepartmentController::class, 'show'])->name('master.departments.show');
+
+        // Roles
+        Route::get('roles', [RoleController::class, 'index'])->name('master.roles.index');
+        Route::get('roles/create', [RoleController::class, 'create'])->name('master.roles.create');
+        Route::post('roles/store', [RoleController::class, 'store'])->name('master.roles.store');
+        Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->name('master.roles.edit');
+        Route::put('roles/{role}', [RoleController::class, 'update'])->name('master.roles.update');
+        Route::put('roles/{role}/delete', [RoleController::class, 'delete'])->name('master.roles.delete');
+        Route::get('roles-restore', [RoleController::class, 'restorePage'])->name('master.roles.restore-index');
+        Route::put('roles/{role}/restore', [RoleController::class, 'restoreRole'])->name('master.roles.restore-role');
+        Route::get('roles/{role}', [RoleController::class, 'show'])->name('master.roles.show');
     });
 });
