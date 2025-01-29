@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mGroupMembers', function (Blueprint $table) {
+        Schema::create('mgroupmembers', function (Blueprint $table) {
             $table->id('intGroupMember_ID');
-            $table->foreignId('intGroup_ID')->constrained('mGroups', 'intGroup_ID');
-            $table->foreignId('intUser_ID')->constrained('mUsers', 'intUser_ID');
+            $table->foreignId('intGroup_ID')->constrained('mgroups', 'intGroup_ID');
+            $table->foreignId('intUser_ID')->constrained('musers', 'intUser_ID');
             $table->unsignedBigInteger('intVotes')->default(0);
             $table->boolean('boolIsLeader')->default(0);
             $table->boolean('boolHasVoted')->default(0);
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('m_group_members');
+        Schema::dropIfExists('mgroupmembers');
     }
 };

@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'mUsers';
+    protected $table = 'musers';
 
     protected $primaryKey = 'intUser_ID';
     protected $fillable = [
@@ -40,7 +40,7 @@ class User extends Authenticatable
 
     public function groups()
     {
-        return $this->belongsToMany(Group::class, 'mGroupMembers', 'intUser_ID', 'intGroup_ID')
+        return $this->belongsToMany(Group::class, 'mgroupMembers', 'intUser_ID', 'intGroup_ID')
             ->withPivot('intVotes', 'boolIsLeader', 'boolHasVoted' , 'txtInsertedBy', 'dtmInserted', 'txtUpdatedBy', 'dtmUpdated')
             ->withTimestamps();
     }

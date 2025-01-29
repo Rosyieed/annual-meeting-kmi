@@ -9,7 +9,7 @@ class Group extends Model
 {
     use HasFactory;
 
-    protected $table = 'mGroups';
+    protected $table = 'mgroups';
     protected $primaryKey = 'intGroup_ID';
 
     protected $fillable = [
@@ -26,7 +26,7 @@ class Group extends Model
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'mGroupMembers', 'intGroup_ID', 'intUser_ID')
+        return $this->belongsToMany(User::class, 'mgroupmembers', 'intGroup_ID', 'intUser_ID')
             ->withPivot('intVotes', 'boolIsLeader', 'boolHasVoted' , 'txtInsertedBy', 'dtmInserted', 'txtUpdatedBy', 'dtmUpdated')
             ->withTimestamps();
     }

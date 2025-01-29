@@ -9,7 +9,7 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $table = 'mQuestions';
+    protected $table = 'mquestions';
 
     protected $primaryKey = 'intQuestion_ID';
 

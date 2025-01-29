@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mAnswers', function (Blueprint $table) {
+        Schema::create('manswers', function (Blueprint $table) {
             $table->id('intAnswer_ID');
-            $table->foreignId('intQuestion_ID')->constrained('mQuestions', 'intQuestion_ID');
+            $table->foreignId('intQuestion_ID')->constrained('mquestions', 'intQuestion_ID');
             $table->string('txtAnswer', 100);
             $table->string('txtInsertedBy', 100);
             $table->dateTime('dtmInserted');
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mAnswers');
+        Schema::dropIfExists('manswers');
     }
 };

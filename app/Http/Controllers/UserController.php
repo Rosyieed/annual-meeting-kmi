@@ -148,7 +148,7 @@ class UserController extends Controller
 
         if ($currentGroup) {
             // Jika pengguna sudah tergabung dalam grup, update grup di pivot table
-            DB::table('mGroupMembers')
+            DB::table('mgroupmembers')
                 ->where('intUser_ID', $user->intUser_ID)
                 ->where('intGroup_ID', $currentGroup->intGroup_ID) // ID grup lama
                 ->update([
@@ -158,7 +158,7 @@ class UserController extends Controller
                 ]);
         } else {
             // Jika pengguna belum tergabung dalam grup, tambahkan ke grup baru
-            DB::table('mGroupMembers')->insert([
+            DB::table('mgroupmembers')->insert([
                 'intGroup_ID' => $request->intGroup_ID,
                 'intUser_ID' => $user->intUser_ID,
                 'intVotes' => 0,

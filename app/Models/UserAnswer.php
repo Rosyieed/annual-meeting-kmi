@@ -9,7 +9,7 @@ class UserAnswer extends Model
 {
     use HasFactory;
 
-    protected $table = 'trUserAnswers';
+    protected $table = 'truseranswers';
 
     protected $primaryKey = 'intUserAnswer_ID';
 

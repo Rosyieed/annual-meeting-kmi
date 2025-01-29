@@ -9,7 +9,7 @@ class Department extends Model
 {
     use HasFactory;
 
-    protected $table = 'mDepartments';
+    protected $table = 'mdepartments';
 
     protected $primaryKey = 'intDepartment_ID';
 

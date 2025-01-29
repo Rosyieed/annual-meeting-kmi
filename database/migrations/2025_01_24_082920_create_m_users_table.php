@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mUsers', function (Blueprint $table) {
+        Schema::create('musers', function (Blueprint $table) {
             $table->id('intUser_ID');
-            $table->foreignId('intDepartment_ID')->constrained('mDepartments', 'intDepartment_ID');
-            $table->foreignId('intRole_ID')->constrained('mRoles', 'intRole_ID');
+            $table->foreignId('intDepartment_ID')->constrained('mdepartments', 'intDepartment_ID');
+            $table->foreignId('intRole_ID')->constrained('mroles', 'intRole_ID');
             $table->string('txtName', 100);
             $table->string('txtEmail', 100)->unique();
             $table->string('txtNIK', 100)->unique();
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mUsers');
+        Schema::dropIfExists('musers');
     }
 };

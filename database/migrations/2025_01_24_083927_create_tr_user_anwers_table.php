@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trUserAnswers', function (Blueprint $table) {
+        Schema::create('truseranswers', function (Blueprint $table) {
             $table->id('intUserAnswer_ID');
-            $table->foreignId('intUser_ID')->constrained('mUsers', 'intUser_ID');
-            $table->foreignId('intQuestion_ID')->constrained('mQuestions', 'intQuestion_ID');
-            $table->foreignId('intAnswer_ID')->constrained('mAnswers', 'intAnswer_ID');
+            $table->foreignId('intUser_ID')->constrained('musers', 'intUser_ID');
+            $table->foreignId('intQuestion_ID')->constrained('mquestions', 'intQuestion_ID');
+            $table->foreignId('intAnswer_ID')->constrained('manswers', 'intAnswer_ID');
             $table->string('txtInsertedBy', 100);
             $table->dateTime('dtmInserted');
             $table->string('txtUpdatedBy', 100)->nullable();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trUserAnswers');
+        Schema::dropIfExists('truseranswers');
     }
 };

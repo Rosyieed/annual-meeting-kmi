@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mGroups', function (Blueprint $table) {
+        Schema::create('mgroups', function (Blueprint $table) {
             $table->id('intGroup_ID');
             $table->string('txtGroupName', 100);
             $table->foreignId('intLeader_ID')->nullable(); // Tambahkan nullable terlebih dahulu
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->tinyInteger('bitActive')->default(1);
             $table->timestamps();
 
-            $table->foreign('intLeader_ID')->references('intUser_ID')->on('mUsers');
+            $table->foreign('intLeader_ID')->references('intUser_ID')->on('musers');
         });
     }
 
