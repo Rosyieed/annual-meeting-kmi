@@ -161,7 +161,7 @@
     <div id="quizModal" class="modal">
         <div class="quiz-container">
             <div class="close-btn">&times;</div>
-            <h1>Survey</h1>
+            <h1>Please fill out the questionnaire!</h1>
             <div class="divider"></div>
 
             <!-- Form untuk menyimpan jawaban -->
@@ -294,16 +294,16 @@
                     (option, i) => {
                         const isChecked = userAnswers[index] === option.id.toString(); // Cek jika jawaban yang disimpan sama dengan ID opsi
                         return `
-                                            <div class="option">
-                                                <input
-                                                    type="radio"
-                                                    id="option${i}"
-                                                    name="answer"
-                                                    value="${option.id}"
-                                                    ${isChecked ? "checked" : ""}>
-                                                <label for="option${i}">${option.text}</label>
-                                            </div>
-                                        `;
+                                                <div class="option">
+                                                    <input
+                                                        type="radio"
+                                                        id="option${i}"
+                                                        name="answer"
+                                                        value="${option.id}"
+                                                        ${isChecked ? "checked" : ""}>
+                                                    <label for="option${i}">${option.text}</label>
+                                                </div>
+                                            `;
                     }
                 )
                 .join("")}

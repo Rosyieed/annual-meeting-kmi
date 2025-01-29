@@ -28,6 +28,12 @@ class LoginController extends Controller
         // Pengecekan NIK
         $user = User::where('txtNIK', $request->nik)->first();
 
+        // Jika user tidak ditemukan
+        if (!$user) {
+            toast('Invalid NIK or password!', 'error')->timerProgressBar();
+            return redirect('/home');
+        }
+
         // jika bitActive = 0
         if ($user->bitActive == 0) {
             toast('Your account is inactive!', 'error')->timerProgressBar();

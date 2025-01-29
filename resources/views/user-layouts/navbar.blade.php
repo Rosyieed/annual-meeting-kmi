@@ -58,7 +58,7 @@
     <div class="head-top" style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
 
         <!-- Logo kiri -->
-        <div class="logo-left">
+        <div class="logo-left" style="background-color: #fff; border-radius: 10px;">
             <a href="#">
                 <img src="{{ asset('user-assets/images/logo/logo kmi.png') }}" alt="Logo Kiri" class="responsive-logo">
             </a>

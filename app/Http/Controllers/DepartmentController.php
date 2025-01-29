@@ -58,8 +58,8 @@ class DepartmentController extends Controller
     {
         $request->validate(
             [
-                'txtDepartment' => 'required|string|max:255|unique:mdepartments,txtDepartment,' . $department->id,
-                'txtShortName' => 'required|string|max:50|unique:mdepartments,txtShortName,' . $department->id,
+                'txtDepartment' => 'required|string|max:255|unique:mdepartments,txtDepartment,' . $department->intDepartment_ID . ',intDepartment_ID',
+                'txtShortName' => 'required|string|max:50|unique:mdepartments,txtShortName,' . $department->intDepartment_ID . ',intDepartment_ID',
             ],
             [
                 'txtDepartment.required' => 'Department name is required!',

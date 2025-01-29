@@ -237,7 +237,7 @@
             <div class="close-btn">&times;</div>
             <h1>Login</h1>
             <div class="divider"></div>
-            <p>Welcome KMlers! Login to start your Smart, Agile, Beyond journey at KMI Annual Meeting 2025.</p>
+            <p>Welcome KMlers! Login to start your <strong>SMILE</strong> (Smart, Agile, Beyond) journey at KMI Annual Meeting 2025.</p>
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <label for="nik">NIK</label>
