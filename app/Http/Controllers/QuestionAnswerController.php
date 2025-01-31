@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\DB;
 class QuestionAnswerController extends Controller
 {
 
+    public function showSurveyPage()
+    {
+        return view('pages.user.quizpage');
+    }
+
     public function index()
     {
         // Ambil semua pertanyaan dengan jawaban terkait

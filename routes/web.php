@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\QuestionAnswerController;
+use App\Http\Controllers\CongratulationPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,39 +62,13 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
-    Route::get('/question', function () {
-        return view('pages.user.quizpage');
-    })->name('question')->middleware('checkprocess');
-
-    // Congatulations Page
-    Route::get('/congratulations', function () {
-        $user = auth()->user();
-
-        // Ambil nama grup pertama yang terkait dengan user
-        $groupName = $user->groups->first()->txtGroupName;
-        $userName = $user->txtName;
-
-        // Dapatkan user yang sedang login
-        $userId = User::find(auth()->id());
-
-        // Cari grup tempat user saat ini tergabung
-        $group = $userId->groups()->first();
-
-        // dd($group);
-
-        // Jika user tidak tergabung dalam grup mana pun
-        if (!$group) {
-            return redirect()->back()->with('error', 'You are not part of any group.');
-        }
-
-        // Ambil anggota grup kecuali user itu sendiri
-        $members = $group->members->where('intUser_ID', '!=', $user->intUser_ID);
-
-        return view('pages.user.congratulations', compact('userName', 'groupName', 'group', 'members'));
-    })->name('congratulations')->middleware('checkprocess');
-
+    // Question and Answer Page
+    Route::get('/question', [QuestionAnswerController::class, 'showSurveyPage'])->name('question')->middleware('checkprocess');
     Route::get('/survey', [SurveyController::class, 'showSurvey'])->name('survey.show');
     Route::post('/survey/submit', [SurveyController::class, 'storeUserAnswers'])->name('survey.submit');
+
+    // Congatulations Page
+    Route::get('/congratulations', [CongratulationPageController::class, 'congratulationPage'])->name('congratulations')->middleware('checkprocess');
 
     // Vote Group Leader Page
     Route::get('/vote', [GroupController::class, 'votePage'])->name('vote')->middleware('auth', 'checkrole:admin');
@@ -164,5 +139,12 @@ Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function 
         Route::get('roles-restore', [RoleController::class, 'restorePage'])->name('master.roles.restore-index');
         Route::put('roles/{role}/restore', [RoleController::class, 'restoreRole'])->name('master.roles.restore-role');
         Route::get('roles/{role}', [RoleController::class, 'show'])->name('master.roles.show');
+
+        Route::get('countdowns', [CongratulationPageController::class, 'index'])->name('master.countdowns.index');
+        Route::get('countdowns/create', [CongratulationPageController::class, 'create'])->name('master.countdowns.create');
+        Route::post('countdowns/store', [CongratulationPageController::class, 'store'])->name('master.countdowns.store');
+        Route::get('countdowns/{countdown}/edit', [CongratulationPageController::class, 'edit'])->name('master.countdowns.edit');
+        Route::put('countdowns/{countdown}', [CongratulationPageController::class, 'update'])->name('master.countdowns.update');
+        Route::get('countdowns/{countdown}', [CongratulationPageController::class, 'show'])->name('master.countdowns.show');
     });
 });

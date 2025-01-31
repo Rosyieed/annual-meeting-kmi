@@ -46,6 +46,11 @@
                             class="nxl-item {{ Request::is('admin/master-data/roles/*') || Request::is('admin/master-data/roles-restore') ? 'active' : '' }}">
                             <a class="nxl-link" href="{{ route('master.roles.index') }}">Role Data</a>
                         </li>
+                        <li
+                            class="nxl-item {{ Request::is('admin/master-data/countdowns/*') || Request::is('admin/master-data/countdowns-restore') ? 'active' : '' }}">
+                            <a class="nxl-link" href="{{ route('master.countdowns.index') }}">Countdown
+                                Data</a>
+                        </li>
                     </ul>
                 </li>
                 {{-- <li class="nxl-item nxl-hasmenu">

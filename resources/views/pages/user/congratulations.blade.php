@@ -130,7 +130,9 @@
                     <p>Get ready to work together, tackle exciting challenges, and make this experience unforgettable. We're
                         thrilled to have you on board!</p>
                 </div>
-                <button id="joinTeamBtn">Join Your Team</button>
+                <div id="countdown"></div>
+
+                <button id="joinTeamBtn" style="display: none;">Join Your Team</button>
             </div>
         </div>
 
@@ -181,6 +183,36 @@
                 </form>
             </div>
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let startTime = new Date("{{ $countDown->dtmStartTime ?? '' }}").getTime();
+                let countdownElement = document.getElementById("countdown");
+                let joinButton = document.getElementById("joinTeamBtn");
+
+                function updateCountdown() {
+                    let now = new Date().getTime();
+                    let distance = startTime - now;
+
+                    if (distance > 0) {
+                        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        countdownElement.innerHTML = `Starts in: ${hours}h ${minutes}m ${seconds}s`;
+                        joinButton.style.display = "none";
+                    } else {
+                        // Saat countdown mencapai 00:00:00, tunggu 1 detik lalu hilangkan teks
+                        setTimeout(() => {
+                            countdownElement.style.display = "none";
+                        }, 1000);
+
+                        joinButton.style.display = "block"; // Tampilkan tombol join
+                    }
+                }
+
+                setInterval(updateCountdown, 1000);
+            });
+        </script>
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
