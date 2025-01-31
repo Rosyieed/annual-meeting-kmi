@@ -64,10 +64,10 @@ class SurveyController extends Controller
         $user = User::find($id);
 
         // // Jika Process Step > 1, maka tidak bisa direset
-        if ($user->intProcessStep > 1) {
-            toast('Process step cannot be reset!', 'error')->timerProgressBar();
-            return redirect()->route('master.users.index');
-        }
+        // if ($user->intProcessStep > 1) {
+        //     toast('Process step cannot be reset!', 'error')->timerProgressBar();
+        //     return redirect()->route('master.users.index');
+        // }
 
         // Hapus jawaban pengguna
         UserAnswer::where('intUser_ID', $user->intUser_ID)->delete();
