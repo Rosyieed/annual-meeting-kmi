@@ -4,10 +4,13 @@ use App\Models\User;
 use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\ArtisanController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\QuestionAnswerController;
@@ -26,6 +29,12 @@ use App\Http\Controllers\QuestionAnswerController;
 // Route Auth(Login, Logout)
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Route Function for Artisan
+Route::get('/artisan/optimize', function () {
+    Artisan::call('optimize');
+    return json_encode(['status' => 'success', 'message' => 'Optimization completed!']);
+})->name('optimize-cache');
 
 // HomePage
 Route::get('/', function () {
@@ -92,9 +101,10 @@ Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
 });
 
 Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('pages.admin.dashboard');
-    })->name('admin.dashboard')->middleware('auth', 'checkrole:admin');
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    // Route untuk mengambil status pengisian proses
+    Route::get('/dashboard/get-process-status', [DashboardController::class, 'getProcessStatus'])->middleware('api');
 
     // Master Data
     Route::prefix('/master-data')->group(function () {

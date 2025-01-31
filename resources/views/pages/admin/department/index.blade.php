@@ -15,16 +15,31 @@
         </div>
         <div class="page-header-right ms-auto">
             <div class="page-header-right-items">
-                <div class="btn-group" role="group">
-                    <a href="{{ route('master.departments.create') }}" class="btn btn-primary">
-                        <i class="feather-plus me-2"></i>
-                        <span>Create Department</span>
-                    </a>
-                    <a href="{{ route('master.departments.restore-index') }}" class="btn btn-secondary">
-                        <i class="feather-list me-2"></i>
-                        <span>Restore Department</span>
+                <div class="d-flex d-md-none">
+                    <a href="javascript:void(0)" class="page-header-right-close-toggle">
+                        <i class="feather-arrow-left me-2"></i>
+                        <span>Back</span>
                     </a>
                 </div>
+                <div class="d-flex align-items-center page-header-right-items-wrapper gap-2">
+                    <div class="dropdown filter-dropdown">
+                        <div class="btn-group" role="group">
+                            <a href="{{ route('master.departments.create') }}" class="btn btn-primary">
+                                <i class="feather-plus me-2"></i>
+                                <span>Create Department</span>
+                            </a>
+                            <a href="{{ route('master.departments.restore-index') }}" class="btn btn-secondary">
+                                <i class="feather-list me-2"></i>
+                                <span>Restore Department</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-md-none d-flex align-items-center">
+                <a href="javascript:void(0)" class="page-header-right-open-toggle">
+                    <i class="feather-align-right fs-20"></i>
+                </a>
             </div>
         </div>
     </div>
