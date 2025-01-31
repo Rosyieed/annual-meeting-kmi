@@ -1,6 +1,6 @@
 @extends('user-layouts.master')
 
-<style>
+{{-- <style>
     /* Modal Styles */
     .modal {
         display: none;
@@ -103,6 +103,118 @@
         color: #333;
         margin-bottom: 10px;
     }
+</style> --}}
+
+<style>
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .modal.show {
+        display: flex;
+        opacity: 1;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .quiz-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 90%;
+        max-width: 500px;
+        text-align: left;
+        /* Rata kiri untuk konten modal */
+    }
+
+    .quiz-container h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        text-align: center;
+        /* Judul tetap di tengah */
+    }
+
+    .quiz-container p {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: left;
+        /* Rata kiri untuk teks */
+    }
+
+    .quiz-container .divider {
+        width: 60%;
+        height: 2px;
+        background-color: #d3d3d3;
+        margin: 10px auto 20px;
+    }
+
+    .quiz-container button {
+        padding: 10px 20px;
+        background-color: #f1f1de !important;
+        border: none;
+        border-radius: 5px;
+        color: #000 !important;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+    .quiz-container .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .question {
+        text-align: left;
+        /* Rata kiri untuk teks soal */
+        margin-bottom: 20px;
+    }
+
+    .question p {
+        margin-left: 20px;
+    }
+
+    .question .option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .question .option input {
+        margin-right: 10px;
+        /* Jarak antara radio button dan teks opsi */
+        margin-left: 20px
+    }
+
+    .question .option label {
+        font-size: 16px;
+        color: #333;
+    }
 </style>
 
 @section('content')
@@ -122,7 +234,7 @@
                     <div class="h-subtitle typing-subtitle">
                         <a href="#" id="openModal"
                             style="display: inline-block; padding: 1px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">
-                            Start Survey
+                            Please Fill The Answer For This Quisioner
                         </a>
                     </div>
                     <span class="typed-subtitle"></span>
@@ -132,7 +244,7 @@
     </div>
 
     <!-- Initial Modal -->
-    <div id="initialModal" class="modal">
+    {{-- <div id="initialModal" class="modal">
         <div class="quiz-container">
             <div class="close-btn">&times;</div>
             <h1>Welcome to the Survey</h1>
@@ -140,7 +252,7 @@
             <p>Thank you for participating in our survey. Please click "Proceed" to start answering the questions.</p>
             <button id="proceed-btn">Proceed</button>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Quiz Modal -->
     {{-- <div id="quizModal" class="modal">
@@ -187,11 +299,11 @@
         let currentQuestionIndex = 0;
         let userAnswers = new Array(questions.length).fill(null); // Array untuk menyimpan jawaban pengguna
 
-        const initialModal = document.getElementById("initialModal");
+        // const initialModal = document.getElementById("initialModal");
         const quizModal = document.getElementById("quizModal");
         const openModalButton = document.getElementById("openModal");
         const proceedBtn = document.getElementById("proceed-btn");
-        const closeInitialModalBtn = initialModal.querySelector(".close-btn");
+        // const closeInitialModalBtn = initialModal.querySelector(".close-btn");
         const closeQuizModalBtn = quizModal.querySelector(".close-btn");
         const questionContainer = document.getElementById("question-container");
         const backBtn = document.getElementById("back-btn");
@@ -201,20 +313,20 @@
         // Membuka modal awal
         openModalButton.addEventListener("click", (event) => {
             event.preventDefault();
-            initialModal.classList.add("show");
+            quizModal.classList.add("show");
         });
 
         // Melanjutkan ke kuis
-        proceedBtn.addEventListener("click", () => {
-            initialModal.classList.remove("show");
-            quizModal.classList.add("show");
-            loadQuestion(currentQuestionIndex);
-        });
+        // proceedBtn.addEventListener("click", () => {
+        //     initialModal.classList.remove("show");
+        //     quizModal.classList.add("show");
+        //     loadQuestion(currentQuestionIndex);
+        // });
 
         // Menutup modal awal
-        closeInitialModalBtn.addEventListener("click", () => {
-            initialModal.classList.remove("show");
-        });
+        // closeInitialModalBtn.addEventListener("click", () => {
+        //     initialModal.classList.remove("show");
+        // });
 
         // Menutup modal kuis
         closeQuizModalBtn.addEventListener("click", () => {
@@ -252,35 +364,40 @@
         }
 
         // Memuat pertanyaan berdasarkan indeks
-        // function loadQuestion(index) {
-        //     const question = questions[index];
-        //     if (!question) return; // Pastikan soal ada sebelum mencoba memuatnya
+        //     function loadQuestion(index) {
+        //         const question = questions[index];
+        //         if (!question) return; // Pastikan soal ada sebelum mencoba memuatnya
 
-        //     questionContainer.innerHTML = `
-    //         <div class="question">
-    //             <p><strong>${index + 1}. ${question.text}</strong></p>
-    //             ${question.options
-    //                 .map(
-    //                     (option, i) =>
-    //                         `<div class="option">
-        //                                                                         <input
-        //                                                                             type="radio"
-        //                                                                             id="option${i}"
-        //                                                                             name="answer"
-        //                                                                             value="${option.id}"
-        //                                                                             ${userAnswers[index] === option.id ? "checked" : ""}
-        //                                                                         >
-        //                                                                         <label for="option${i}">${option.text}</label>
-        //                                                                     </div>`
-    //                 )
-    //                 .join("")}
-    //         </div>
-    //     `;
+        //         questionContainer.innerHTML = `
+    //     <div class="question">
+    //         <p><strong>${index + 1}. ${question.text}</strong></p>
+    //         ${question.options
+    //             .map(
+    //                 (option, i) => {
+    //                     const isChecked = userAnswers[index] === option.id.toString(); // Cek jika jawaban yang disimpan sama dengan ID opsi
+    //                     return `
+        //                                                     <div class="option">
+        //                                                         <input
+        //                                                             type="radio"
+        //                                                             id="option${i}"
+        //                                                             name="answer"
+        //                                                             value="${option.id}"
+        //                                                             ${isChecked ? "checked" : ""}>
+        //                                                         <label for="option${i}">${option.text}</label>
+        //                                                     </div>
+        //                                                 `;
+    //                 }
+    //             )
+    //             .join("")}
+    //     </div>
+    // `;
 
-        //     backBtn.style.display = index > 0 ? "inline-block" : "none";
-        //     nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
-        //     submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
-        // }
+        //         // Tampilkan tombol "Back", "Next", dan "Submit"
+        //         backBtn.style.display = index > 0 ? "inline-block" : "none";
+        //         nextBtn.style.display = index < questions.length - 1 ? "inline-block" : "none";
+        //         submitBtn.style.display = index === questions.length - 1 ? "inline-block" : "none";
+        //     }
+
 
         function loadQuestion(index) {
             const question = questions[index];
@@ -294,16 +411,16 @@
                     (option, i) => {
                         const isChecked = userAnswers[index] === option.id.toString(); // Cek jika jawaban yang disimpan sama dengan ID opsi
                         return `
-                                                <div class="option">
-                                                    <input
-                                                        type="radio"
-                                                        id="option${i}"
-                                                        name="answer"
-                                                        value="${option.id}"
-                                                        ${isChecked ? "checked" : ""}>
-                                                    <label for="option${i}">${option.text}</label>
-                                                </div>
-                                            `;
+                                    <div class="option">
+                                        <input
+                                            type="radio"
+                                            id="option${i}"
+                                            name="answer"
+                                            value="${option.id}"
+                                            ${isChecked ? "checked" : ""}>
+                                        <label for="option${i}">${option.text}</label>
+                                    </div>
+                                `;
                     }
                 )
                 .join("")}

@@ -89,7 +89,7 @@ Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
         // Ambil anggota grup kecuali user itu sendiri
         $members = $group->members->where('intUser_ID', '!=', $user->intUser_ID);
 
-        return view('pages.congratulations', compact('userName', 'groupName', 'group', 'members'));
+        return view('pages.user.congratulations', compact('userName', 'groupName', 'group', 'members'));
     })->name('congratulations')->middleware('checkprocess');
 
     Route::get('/survey', [SurveyController::class, 'showSurvey'])->name('survey.show');

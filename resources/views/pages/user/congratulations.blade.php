@@ -126,9 +126,7 @@
                 <!-- Ucapan Kata Kata -->
                 <div class="text-content" style="text-align: left;">
                     <p>Great news, <strong>{{ $userName }}</strong>!</p>
-                    <p>Thank you for completing the survey. We're excited to announce that you have been successfully
-                        assigned
-                        to the <strong>{{ $groupName }}</strong> team.</p>
+                    <p>Thank you for completing the survey.</p>
                     <p>Get ready to work together, tackle exciting challenges, and make this experience unforgettable. We're
                         thrilled to have you on board!</p>
                 </div>
@@ -140,12 +138,12 @@
         <div id="joinTeamModal" class="modal">
             <div class="congratulation-container">
                 <div class="close-btn" id="closeJoinTeamModal">&times;</div>
-                <h1>Welcome to Your Team</h1>
+                <h1>Welcome to {{ $groupName }}</h1>
                 <div class="divider"></div>
 
                 <!-- Task 1: Cari Teman Kamu -->
                 <div class="text-content" style="text-align: left;">
-                    <p>Task 1: <strong>Cari Teman Kamu</strong></p>
+                    <p>Task 1: <strong>Find Your Teams member</strong></p>
                     <p>Get ready to collaborate with your team and find your friends!</p>
                     {{-- <button id="openTask1Modal" class="task-btn">Proceed to Task 1</button> --}}
                 </div>
@@ -154,7 +152,7 @@
 
                 <!-- Task 2: Vote Ketua Kelompok -->
                 <div class="text-content" style="text-align: left;">
-                    <p>Task 2: <strong>Vote Ketua Kelompok</strong></p>
+                    <p>Task 2: <strong>Please choose your team Leader</strong></p>
                     <p>Now, it's time to vote for your team leader!</p>
                     <button id="openTask2Modal" class="task-btn">Vote for Team Leader</button>
                 </div>
@@ -170,7 +168,6 @@
 
                 <!-- Form Pemilihan Ketua -->
                 <form action="{{ route('groups.vote', $group->intGroup_ID) }}" method="POST">
-                    {{-- <form action="#" method="POST"> --}}
                     @csrf
                     <ul>
                         @foreach ($members as $member)
@@ -184,55 +181,6 @@
                 </form>
             </div>
         </div>
-
-        {{-- <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const modal = document.getElementById('congratulation');
-                const closeBtn = modal.querySelector('.close-btn');
-                const joinTeamBtn = document.getElementById('joinTeamBtn');
-                const joinTeamModal = document.getElementById('joinTeamModal');
-                const closeJoinTeamModal = document.getElementById('closeJoinTeamModal');
-                const task2Modal = document.getElementById('task2Modal');
-                const closeTask2Modal = document.getElementById('closeTask2Modal');
-                const openTask2Modal = document.getElementById('openTask2Modal');
-                const openModalCongratulation = document.getElementById('openModalCongratulation'); // Tambahkan ini
-
-                // Show the congratulation modal when the page loads
-                modal.classList.add('show');
-
-                // Show the congratulation modal when the "Join Your Team" button is clicked
-                openModalCongratulation.addEventListener('click', () => { // Menambahkan event listener
-                    modal.classList.add('show');
-                });
-
-                // Close the congratulation modal
-                closeBtn.addEventListener('click', () => {
-                    modal.classList.remove('show');
-                });
-
-                // Show the Join Team modal when the "Join Your Team" button is clicked
-                joinTeamBtn.addEventListener('click', () => {
-                    modal.classList.remove('show');
-                    joinTeamModal.classList.add('show');
-                });
-
-                // Close the Join Team modal
-                closeJoinTeamModal.addEventListener('click', () => {
-                    joinTeamModal.classList.remove('show');
-                });
-
-                // Open Task 2 modal for voting team leader
-                openTask2Modal.addEventListener('click', () => {
-                    joinTeamModal.classList.remove('show');
-                    task2Modal.classList.add('show');
-                });
-
-                // Close Task 2 modal
-                closeTask2Modal.addEventListener('click', () => {
-                    task2Modal.classList.remove('show');
-                });
-            });
-        </script> --}}
 
         <script>
             document.addEventListener('DOMContentLoaded', () => {
