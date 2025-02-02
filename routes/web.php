@@ -61,6 +61,8 @@ Route::get('/', function () {
     return view('pages.user.homepage', compact('group'));
 })->name('home');
 
+Route::get('get-group-information', [GroupController::class, 'getGroupInformation'])->name('get-group-information');
+
 Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
     // Question and Answer Page
     Route::get('/question', [QuestionAnswerController::class, 'showSurveyPage'])->name('question')->middleware('checkprocess');

@@ -177,4 +177,26 @@ class GroupController extends Controller
         toast('Your vote has been counted!', 'success');
         return redirect()->route('home');
     }
+
+    public function getGroupInformation()
+    {
+        $user = auth()->user();
+
+        // Fetch the group(s) associated with the user
+        $group = $user->groups->first(); // Get the first group associated with the user
+
+        // If the user doesn't belong to any group, handle it
+        if (!$group) {
+            return response()->json(['error' => 'User is not assigned to any group!'], 404);
+        }
+
+        // Fetch the group with its members and leader
+        $group = Group::with(['members', 'leader'])->findOrFail($group->intGroup_ID);
+
+        return response()->json([
+            'groupName' => $group->txtGroupName,
+            'members' => $group->members->pluck('txtName'),
+            'leader' => $group->leader ? $group->leader->txtName : 'No Leader'
+        ]);
+    }
 }

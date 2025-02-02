@@ -256,7 +256,7 @@
     </div>
 
     @if (Auth::user() && Auth::user()->intProcessStep == 2)
-        <div id="groupCheckModal" class="modal">
+        {{-- <div id="groupCheckModal" class="modal">
             <div class="login-container">
                 <div class="close-btn-group">&times;</div>
                 <h1>Group Information</h1>
@@ -288,6 +288,33 @@
                     @else
                         <p id="leader_name" class="no-leader">No Leader</p>
                     @endif
+                </div>
+            </div>
+        </div> --}}
+
+        <!-- Modal HTML -->
+        <div id="groupCheckModal" class="modal">
+            <div class="login-container">
+                <div class="close-btn-group">&times;</div>
+                <h1>Group Information</h1>
+                <div class="divider"></div>
+
+                <!-- Group Name -->
+                <div class="group-info">
+                    <label for="group_name">Group Name</label>
+                    <p id="group_name"></p>
+                </div>
+
+                <!-- Group Members -->
+                <div class="group-info">
+                    <label for="group_members">Group Members</label>
+                    <ul id="group_members"></ul>
+                </div>
+
+                <!-- Leader -->
+                <div class="group-info">
+                    <label for="leader_id">Leader</label>
+                    <p id="leader_name"></p>
                 </div>
             </div>
         </div>
@@ -363,5 +390,54 @@
                 openModalGroupButton.style.display = "inline-block";
             }
         });
+
+        // AJAX to fetch group information
+        if (openModalGroupButton) {
+            openModalGroupButton.addEventListener("click", function(event) {
+                event.preventDefault();
+
+                // Show loading state (optional)
+                groupCheckModal.classList.add("show");
+
+                // Fetch group data via AJAX
+                function fetchGroupData() {
+                    fetch("{{ route('get-group-information') }}")
+                        .then(response => response.json())
+                        .then(data => {
+                            // Populate modal with fetched data
+                            document.getElementById('group_name').innerText = data.groupName;
+                            const groupMembersList = document.getElementById('group_members');
+                            groupMembersList.innerHTML = ''; // Clear previous members
+                            data.members.forEach(member => {
+                                const li = document.createElement('li');
+                                li.textContent = member;
+                                groupMembersList.appendChild(li);
+                            });
+                            document.getElementById('leader_name').innerText = data.leader;
+                        })
+                        .catch(error => {
+                            console.error('Error fetching group data:', error);
+                            // Handle error appropriately
+                        });
+                }
+
+                // Initial fetch when the modal opens
+                fetchGroupData();
+
+                // Periodically fetch data (every 30 seconds, for example)
+                const refreshInterval = setInterval(fetchGroupData, 1000);
+
+                // Stop refreshing when the modal is closed
+                closeBtnGroup.addEventListener("click", function() {
+                    clearInterval(refreshInterval);
+                    groupCheckModal.classList.remove("show");
+                    groupCheckModal.classList.add("hide");
+                    setTimeout(function() {
+                        groupCheckModal.classList.remove("hide");
+                    }, 300);
+                    openModalGroupButton.style.display = "inline-block";
+                });
+            });
+        }
     </script>
 @endsection
