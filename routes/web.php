@@ -41,6 +41,12 @@ Route::prefix('command')->group(function () {
     Route::get('/config-cache', [ArtisanController::class, 'configCache'])->name('config-cache');
     Route::get('publish-sweetalert', [ArtisanController::class, 'publishSweetAlert'])->name('publish-sweetalert');
     Route::get('storage-link', [ArtisanController::class, 'storageLink'])->name('storage-link');
+    Route::get('cache-view', function () {
+        Artisan::call('view:clear');
+        Artisan::call('cache:clear');
+        Artisan::call('config:cache');
+        return json_encode(['status' => 'success', 'message' => 'View cache cleared!']);
+    })->name('cache-view');
 });
 
 // HomePage
