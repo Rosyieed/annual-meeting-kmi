@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Models\Group;
+use App\Models\EventInformation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -14,6 +15,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\QuestionAnswerController;
+use App\Http\Controllers\EventInformationController;
 use App\Http\Controllers\CongratulationPageController;
 
 /*
@@ -32,10 +34,14 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route Function for Artisan
-Route::get('/artisan/optimize', function () {
-    Artisan::call('optimize');
-    return json_encode(['status' => 'success', 'message' => 'Optimization completed!']);
-})->name('optimize-cache');
+Route::prefix('command')->group(function () {
+    Route::get('/optimize', [ArtisanController::class, 'optimize'])->name('optimize');
+    Route::get('/cache-clear', [ArtisanController::class, 'cacheClear'])->name('cache-clear');
+    Route::get('/route-clear', [ArtisanController::class, 'routeClear'])->name('route-clear');
+    Route::get('/config-cache', [ArtisanController::class, 'configCache'])->name('config-cache');
+    Route::get('publish-sweetalert', [ArtisanController::class, 'publishSweetAlert'])->name('publish-sweetalert');
+    Route::get('storage-link', [ArtisanController::class, 'storageLink'])->name('storage-link');
+});
 
 // HomePage
 Route::get('/', function () {
@@ -58,7 +64,9 @@ Route::get('/', function () {
     // Fetch the group with its members and leader
     $group = Group::with(['members', 'leader'])->find($group->intGroup_ID);
 
-    return view('pages.user.homepage', compact('group'));
+    $buttons = EventInformation::where('bitActive', 1)->get();
+
+    return view('pages.user.homepage', compact('group' , 'buttons'));
 })->name('home');
 
 Route::get('get-group-information', [GroupController::class, 'getGroupInformation'])->name('get-group-information');
@@ -142,11 +150,23 @@ Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function 
         Route::put('roles/{role}/restore', [RoleController::class, 'restoreRole'])->name('master.roles.restore-role');
         Route::get('roles/{role}', [RoleController::class, 'show'])->name('master.roles.show');
 
+        // Countdowns
         Route::get('countdowns', [CongratulationPageController::class, 'index'])->name('master.countdowns.index');
         Route::get('countdowns/create', [CongratulationPageController::class, 'create'])->name('master.countdowns.create');
         Route::post('countdowns/store', [CongratulationPageController::class, 'store'])->name('master.countdowns.store');
         Route::get('countdowns/{countdown}/edit', [CongratulationPageController::class, 'edit'])->name('master.countdowns.edit');
         Route::put('countdowns/{countdown}', [CongratulationPageController::class, 'update'])->name('master.countdowns.update');
         Route::get('countdowns/{countdown}', [CongratulationPageController::class, 'show'])->name('master.countdowns.show');
+
+        // Event Information
+        Route::get('event-informations', [EventInformationController::class, 'index'])->name('master.event-informations.index');
+        Route::get('event-informations/create', [EventInformationController::class, 'create'])->name('master.event-informations.create');
+        Route::post('event-informations/store', [EventInformationController::class, 'store'])->name('master.event-informations.store');
+        Route::get('event-informations/{eventInformation}/edit', [EventInformationController::class, 'edit'])->name('master.event-informations.edit');
+        Route::put('event-informations/{eventInformation}', [EventInformationController::class, 'update'])->name('master.event-informations.update');
+        Route::put('event-informations/{eventInformation}/delete', [EventInformationController::class, 'delete'])->name('master.event-informations.delete');
+        Route::get('event-informations-restore', [EventInformationController::class, 'restorePage'])->name('master.event-informations.restore-index');
+        Route::put('event-informations/{eventInformation}/restore', [EventInformationController::class, 'restoreEventInformation'])->name('master.event-informations.restore-event-information');
+        Route::get('event-informations/{eventInformation}', [EventInformationController::class, 'show'])->name('master.event-informations.show');
     });
 });

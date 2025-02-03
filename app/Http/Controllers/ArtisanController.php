@@ -30,4 +30,20 @@ class ArtisanController extends Controller
         Artisan::call('config:cache');
         return json_encode(['status' => 'success', 'message' => 'Config cache generated!']);
     }
+
+    public function publishSweetAlert()
+    {
+        Artisan::call('vendor:publish', [
+            '--provider' => 'RealRashid\SweetAlert\SweetAlertServiceProvider',
+            '--force' => true, // Gunakan ini jika ingin menimpa file lama
+        ]);
+
+        return json_encode(['status' => 'success', 'message' => 'SweetAlert published!']);
+    }
+
+    public function storageLink()
+    {
+        Artisan::call('storage:link');
+        return json_encode(['status' => 'success', 'message' => 'Storage linked!']);
+    }
 }

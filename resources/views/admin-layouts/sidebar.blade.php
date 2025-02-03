@@ -51,6 +51,11 @@
                             <a class="nxl-link" href="{{ route('master.countdowns.index') }}">Countdown
                                 Data</a>
                         </li>
+                        <li
+                            class="nxl-item {{ Request::is('admin/master-data/event-informations/*') || Request::is('admin/master-data/event-informations-restore') ? 'active' : '' }}">
+                            <a class="nxl-link" href="{{ route('master.event-informations.index') }}">Event
+                                Information Data</a>
+                        </li>
                     </ul>
                 </li>
                 {{-- <li class="nxl-item nxl-hasmenu">

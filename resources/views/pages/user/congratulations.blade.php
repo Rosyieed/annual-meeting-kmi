@@ -110,8 +110,26 @@
         <div class="centrize full-width">
             <div class="vertical-center">
                 <div class="started-content">
-                    <!-- Konten yang sebelumnya ada di modal -->
-                    <div class="congratulation-container" id="welcomeContainer">
+                    {{-- Kata Kata --}}
+                    <div class="congratulation-container" id="kata-kata-container">
+                        <h1>Congratulations</h1>
+                        <div class="divider"></div>
+
+                        <!-- Ucapan Kata Kata -->
+                        <div class="text-content" style="text-align: left;">
+                            <p>Great news, <strong>{{ $userName }}</strong>!</p>
+                            <p>Thank you for completing the survey.</p>
+                            <p>Get ready to work together, tackle exciting challenges, and make this experience
+                                unforgettable. We're
+                                thrilled to have you on board!</p>
+                        </div>
+                        <div id="countdown"></div>
+
+                        <button id="joinTeamBtn" style="display: none;">Join Your Team</button>
+                        {{-- <button id="joinTeamBtn">Join Your Team</button> --}}
+                    </div>
+
+                    <div class="congratulation-container" id="welcomeContainer" style="display: none;">
                         <h1>Welcome to {{ $groupName }}</h1>
                         <div class="divider"></div>
 
@@ -132,7 +150,7 @@
                     </div>
 
                     <!-- Task 2: Form Pemilihan Ketua Kelompok -->
-                    <div id="task2Modal" style="display: none;" >
+                    <div id="task2Modal" style="display: none;">
                         <div class="congratulation-container">
                             <h1>Vote for Your Team Leader</h1>
                             <div class="divider"></div>
@@ -159,10 +177,49 @@
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let startTime = new Date("{{ $countDown->dtmStartTime ?? '' }}").getTime();
+            let countdownElement = document.getElementById("countdown");
+            let joinButton = document.getElementById("joinTeamBtn");
+
+            function updateCountdown() {
+                let now = new Date().getTime();
+                let distance = startTime - now;
+
+                if (distance > 0) {
+                    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    countdownElement.innerHTML = `Starts in: ${hours}h ${minutes}m ${seconds}s`;
+                    joinButton.style.display = "none";
+                } else {
+                    // Saat countdown mencapai 00:00:00, tunggu 1 detik lalu hilangkan teks
+                    setTimeout(() => {
+                        countdownElement.style.display = "none";
+                    }, 1000);
+
+                    joinButton.style.display = "block"; // Tampilkan tombol join
+                }
+            }
+
+            setInterval(updateCountdown, 1000);
+        });
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             const openTask2Modal = document.getElementById('openTask2Modal');
             const task2Modal = document.getElementById('task2Modal');
+            const joinTeamBtn = document.getElementById('joinTeamBtn');
+            const kataKataContainer = document.getElementById('kata-kata-container');
             const welcomeContainer = document.getElementById('welcomeContainer');
+            const congratulationContainer = document.getElementById('congratulationContainer');
+
+            // Jika tombol "Join Your Team" diklik
+            joinTeamBtn.addEventListener('click', () => {
+                kataKataContainer.style.display = 'none';
+                welcomeContainer.style.display = 'block';
+            });
 
             // Tampilkan Task 2 Modal saat tombol "Vote for Team Leader" diklik
             openTask2Modal.addEventListener('click', () => {

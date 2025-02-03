@@ -179,6 +179,135 @@
         font-style: italic;
         color: #888;
     }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-btn {
+        padding: 12px 24px;
+        background-color: #f1f1de !important;
+        color: #000;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        min-width: 200px;
+        z-index: 1;
+        bottom: 100%;
+        left: -100px;
+        transform: translateY(-5px);
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 10px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Container Dynamic Modal */
+    /* Style untuk container login di dalam modal */
+    .dynamic-modal-container {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        position: relative;
+    }
+
+    /* Style untuk tombol close */
+    .close-btn-dynamic {
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+    }
+
+    .close-btn-dynamic:hover,
+    .close-btn-dynamic:focus {
+        color: #000;
+        text-decoration: none;
+    }
+
+    /* Style untuk judul modal */
+    h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    /* Style untuk divider */
+    .divider {
+        border-bottom: 1px solid #ddd;
+        margin: 10px 0;
+    }
+
+    /* Style untuk konten modal */
+    .modal-content {
+        margin-top: 20px;
+        font-size: 12px;
+    }
+
+    /* Style untuk setiap info di dalam modal */
+    .modal-info {
+        margin-bottom: 15px;
+        font-size: 12px;
+    }
+
+    .modal-info label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+        font-size: 12px;
+    }
+
+    .modal-info p {
+        margin: 0;
+        color: #333;
+        font-size: 12px;
+    }
+
+    /* Style untuk gambar di dalam modal */
+    #modal_image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 10px;
+        display: block;
+    }
+
+    /* Style untuk link di dalam modal */
+    #modal_link {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    #modal_link:hover {
+        text-decoration: underline;
+    }
 </style>
 
 @section('content')
@@ -201,28 +330,46 @@
                         <div class="button-container">
                             @if (Auth::user() && Auth::user()->intProcessStep == 0)
                                 <a href="{{ route('question') }}"
-                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Survey
+                                    style="display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 14px; border-radius: 5px; font-weight: bold; width: 110px;">Survey
                                     Page</a>
                             @elseif (Auth::user() && Auth::user()->intProcessStep == 1)
                                 <a href="{{ route('congratulations') }}"
-                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">congratulations
+                                    style="display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 14px; border-radius: 5px; font-weight: bold; width: 110px;">congratulations
                                     Page</a>
                             @elseif (Auth::user() && Auth::user()->intProcessStep == 2)
                                 <a href="#" id="openModalGroup"
-                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Group
+                                    style="display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 14px; border-radius: 5px; font-weight: bold; width: 110px;">Group
                                     Information</a>
                             @else
                                 <a href="#" id="openModal"
-                                    style="display: inline-block; padding: 12px 24px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 16px; border-radius: 5px; font-weight: bold;">Get
+                                    style="display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 14px; border-radius: 5px; font-weight: bold; width: 110px;">Get
                                     Started</a>
+                            @endif
+                            @if (Auth::user() && $buttons->count() > 0)
+                                <div class="dropdown" style="margin-left: 10px;">
+                                    <a class="dropdown-btn"
+                                        style="display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 14px; border-radius: 5px; font-weight: bold; width: 110px;">Event</a>
+                                    <div class="dropdown-content">
+                                        @foreach ($buttons as $button)
+                                            <a href="#" class="open-dynamic-modal"
+                                                style="display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 14px; border-radius: 5px; font-weight: bold; margin-bottom: 10px;"
+                                                data-id="{{ $button->intEventInformation_ID }}">
+                                                {{ $button->txtModalTitle }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
                             @endif
                         </div>
                     </div>
 
                     <div class="h-subtitle typing-subtitle">
-                        <p><span style="color: #f1f1de">PREPARE FOR THE</span> <strong style="color: #F22121"> NEXT MISSION</strong></p>
-                        <p><span style="color: #f1f1de">"SMILE"</span> <br> <strong style="color: #F22121"> SMART-AGILE-BEYOND</strong></p>
-                        <p><span style="color: #f1f1de">ANNUAL MEETING KMI</span> <strong style="color: #F22121"> 2025</strong>
+                        <p><span style="color: #f1f1de">PREPARE FOR THE</span> <strong style="color: #F22121"> NEXT
+                                MISSION</strong></p>
+                        <p><span style="color: #f1f1de">"SMILE"</span> <br> <strong style="color: #F22121">
+                                SMART-AGILE-BEYOND</strong></p>
+                        <p><span style="color: #f1f1de">ANNUAL MEETING KMI</span> <strong style="color: #F22121">
+                                2025</strong>
                         </p>
                     </div>
                     <span class="typed-subtitle"></span>
@@ -231,13 +378,58 @@
         </div>
     </div>
 
+    @auth
+        {{-- Modal dinamis --}}
+        @foreach ($buttons as $button)
+            <!-- Dynamic Modal -->
+            <div id="dynamicModal{{ $button->intEventInformation_ID }}" class="modal">
+                <div class="login-container">
+                    <div class="close-btn-dynamic" data-id="{{ $button->intEventInformation_ID }}">&times;</div>
+                    <h1>{{ $button->txtModalTitle }}</h1>
+                    <div class="divider"></div>
+
+                    <!-- Modal Content -->
+                    <div class="modal-content">
+                        <div class="modal-info">
+                            <label for="modal_title">Title</label>
+                            <p id="modal_title">{{ $button->txtModalTitle }}</p>
+                        </div>
+
+                        @if ($button->txtModalContent)
+                            <div class="modal-info">
+                                <label for="modal_content">Content</label>
+                                <p id="modal_content">{{ $button->txtModalContent }}</p>
+                            </div>
+                        @endif
+
+                        @if ($button->txtModalImagePath)
+                            <div class="modal-info">
+                                <label for="modal_image">Image</label>
+                                <img id="modal_image" src="{{ asset('storage/' . $button->txtModalImagePath) }}"
+                                    alt="Modal Image">
+                            </div>
+                        @endif
+
+                        @if ($button->txtModalLink)
+                            <div class="modal-info">
+                                <label for="modal_link">Link</label>
+                                <a id="modal_link" href="{{ $button->txtModalLink }}">{{ $button->txtModalLink }}</a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    @endauth
+
     <!-- Modal HTML -->
     <div id="loginModal" class="modal">
         <div class="login-container">
             <div class="close-btn">&times;</div>
             <h1>Login</h1>
             <div class="divider"></div>
-            <p>Welcome KMlers! Login to start your <strong>SMILE</strong> (Smart, Agile, Beyond) journey at KMI Annual Meeting 2025.</p>
+            <p>Welcome KMlers! Login to start your <strong>SMILE</strong> (Smart, Agile, Beyond) journey at KMI Annual
+                Meeting 2025.</p>
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <label for="nik">NIK</label>
@@ -256,42 +448,6 @@
     </div>
 
     @if (Auth::user() && Auth::user()->intProcessStep == 2)
-        {{-- <div id="groupCheckModal" class="modal">
-            <div class="login-container">
-                <div class="close-btn-group">&times;</div>
-                <h1>Group Information</h1>
-                <div class="divider"></div>
-
-                <!-- Group Name -->
-                <div class="group-info">
-                    <label for="group_name">Group Name</label>
-                    <p id="group_name">{{ $group->txtGroupName }}</p>
-                </div>
-
-                <!-- Group Members -->
-                <div class="group-info">
-                    <label for="group_members">Group Members</label>
-                    <ul id="group_members">
-                        @foreach ($group->members as $member)
-                            <li>{{ $member->txtName }}</li> <!-- Display member's name -->
-                        @endforeach
-                    </ul>
-                </div>
-
-                <!-- Leader -->
-                <div class="group-info">
-                    <label for="leader_id">Leader</label>
-                    @if ($group->leader->intUser_ID == Auth::user()->intUser_ID)
-                        <p id="leader_name">{{ $group->leader->txtName }} (You)</p> <!-- Display leader's name -->
-                    @elseif($group->leader)
-                        <p id="leader_name">{{ $group->leader->txtName }}</p> <!-- Display leader's name -->
-                    @else
-                        <p id="leader_name" class="no-leader">No Leader</p>
-                    @endif
-                </div>
-            </div>
-        </div> --}}
-
         <!-- Modal HTML -->
         <div id="groupCheckModal" class="modal">
             <div class="login-container">
@@ -439,5 +595,69 @@
                 });
             });
         }
+    </script>
+
+    <script>
+        // Handle button untuk membuka modal dinamis
+        document.querySelectorAll('.open-dynamic-modal').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const modalId = this.getAttribute('data-id');
+                const modal = document.getElementById(`dynamicModal${modalId}`);
+                modal.classList.add('show');
+            });
+        });
+
+        // Handle button untuk menutup modal dinamis
+        document.querySelectorAll('.close-btn-dynamic').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-id');
+                const modal = document.getElementById(`dynamicModal${modalId}`);
+                modal.classList.remove('show');
+            });
+        });
+
+        // Handle klik di luar modal untuk menutup modal
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const dropdownBtn = document.querySelector(".dropdown-btn");
+            const dropdownContent = document.querySelector(".dropdown-content");
+
+            dropdownBtn.addEventListener("click", function(event) {
+                event.stopPropagation(); // Mencegah event bubbling
+                const isOpen = dropdownContent.style.display === "block";
+
+                // Sembunyikan semua dropdown sebelum membuka yang baru
+                document.querySelectorAll(".dropdown-content").forEach(content => {
+                    content.style.display = "none";
+                    content.style.opacity = "0";
+                });
+
+                // Tampilkan dropdown jika belum terbuka
+                if (!isOpen) {
+                    dropdownContent.style.display = "block";
+                    setTimeout(() => {
+                        dropdownContent.style.opacity = "1";
+                    }, 10);
+                }
+            });
+
+            // Klik di luar dropdown untuk menutupnya
+            document.addEventListener("click", function(event) {
+                if (!dropdownBtn.contains(event.target) && !dropdownContent.contains(event.target)) {
+                    dropdownContent.style.opacity = "0";
+                    setTimeout(() => {
+                        dropdownContent.style.display = "none";
+                    }, 200);
+                }
+            });
+        });
     </script>
 @endsection
