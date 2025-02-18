@@ -450,7 +450,7 @@
         @foreach ($buttons as $button)
             <!-- Dynamic Modal -->
             <div id="dynamicModal{{ $button->intEventInformation_ID }}" class="modal">
-                <div class="login-container">
+                <div class="login-container" style="max-width: 600px;">
                     <div class="close-btn-dynamic" data-id="{{ $button->intEventInformation_ID }}">&times;</div>
                     <h1>{{ $button->txtModalTitle }}</h1>
                     <div class="divider"></div>

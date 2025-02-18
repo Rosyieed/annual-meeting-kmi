@@ -87,7 +87,7 @@ class EventInformationController extends Controller
 
     public function delete($id)
     {
-        $eventInformation = EventInformation::findOrFail($id)->where('bitActive', 1)->first();
+        $eventInformation = EventInformation::findOrFail($id);
         $eventInformation->update([
             'txtUpdatedBy' => auth()->user()->txtName,
             'dtmUpdated' => now(),
