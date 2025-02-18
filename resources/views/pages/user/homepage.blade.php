@@ -370,6 +370,63 @@
     #modal_link:hover {
         text-decoration: underline;
     }
+
+    /* Styling kontainer dalam modal */
+    .geeting-container {
+        background: white !important;
+        padding: 20px;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 10px;
+        text-align: center;
+        position: relative;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Styling untuk tombol */
+    .button-geeting {
+        background-color: #f1f1de !important;
+        color: #000;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .button-geeting:disabled {
+        background-color: #ccc !important;
+        cursor: not-allowed;
+    }
+
+    /* Styling untuk video kamera */
+    #cameraPreview {
+        width: 100%;
+        border-radius: 5px;
+        border: 2px solid #ddd !important;
+    }
+
+    /* Styling untuk preview gambar */
+    #photoPreview {
+        width: 100%;
+        max-height: 300px;
+        border-radius: 5px;
+        margin-top: 10px;
+        border: 2px solid #ddd !important;
+    }
+
+    /* Styling untuk form input */
+    .geeting-container input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 8px;
+        border: 1px solid #ccc !important;
+        border-radius: 5px;
+        color: #333 !important
+    }
 </style>
 
 @section('content')
@@ -407,7 +464,7 @@
                                     Page</a>
                             @elseif (Auth::user() && Auth::user()->intProcessStep == 1)
                                 <a href="{{ route('congratulations') }}"
-                                    style="display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 14px; border-radius: 5px; font-weight: bold; width: 110px;">congratulations
+                                    style="display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 14px; border-radius: 5px; font-weight: bold; width: 110px;">Task
                                     Page</a>
                             @elseif (Auth::user() && Auth::user()->intProcessStep == 2)
                                 <a href="#" id="openModalGroup"
@@ -432,6 +489,11 @@
                                         @endforeach
                                     </div>
                                 </div>
+                            @endif
+                            @if (Auth::user() && !$hasSubmittedGeeting)
+                                <a href="#" id="openModalGeetingCommitment"
+                                    style="margin-left: 10px;display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 12px; border-radius: 5px; font-weight: bold; width: 110px;">Geeting
+                                    Commitment</a>
                             @endif
                         </div>
                     </div>
@@ -522,6 +584,47 @@
         </div>
     </div>
 
+    <!-- Modal Geeting Commitment -->
+    <div id="geetingCommitmentModal" class="modal">
+        <div class="geeting-container">
+            <div class="close-btn" onclick="closeGeetingModal()">&times;</div>
+            <h1>Geeting Commitment</h1>
+            <div class="divider"></div>
+
+            <!-- Step 1: Ambil Foto dari Kamera -->
+            <div id="photoStep">
+                <p style="color: black !important">Take a photo</p>
+
+                <!-- Video Kamera (Akan Diganti oleh Foto) -->
+                <video id="cameraPreview" autoplay></video>
+
+                <!-- Gambar Preview (Awalnya Tersembunyi) -->
+                <img id="photoPreview" style="display: none; max-width: 100%; margin-top: 10px;">
+
+                <!-- Tombol untuk Capture dan Lanjut -->
+                <button class="button-geeting" id="captureBtn">Capture</button>
+                <canvas id="canvas" style="display: none;"></canvas>
+                <button class="button-geeting" id="nextStepBtn" style="display: none;">Next</button>
+            </div>
+
+
+            <!-- Step 2: Input Geeting Commitment -->
+            <div id="commitmentStep" style="display: none;">
+                <p style="color: #333 !important">Enter your Geeting Commitment</p>
+                <form action="{{ route('geeting-commitment.store-user') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="photo" id="hiddenPhoto">
+                    <label for="geetingText" style="color: #333 !important">Please enter your commitment in three words.</label>
+                    <input type="text" id="geetingText" name="geetingText" placeholder="Enter your commitment..."
+                        required>
+                    <button class="button-geeting" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     @if (Auth::user() && Auth::user()->intProcessStep == 2)
         <!-- Modal HTML -->
         <div id="groupCheckModal" class="modal">
@@ -579,7 +682,7 @@
             // Memainkan audio MP3 sebagai backsound
             const audio = document.getElementById("backgroundMusic");
             if (audio) {
-                audio.volume = 0.5; // Atur volume awal
+                audio.volume = 1; // Atur volume awal
                 audio.play().catch(error => console.error("Autoplay error:", error));
             }
         });
@@ -756,6 +859,84 @@
                     }, 200);
                 }
             });
+        });
+    </script>
+
+    <script>
+        // Buka modal saat tombol diklik
+        document.getElementById("openModalGeetingCommitment").addEventListener("click", function() {
+            document.getElementById("geetingCommitmentModal").style.display = "flex";
+            startCamera();
+        });
+
+        // Tutup modal
+        function closeGeetingModal() {
+            document.getElementById("geetingCommitmentModal").style.display = "none";
+            stopCamera();
+        }
+
+        // Mulai kamera saat modal dibuka
+        function startCamera() {
+            let video = document.getElementById("cameraPreview");
+
+            navigator.mediaDevices.getUserMedia({
+                    video: true
+                })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function(err) {
+                    console.error("Error accessing camera:", err);
+                    alert("Could not access camera. Please check your permissions.");
+                });
+        }
+
+        // Hentikan kamera saat modal ditutup
+        function stopCamera() {
+            let video = document.getElementById("cameraPreview");
+            let stream = video.srcObject;
+            if (stream) {
+                let tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+            }
+        }
+
+        // Tangkap gambar dari kamera
+        document.getElementById("captureBtn").addEventListener("click", function() {
+            let video = document.getElementById("cameraPreview");
+            let canvas = document.getElementById("canvas");
+            let photoPreview = document.getElementById("photoPreview");
+            let captureBtn = document.getElementById("captureBtn"); // Ambil tombol Capture
+            let nextStepBtn = document.getElementById("nextStepBtn");
+
+            let context = canvas.getContext("2d");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Konversi ke base64 untuk dikirim ke backend
+            let photoData = canvas.toDataURL("image/png");
+            document.getElementById("hiddenPhoto").value = photoData;
+
+            // Tampilkan preview foto menggantikan video
+            photoPreview.src = photoData;
+            photoPreview.style.display = "block";
+            video.style.display = "none"; // Sembunyikan kamera
+
+            // Sembunyikan tombol Capture
+            captureBtn.style.display = "none";
+
+            // Munculkan tombol "Next"
+            nextStepBtn.style.display = "inline-block";
+        });
+
+
+
+        // Lanjut ke langkah 2 (input geeting commitment)
+        document.getElementById("nextStepBtn").addEventListener("click", function() {
+            document.getElementById("photoStep").style.display = "none";
+            document.getElementById("commitmentStep").style.display = "block";
         });
     </script>
 @endsection

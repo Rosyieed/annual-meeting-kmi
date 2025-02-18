@@ -56,6 +56,11 @@
                             <a class="nxl-link" href="{{ route('master.event-informations.index') }}">Event
                                 Information Data</a>
                         </li>
+                        <li
+                            class="nxl-item {{ Request::is('admin/master-data/geeting-commitments/*') || Request::is('admin/master-data/geeting-commitments-restore') ? 'active' : '' }}">
+                            <a class="nxl-link" href="{{ route('geeting-commitment.index') }}">Geeting
+                                Commitment Data</a>
+                        </li>
                     </ul>
                 </li>
                 {{-- <li class="nxl-item nxl-hasmenu">

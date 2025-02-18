@@ -1,8 +1,10 @@
 <?php
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\EventInformation;
+use App\Models\GeetingCommitment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -16,6 +18,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\QuestionAnswerController;
 use App\Http\Controllers\EventInformationController;
+use App\Http\Controllers\GeetingCommitmentController;
 use App\Http\Controllers\CongratulationPageController;
 
 /*
@@ -72,7 +75,17 @@ Route::get('/', function () {
 
     $buttons = EventInformation::where('bitActive', 1)->get();
 
-    return view('pages.user.homepage', compact('group' , 'buttons'));
+    // $now = Carbon::now();
+    // $buttonVisible = GreetingCommitment::where('dtmButtonShow', '<=', $now)
+    //     ->where('bitActive', 1)
+    //     ->exists();
+
+    $hasSubmittedGeeting = GeetingCommitment::where('intUser_ID', Auth::user()->intUser_ID)
+    ->where('bitActive', 1)
+    ->exists();
+
+
+    return view('pages.user.homepage', compact('group', 'buttons', 'hasSubmittedGeeting'));
 })->name('home');
 
 Route::get('get-group-information', [GroupController::class, 'getGroupInformation'])->name('get-group-information');
@@ -89,6 +102,10 @@ Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
     // Vote Group Leader Page
     Route::get('/vote', [GroupController::class, 'votePage'])->name('vote')->middleware('auth', 'checkrole:admin');
     Route::post('/group/{groupId}/vote', [GroupController::class, 'vote'])->name('groups.vote');
+
+    // Geeting Commitment Page
+    Route::post('/geeting-commitment/store-user', [GeetingCommitmentController::class, 'storeUser'])->name('geeting-commitment.store-user');
+    Route::get('/geeting-commitments-page', [GeetingCommitmentController::class, 'showGeetingCommitmentPage'])->name('geeting-commitment');
 });
 
 Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function () {
@@ -174,5 +191,14 @@ Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function 
         Route::get('event-informations-restore', [EventInformationController::class, 'restorePage'])->name('master.event-informations.restore-index');
         Route::put('event-informations/{eventInformation}/restore', [EventInformationController::class, 'restoreEventInformation'])->name('master.event-informations.restore-event-information');
         Route::get('event-informations/{eventInformation}', [EventInformationController::class, 'show'])->name('master.event-informations.show');
+
+        // Geeting Commitment
+        Route::get('/geeting-commitments', [GeetingCommitmentController::class, 'index'])->name('geeting-commitment.index');
+        Route::get('/geeting-commitments/{geetingCommitment}/edit', [GeetingCommitmentController::class, 'edit'])->name('geeting-commitment.edit');
+        Route::put('/geeting-commitments/{geetingCommitment}', [GeetingCommitmentController::class, 'update'])->name('geeting-commitment.update');
+        Route::put('/geeting-commitments/{geetingCommitment}/delete', [GeetingCommitmentController::class, 'delete'])->name('geeting-commitment.delete');
+        Route::get('/geeting-commitments/{geetingCommitment}', [GeetingCommitmentController::class, 'show'])->name('geeting-commitment.show');
+        Route::get('/geeting-commitments-restore', [GeetingCommitmentController::class, 'restorePage'])->name('geeting-commitment.restore-index');
+        Route::put('/geeting-commitments/{geetingCommitment}/restore', [GeetingCommitmentController::class, 'restoreGeetingCommitment'])->name('geeting-commitment.restore-geeting-commitment');
     });
 });

@@ -303,10 +303,10 @@
                 //     video.volume = 1;
                 //     video.play();
                 // }
-                
+
                 const audio = document.getElementById("backgroundMusic");
                 if (audio) {
-                    audio.volume = 0.5; // Atur volume awal
+                    audio.volume = 1; // Atur volume awal
                     audio.play().catch(error => console.error("Autoplay error:", error));
                 }
 

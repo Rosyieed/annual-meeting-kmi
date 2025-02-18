@@ -84,7 +84,7 @@
         <!-- Logo kiri -->
         <div class="logo-left">
             <a href="#">
-                <img src="{{ asset('user-assets/images/logo/logo kmi.png') }}" alt="Logo Kiri" class="responsive-logo">
+                <img src="{{ asset('user-assets/images/logo/kmi_white.png') }}" alt="Logo Kiri" class="responsive-logo">
             </a>
         </div>
 
@@ -96,7 +96,7 @@
         <!-- Logo kanan -->
         <div class="logo-right">
             <a href="#">
-                <img src="{{ asset('user-assets/images/logo/Logo.png') }}" alt="Logo Kanan" class="responsive-logo">
+                <img src="{{ asset('user-assets/images/logo/patriot.png') }}" alt="Logo Kanan" class="responsive-logo">
             </a>
         </div>
 

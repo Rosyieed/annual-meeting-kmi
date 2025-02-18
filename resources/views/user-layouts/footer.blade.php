@@ -8,12 +8,17 @@
             &copy; 2025 KMI. All Rights Reserved.
         </div>
         <div class="soc">
-            <a target="_blank" href="https://id.linkedin.com/company/pt-kalbe-morinaga-indonesia">
+            {{-- <a target="_blank" href="https://id.linkedin.com/company/pt-kalbe-morinaga-indonesia">
                 <span class="icon fab fa-linkedin-in" style="color: #f1f1de"></span>
-            </a>
+            </a> --}}
             <a target="_blank" href="https://www.instagram.com/one.kmi">
                 <span class="icon fab fa-instagram" style="color: #f1f1de"></span>
             </a>
+            @if(Auth::check())
+                <a href="{{ route('home') }}">
+                    <span class="icon fas fa-home" style="color: #f1f1de"></span>
+                </a>
+            @endif
             @if (Auth::check() && Auth::user()->role->txtRole == 'Admin')
                 <a href="{{ route('admin.dashboard') }}">
                     <span class="icon fas fa-tachometer-alt" style="color: #f1f1de"></span>
