@@ -170,11 +170,17 @@
     <div class="section started" id="section-started">
         <!-- Background -->
         <div id="started-video-bg" class="video-bg media-bg jarallax-video video-mobile-bg"
-            data-jarallax-video="mp4:{{ asset('user-assets/videos/video-background-new.mp4') }}" data-volume="0" muted>
+            data-jarallax-video="mp4:{{ asset('user-assets/videos/background.mp4') }}" data-volume="0" muted>
             <div class="video-bg-mask">
             </div>
             <div class="video-bg-texture" id="grained_container"></div>
         </div>
+
+        {{-- Backsound --}}
+        <audio id="backgroundMusic" loop>
+            <source src="{{ asset('user-assets/audios/backsound.mp3') }}" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
 
         <div class="centrize full-width">
             <div class="vertical-center">
@@ -276,27 +282,6 @@
     </script>
 
     <script>
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const openTask2Modal = document.getElementById('openTask2Modal');
-        //     const task2Modal = document.getElementById('task2Modal');
-        //     const joinTeamBtn = document.getElementById('joinTeamBtn');
-        //     const kataKataContainer = document.getElementById('kata-kata-container');
-        //     const welcomeContainer = document.getElementById('welcomeContainer');
-        //     const congratulationContainer = document.getElementById('congratulationContainer');
-
-        //     // Jika tombol "Join Your Team" diklik
-        //     joinTeamBtn.addEventListener('click', () => {
-        //         kataKataContainer.style.display = 'none';
-        //         welcomeContainer.style.display = 'block';
-        //     });
-
-        //     // Tampilkan Task 2 Modal saat tombol "Vote for Team Leader" diklik
-        //     openTask2Modal.addEventListener('click', () => {
-        //         welcomeContainer.style.display = 'none';
-        //         task2Modal.style.display = 'block';
-        //     });
-        // });
-
         document.addEventListener('DOMContentLoaded', () => {
             const openTask2Modal = document.getElementById('openTask2Modal');
             const task2Modal = document.getElementById('task2Modal');
@@ -312,12 +297,19 @@
                 sectionStarted.style.display = 'block';
 
                 // Memutar video dan mengaktifkan suara
-                const video = document.querySelector(".jarallax-video video");
-                if (video) {
-                    video.muted = false;
-                    video.volume = 1;
-                    video.play();
+                // const video = document.querySelector(".jarallax-video video");
+                // if (video) {
+                //     video.muted = false;
+                //     video.volume = 1;
+                //     video.play();
+                // }
+                
+                const audio = document.getElementById("backgroundMusic");
+                if (audio) {
+                    audio.volume = 0.5; // Atur volume awal
+                    audio.play().catch(error => console.error("Autoplay error:", error));
                 }
+
             });
 
             // Jika tombol "Join Your Team" diklik

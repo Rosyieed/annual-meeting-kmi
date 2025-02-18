@@ -184,10 +184,16 @@
 
         <!-- Background -->
         <div id="started-video-bg" class="video-bg media-bg jarallax-video video-mobile-bg"
-            data-jarallax-video="mp4:{{ asset('user-assets/videos/video-background-new.mp4') }}">
+            data-jarallax-video="mp4:{{ asset('user-assets/videos/background.mp4') }}">
             <div class="video-bg-mask"></div>
             <div class="video-bg-texture" id="grained_container"></div>
         </div>
+
+        {{-- Backsound --}}
+        <audio id="backgroundMusic" loop>
+            <source src="{{ asset('user-assets/audios/backsound.mp3') }}" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
 
         <div class="centrize full-width">
             <div class="vertical-center">
@@ -373,16 +379,16 @@
                     (option, i) => {
                         const isChecked = userAnswers[index] === option.id.toString(); // Cek jika jawaban yang disimpan sama dengan ID opsi
                         return `
-                                                    <div class="option">
-                                                        <input
-                                                            type="radio"
-                                                            id="option${i}"
-                                                            name="answer"
-                                                            value="${option.id}"
-                                                            ${isChecked ? "checked" : ""}>
-                                                        <label for="option${i}">${option.text}</label>
-                                                    </div>
-                                                `;
+                                                            <div class="option">
+                                                                <input
+                                                                    type="radio"
+                                                                    id="option${i}"
+                                                                    name="answer"
+                                                                    value="${option.id}"
+                                                                    ${isChecked ? "checked" : ""}>
+                                                                <label for="option${i}">${option.text}</label>
+                                                            </div>
+                                                        `;
                     }
                 )
                 .join("")}
@@ -474,11 +480,17 @@
             sectionStarted.style.display = 'block';
 
             // Memutar video dan mengaktifkan suara
-            const video = document.querySelector(".jarallax-video video");
-            if (video) {
-                video.muted = false;
-                video.volume = 1;
-                video.play();
+            // const video = document.querySelector(".jarallax-video video");
+            // if (video) {
+            //     video.muted = false;
+            //     video.volume = 1;
+            //     video.play();
+            // }
+
+            const audio = document.getElementById("backgroundMusic");
+            if (audio) {
+                audio.volume = 0.5; // Atur volume awal
+                audio.play().catch(error => console.error("Autoplay error:", error));
             }
         });
     </script>

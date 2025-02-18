@@ -383,11 +383,17 @@
 
         <!-- background -->
         <div id="started-video-bg" class="video-bg media-bg jarallax-video video-mobile-bg"
-            data-jarallax-video="mp4:{{ asset('user-assets/videos/video-background-new.mp4') }}"
+            data-jarallax-video="mp4:{{ asset('user-assets/videos/background.mp4') }}"
             data-mobile-preview="images/started_image_p.jpg" data-volume="0" muted>
             <div class="video-bg-mask"></div>
             <div class="video-bg-texture" id="grained_container"></div>
         </div>
+
+        {{-- Backsound --}}
+        <audio id="backgroundMusic" loop>
+            <source src="{{ asset('user-assets/audios/backsound.mp3') }}" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
 
         <!-- started content -->
         <div class="centrize full-width">
@@ -472,8 +478,10 @@
                         @if ($button->txtModalImagePath)
                             <div class="modal-info">
                                 <label for="modal_image">Image</label>
-                                <img id="modal_image" src="{{ asset('storage/' . $button->txtModalImagePath) }}"
-                                    alt="Modal Image">
+                                <a href="{{ asset('storage/' . $button->txtModalImagePath) }}" target="_blank">
+                                    <img id="modal_image" src="{{ asset('storage/' . $button->txtModalImagePath) }}"
+                                        alt="Modal Image">
+                                </a>
                             </div>
                         @endif
 
@@ -561,11 +569,18 @@
             sectionStarted.style.display = 'block';
 
             // Memutar video dan mengaktifkan suara
-            const video = document.querySelector(".jarallax-video video");
-            if (video) {
-                video.muted = false;
-                video.volume = 1;
-                video.play();
+            // const video = document.querySelector(".jarallax-video video");
+            // if (video) {
+            //     video.muted = false;
+            //     video.volume = 1;
+            //     video.play();
+            // }
+
+            // Memainkan audio MP3 sebagai backsound
+            const audio = document.getElementById("backgroundMusic");
+            if (audio) {
+                audio.volume = 0.5; // Atur volume awal
+                audio.play().catch(error => console.error("Autoplay error:", error));
             }
         });
 
