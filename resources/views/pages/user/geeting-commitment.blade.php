@@ -127,17 +127,6 @@
         margin: 10px auto 20px;
     }
 
-    .quiz-container button {
-        padding: 10px 20px;
-        background-color: #f1f1de !important;
-        border: none;
-        border-radius: 5px;
-        color: #000 !important;
-        font-weight: bold;
-        cursor: pointer;
-        margin: 5px;
-    }
-
     .quiz-container .close-btn {
         position: absolute;
         top: 10px;
@@ -146,31 +135,95 @@
         cursor: pointer;
     }
 
-    .question {
-        text-align: left;
-        /* Rata kiri untuk teks soal */
-        margin-bottom: 20px;
-    }
-
-    .question p {
-        margin-left: 20px;
-    }
-
-    .question .option {
-        display: flex;
+    /* Congratulations Modal */
+    .congrats-modal {
+        display: none;
+        position: fixed;
+        z-index: 10000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7) !important;
+        justify-content: center;
         align-items: center;
+    }
+
+    .congrats-modal.show {
+        display: flex;
+    }
+
+    .congrats-content {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2) !important;
+        padding: 30px;
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    .congrats-content h1 {
+        font-size: 24px;
+        color: #333;
         margin-bottom: 10px;
     }
 
-    .question .option input {
-        margin-right: 10px;
-        /* Jarak antara radio button dan teks opsi */
-        margin-left: 20px
+    .congrats-content p {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 20px;
     }
 
-    .question .option label {
+    .congrats-content button {
+        padding: 10px 20px;
+        background-color: #f1f1de !important;
+        border: none;
+        border-radius: 5px;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .congrats-content button:hover {
+        background-color: #f1f1de !important;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .btn-circle {
+        width: 80px;
+        height: 80px;
+        background-color: #f1c40f !important;
+        border: none;
+        border-radius: 50%;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
         font-size: 16px;
-        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        outline: none;
+        text-align: center;
+    }
+
+    .btn-circle:hover {
+        background-color: #e0b70c !important;
+        transform: scale(1.1);
+    }
+
+    .btn-circle:active {
+        transform: scale(0.9);
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
     }
 </style>
 
@@ -223,77 +276,22 @@
             <p style="text-align: center; margin-top: 10px;"><span id="progressText">0</span>%</p>
 
             <!-- Push Button -->
-            <button id="pushButton" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Hold to Fill</button>
+            <div class="button-container">
+                <button id="pushButton" class="btn-circle">
+                    Hold
+                </button>
+            </div>
         </div>
     </div>
 
-    {{-- <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const openingContainer = document.getElementById("openingContainer");
-            const sectionStarted = document.getElementById("section-started");
-            const progressModal = document.getElementById("progressModal");
-            const progressBar = document.getElementById("progressBar");
-            const progressText = document.getElementById("progressText");
-            const pushButton = document.getElementById("pushButton");
-
-            let progress = 0;
-            let increaseInterval;
-            let decreaseInterval;
-
-            // **Tampilkan modal setelah tombol Start diklik**
-            document.getElementById("startButton").addEventListener("click", function() {
-                openingContainer.style.display = "none";
-                sectionStarted.style.display = "block";
-
-                // Putar backsound
-                const audio = document.getElementById("backgroundMusic");
-                if (audio) {
-                    audio.volume = 1; // Set volume awal
-                    audio.play().catch(error => console.error("Autoplay error:", error));
-                }
-
-                // **Tampilkan modal setelah animasi selesai**
-                setTimeout(() => {
-                    progressModal.classList.add("show");
-                }, 500); // Tunggu 0.5 detik setelah halaman berganti
-            });
-
-            // **Saat tombol ditekan dan ditahan**
-            pushButton.addEventListener("mousedown", function() {
-                clearInterval(decreaseInterval); // Hentikan pengurangan progress jika ada
-                increaseInterval = setInterval(() => {
-                    if (progress < 100) {
-                        progress += 20; // Setiap detik bertambah 20%
-                        progress = Math.min(progress, 100); // Pastikan tidak melebihi 100%
-                        progressBar.style.width = progress + "%";
-                        progressText.innerText = progress;
-                    }
-                    if (progress >= 100) {
-                        clearInterval(increaseInterval);
-                        setTimeout(() => {
-                            window.location.href =
-                            "{{ route('home') }}"; // Redirect setelah 100%
-                        }, 300);
-                    }
-                }, 1000); // Bertambah setiap 1 detik
-            });
-
-            // **Saat tombol dilepas, mulai mengurangi progress**
-            pushButton.addEventListener("mouseup", function() {
-                clearInterval(increaseInterval); // Hentikan pertumbuhan progress
-                decreaseInterval = setInterval(() => {
-                    if (progress > 0) {
-                        progress -= 20; // Setiap detik berkurang 20%
-                        progress = Math.max(progress, 0); // Pastikan tidak kurang dari 0%
-                        progressBar.style.width = progress + "%";
-                        progressText.innerText = progress;
-                    } else {
-                        clearInterval(decreaseInterval); // Jika sudah 0, hentikan interval
-                    }
-                }, 1000);
-            });
-        });
-    </script> --}}
+    <!-- Congratulations Modal -->
+    <div id="congratsModal" class="congrats-modal">
+        <div class="congrats-content">
+            <h1>🎉 Congratulations! 🎉</h1>
+            <p>Your commitment has been successfully recorded. Thank you for contributing to KMI’s future improvements.</p>
+            <button onclick="window.location.href='{{ route('home') }}'">Back to Home</button>
+        </div>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -303,75 +301,60 @@
             const progressBar = document.getElementById("progressBar");
             const progressText = document.getElementById("progressText");
             const pushButton = document.getElementById("pushButton");
+            const congratsModal = document.getElementById("congratsModal");
 
             let progress = 0;
             let increaseInterval;
             let decreaseInterval;
 
-            // **Tampilkan modal setelah tombol Start diklik**
             document.getElementById("startButton").addEventListener("click", function() {
                 openingContainer.style.display = "none";
                 sectionStarted.style.display = "block";
 
-                // Putar backsound
                 const audio = document.getElementById("backgroundMusic");
                 if (audio) {
-                    audio.volume = 1; // Set volume awal
+                    audio.volume = 1;
                     audio.play().catch(error => console.error("Autoplay error:", error));
                 }
 
-                // **Tampilkan modal setelah animasi selesai**
                 setTimeout(() => {
                     progressModal.classList.add("show");
                 }, 500);
             });
 
             function startProgress() {
-                clearInterval(decreaseInterval); // Hentikan pengurangan progress jika ada
+                clearInterval(decreaseInterval);
                 increaseInterval = setInterval(() => {
                     if (progress < 100) {
-                        progress += 20; // Setiap detik bertambah 20%
-                        progress = Math.min(progress, 100); // Pastikan tidak melebihi 100%
+                        progress += 20;
                         progressBar.style.width = progress + "%";
                         progressText.innerText = progress;
                     }
                     if (progress >= 100) {
                         clearInterval(increaseInterval);
-                        setTimeout(() => {
-                            window.location.href = "{{ route('home') }}"; // Redirect setelah 100%
-                        }, 300);
-                    }
-                }, 1000); // Bertambah setiap 1 detik
-            }
-
-            function stopProgress() {
-                clearInterval(increaseInterval); // Hentikan pertumbuhan progress
-                decreaseInterval = setInterval(() => {
-                    if (progress > 0) {
-                        progress -= 20; // Setiap detik berkurang 20%
-                        progress = Math.max(progress, 0); // Pastikan tidak kurang dari 0%
-                        progressBar.style.width = progress + "%";
-                        progressText.innerText = progress;
-                    } else {
-                        clearInterval(decreaseInterval); // Jika sudah 0, hentikan interval
+                        progressModal.classList.remove("show");
+                        congratsModal.classList.add("show");
                     }
                 }, 1000);
             }
 
-            // **Event untuk perangkat desktop**
+            function stopProgress() {
+                clearInterval(increaseInterval);
+                decreaseInterval = setInterval(() => {
+                    if (progress > 0) {
+                        progress -= 20;
+                        progressBar.style.width = progress + "%";
+                        progressText.innerText = progress;
+                    } else {
+                        clearInterval(decreaseInterval);
+                    }
+                }, 1000);
+            }
+
             pushButton.addEventListener("mousedown", startProgress);
             pushButton.addEventListener("mouseup", stopProgress);
-
-            // **Event untuk perangkat mobile**
-            pushButton.addEventListener("touchstart", function(event) {
-                event.preventDefault(); // Mencegah sentuhan menyebabkan event klik
-                startProgress();
-            });
-
-            pushButton.addEventListener("touchend", function(event) {
-                event.preventDefault(); // Mencegah sentuhan menyebabkan event klik
-                stopProgress();
-            });
+            pushButton.addEventListener("touchstart", startProgress);
+            pushButton.addEventListener("touchend", stopProgress);
         });
     </script>
 @endsection
