@@ -61,6 +61,11 @@
                             <a class="nxl-link" href="{{ route('geeting-commitment.index') }}">Geeting
                                 Commitment Data</a>
                         </li>
+                        <li
+                            class="nxl-item {{ Request::is('admin/master-data/geeting-buttons/*') || Request::is('admin/master-data/geeting-buttons-restore') ? 'active' : '' }}">
+                            <a class="nxl-link" href="{{ route('master.geeting-buttons.index') }}">Geeting
+                                Countdown Data</a>
+                        </li>
                     </ul>
                 </li>
                 {{-- <li class="nxl-item nxl-hasmenu">

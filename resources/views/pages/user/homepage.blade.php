@@ -490,10 +490,11 @@
                                     </div>
                                 </div>
                             @endif
-                            @if (Auth::user() && !$hasSubmittedGeeting)
+                            @if (Auth::user())
                                 <a href="#" id="openModalGeetingCommitment"
-                                    style="margin-left: 10px;display: inline-block; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 12px; border-radius: 5px; font-weight: bold; width: 110px;">Geeting
-                                    Commitment</a>
+                                    style="margin-left: 10px; display: none; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 12px; border-radius: 5px; font-weight: bold; width: 110px;">
+                                    Geeting Commitment
+                                </a>
                             @endif
                         </div>
                     </div>
@@ -615,7 +616,8 @@
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="photo" id="hiddenPhoto">
-                    <label for="geetingText" style="color: #333 !important">Please enter your commitment in three words.</label>
+                    <label for="geetingText" style="color: #333 !important">Please enter your commitment in three
+                        words.</label>
                     <input type="text" id="geetingText" name="geetingText" placeholder="Enter your commitment..."
                         required>
                     <button class="button-geeting" type="submit">Submit</button>
@@ -655,6 +657,8 @@
     @endif
 
     {{-- Javascript Loader --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         // Get modal and buttons
         const loginModal = document.getElementById("loginModal");
@@ -937,6 +941,30 @@
         document.getElementById("nextStepBtn").addEventListener("click", function() {
             document.getElementById("photoStep").style.display = "none";
             document.getElementById("commitmentStep").style.display = "block";
+        });
+    </script>
+
+    <script>
+        function checkGeetingButton() {
+            $.ajax({
+                url: "{{ url('/geeting-commitments/check-geeting-button') }}",
+                type: "GET",
+                success: function(response) {
+                    if (response.buttonVisible && !response.hasSubmittedGeeting) {
+                        $("#openModalGeetingCommitment").show();
+                    } else {
+                        $("#openModalGeetingCommitment").hide();
+                    }
+                }
+            });
+        }
+
+        // Panggil pertama kali saat halaman dimuat
+        $(document).ready(function() {
+            checkGeetingButton();
+
+            // Periksa status tombol setiap 10 detik
+            setInterval(checkGeetingButton, 1000);
         });
     </script>
 @endsection

@@ -20,6 +20,8 @@ use App\Http\Controllers\QuestionAnswerController;
 use App\Http\Controllers\EventInformationController;
 use App\Http\Controllers\GeetingCommitmentController;
 use App\Http\Controllers\CongratulationPageController;
+use App\Http\Controllers\GeetingButtonController;
+use App\Models\GeetingButton;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,17 +77,17 @@ Route::get('/', function () {
 
     $buttons = EventInformation::where('bitActive', 1)->get();
 
-    // $now = Carbon::now();
-    // $buttonVisible = GreetingCommitment::where('dtmButtonShow', '<=', $now)
-    //     ->where('bitActive', 1)
-    //     ->exists();
+    $now = Carbon::now();
+    $buttonVisible = GeetingButton::where('dtmButtonShow', '<=', $now)
+        ->where('bitActive', 1)
+        ->exists();
 
     $hasSubmittedGeeting = GeetingCommitment::where('intUser_ID', Auth::user()->intUser_ID)
     ->where('bitActive', 1)
     ->exists();
 
 
-    return view('pages.user.homepage', compact('group', 'buttons', 'hasSubmittedGeeting'));
+    return view('pages.user.homepage', compact('group', 'buttons', 'hasSubmittedGeeting', 'buttonVisible'));
 })->name('home');
 
 Route::get('get-group-information', [GroupController::class, 'getGroupInformation'])->name('get-group-information');
@@ -106,6 +108,7 @@ Route::middleware(['auth', 'checkrole:admin,user'])->group(function () {
     // Geeting Commitment Page
     Route::post('/geeting-commitment/store-user', [GeetingCommitmentController::class, 'storeUser'])->name('geeting-commitment.store-user');
     Route::get('/geeting-commitments-page', [GeetingCommitmentController::class, 'showGeetingCommitmentPage'])->name('geeting-commitment');
+    Route::get('/geeting-commitments/check-geeting-button', [GeetingButtonController::class, 'checkGeetingButton'])->name('geeting-commitment.check-geeting-button');
 });
 
 Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function () {
@@ -200,5 +203,13 @@ Route::prefix('admin')->middleware(['auth', 'checkrole:admin'])->group(function 
         Route::get('/geeting-commitments/{geetingCommitment}', [GeetingCommitmentController::class, 'show'])->name('geeting-commitment.show');
         Route::get('/geeting-commitments-restore', [GeetingCommitmentController::class, 'restorePage'])->name('geeting-commitment.restore-index');
         Route::put('/geeting-commitments/{geetingCommitment}/restore', [GeetingCommitmentController::class, 'restoreGeetingCommitment'])->name('geeting-commitment.restore-geeting-commitment');
+
+        // Geeting Button
+        Route::get('/geeting-buttons', [GeetingButtonController::class, 'index'])->name('master.geeting-buttons.index');
+        Route::get('/geeting-buttons/create', [GeetingButtonController::class, 'create'])->name('master.geeting-buttons.create');
+        Route::post('/geeting-buttons/store', [GeetingButtonController::class, 'store'])->name('master.geeting-buttons.store');
+        Route::get('/geeting-buttons/{geetingButton}/edit', [GeetingButtonController::class, 'edit'])->name('master.geeting-buttons.edit');
+        Route::put('/geeting-buttons/{geetingButton}', [GeetingButtonController::class, 'update'])->name('master.geeting-buttons.update');
+        Route::get('/geeting-buttons/{geetingButton}', [GeetingButtonController::class, 'show'])->name('master.geeting-buttons.show');
     });
 });
