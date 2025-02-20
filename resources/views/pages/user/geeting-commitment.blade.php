@@ -113,10 +113,11 @@
     }
 
     .quiz-container p {
-        font-size: 16px;
+        font-size: 13px;
         color: #333;
         margin-bottom: 20px;
-        text-align: left;
+        text-align: center;
+        font-weight: bold;
         /* Rata kiri untuk teks */
     }
 
@@ -228,10 +229,10 @@
 </style>
 
 @section('content')
-    <div class="opening-container" id="openingContainer">
+    {{-- <div class="opening-container" id="openingContainer">
         <p>Click the button below to start the experience.</p>
         <button id="startButton">Start</button>
-    </div>
+    </div> --}}
 
     <div class="section started" id="section-started">
 
@@ -264,9 +265,10 @@
     <div id="progressModal" class="modal">
         <div class="quiz-container">
             {{-- <span class="close-btn">&times;</span> --}}
-            <h1>Geeting Commitment</h1>
+            <h1>GETTING COMMITMENT</h1>
             <div class="divider"></div>
-
+            <p style="color: #333 !important">Push the button with mindfulness to describe how your commitment to the
+                activity in 2025. Push your limits until 100% power</p>
             <!-- Progress Bar -->
             <div style="width: 100%; background-color: #ddd; border-radius: 10px; overflow: hidden;">
                 <div id="progressBar" style="width: 0%; height: 30px; background-color: #f1c40f; transition: width 0.1s;">
@@ -278,7 +280,7 @@
             <!-- Push Button -->
             <div class="button-container">
                 <button id="pushButton" class="btn-circle">
-                    Hold
+                    PUSH
                 </button>
             </div>
         </div>
@@ -295,7 +297,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const openingContainer = document.getElementById("openingContainer");
+            // const openingContainer = document.getElementById("openingContainer");
             const sectionStarted = document.getElementById("section-started");
             const progressModal = document.getElementById("progressModal");
             const progressBar = document.getElementById("progressBar");
@@ -307,20 +309,33 @@
             let increaseInterval;
             let decreaseInterval;
 
-            document.getElementById("startButton").addEventListener("click", function() {
-                openingContainer.style.display = "none";
-                sectionStarted.style.display = "block";
+            // document.getElementById("startButton").addEventListener("click", function() {
+            //     openingContainer.style.display = "none";
+            //     sectionStarted.style.display = "block";
 
-                const audio = document.getElementById("backgroundMusic");
-                if (audio) {
-                    audio.volume = 1;
-                    audio.play().catch(error => console.error("Autoplay error:", error));
-                }
+            //     const audio = document.getElementById("backgroundMusic");
+            //     if (audio) {
+            //         audio.volume = 1;
+            //         audio.play().catch(error => console.error("Autoplay error:", error));
+            //     }
 
-                setTimeout(() => {
-                    progressModal.classList.add("show");
-                }, 500);
-            });
+            //     setTimeout(() => {
+            //         progressModal.classList.add("show");
+            //     }, 500);
+            // });
+
+            // Tampilkan sectionStarted langsung
+            sectionStarted.style.display = "block";
+            setTimeout(() => {
+                progressModal.classList.add("show");
+            }, 1200);
+
+            // Mulai audio jika tersedia
+            const audio = document.getElementById("backgroundMusic");
+            if (audio) {
+                audio.volume = 1;
+                audio.play().catch(error => console.error("Autoplay error:", error));
+            }
 
             function startProgress() {
                 clearInterval(decreaseInterval);

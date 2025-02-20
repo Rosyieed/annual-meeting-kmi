@@ -493,19 +493,16 @@
                             @if (Auth::user())
                                 <a href="#" id="openModalGeetingCommitment"
                                     style="margin-left: 10px; display: none; padding: 10px; background-color: #f1f1de; color: #000; text-decoration: none; font-size: 12px; border-radius: 5px; font-weight: bold; width: 110px;">
-                                    Geeting Commitment
+                                    Getting Commitment
                                 </a>
                             @endif
                         </div>
                     </div>
 
                     <div class="h-subtitle typing-subtitle">
-                        <p><span style="color: #f1f1de">PREPARE FOR THE</span> <strong style="color: #F22121"> NEXT
-                                MISSION</strong></p>
-                        <p><span style="color: #f1f1de">"SMILE"</span> <br> <strong style="color: #F22121">
-                                SMART-AGILE-BEYOND</strong></p>
-                        <p><span style="color: #f1f1de">ANNUAL MEETING KMI</span> <strong style="color: #F22121">
-                                2025</strong>
+                        <p><span style="color: #f1f1de">PREPARE FOR THE</span> <strong style="color: #F22121"> NEXT MISSION</strong></p>
+                        <p><span style="color: #f1f1de">"SMILE"</span> <br> <strong style="color: #F22121"> SMART-AGILE-BEYOND</strong></p>
+                        <p><span style="color: #f1f1de">ANNUAL MEETING KMI</span> <strong style="color: #F22121"> 2025</strong>
                         </p>
                     </div>
                     <span class="typed-subtitle"></span>
@@ -589,7 +586,7 @@
     <div id="geetingCommitmentModal" class="modal">
         <div class="geeting-container">
             <div class="close-btn" onclick="closeGeetingModal()">&times;</div>
-            <h1>Geeting Commitment</h1>
+            <h1>Getting Commitment</h1>
             <div class="divider"></div>
 
             <!-- Step 1: Ambil Foto dari Kamera -->
@@ -611,7 +608,7 @@
 
             <!-- Step 2: Input Geeting Commitment -->
             <div id="commitmentStep" style="display: none;">
-                <p style="color: #333 !important">Enter your Geeting Commitment</p>
+                <p style="color: #333 !important">Enter your Getting Commitment</p>
                 <form action="{{ route('geeting-commitment.store-user') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
