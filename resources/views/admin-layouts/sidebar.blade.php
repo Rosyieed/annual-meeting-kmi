@@ -3,9 +3,9 @@
         <div class="m-header">
             <a href="#" class="b-brand">
                 <!-- ========   change your logo hear   ============ -->
-                <img src="{{ asset('user-assets/images/logo/Logo.png') }}" alt="" class="logo logo-lg"
+                <img src="{{ asset('user-assets/images/logo/patriot.png') }}" alt="" class="logo logo-lg"
                     width="70px" />
-                <img src="{{ asset('user-assets/images/logo/Logo.png') }}" alt="" class="logo logo-sm" />
+                <img src="{{ asset('user-assets/images/logo/patriot.png') }}" alt="" class="logo logo-sm" />
             </a>
         </div>
         <div class="navbar-content">

@@ -81,7 +81,7 @@
         color: #333;
     }
 
-    .login-container input[type="number"],
+    .login-container input[type="text"],
     .login-container input[type="password"] {
         width: 100%;
         padding: 10px;
@@ -495,7 +495,7 @@
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <label for="nik">NIK</label>
-                <input type="number" id="nik" name="nik" placeholder="Enter your NIK">
+                <input type="text" id="nik" name="nik" placeholder="Enter your NIK">
                 @error('nik')
                     <p style="color: red">{{ $message }}</p>
                 @enderror

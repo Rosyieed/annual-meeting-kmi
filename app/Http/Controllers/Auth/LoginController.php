@@ -15,7 +15,7 @@ class LoginController extends Controller
     {
         // Validasi input dari pengguna
         $validator = Validator::make($request->all(), [
-            'nik' => 'required|numeric',
+            'nik' => 'required',
             'password' => 'required|string|min:8',
         ]);
 
