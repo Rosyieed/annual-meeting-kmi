@@ -88,11 +88,6 @@
             </a>
         </div>
 
-        <!-- Tombol Play/Mute -->
-        <button id="play-video" class="play-audio-btn pulse">
-            <i id="audio-icon" class="fa fa-volume-up"></i> <!-- Default: suara -->
-        </button>
-
         <!-- Logo kanan -->
         <div class="logo-right">
             <a href="#">
@@ -102,70 +97,3 @@
 
     </div>
 </header>
-
-{{-- <script>
-    document.getElementById("play-video").addEventListener("click", function() {
-        var video = document.querySelector(".jarallax-video video");
-        if (video) {
-            video.muted = false;
-            video.volume = 1;
-            video.play();
-        }
-        this.classList.remove("pulse"); // Hapus efek animasi setelah diklik
-    });
-</script> --}}
-
-{{-- <script>
-    document.getElementById("play-video").addEventListener("click", function() {
-        var video = document.querySelector(".jarallax-video video");
-        var icon = document.getElementById("audio-icon");
-
-        if (video) {
-            video.muted = !video.muted; // Toggle mute/unmute
-
-            // Ubah ikon sesuai status suara
-            if (video.muted) {
-                icon.classList.remove("fa-volume-up");
-                icon.classList.add("fa-volume-mute"); // Ikon Mute
-            } else {
-                icon.classList.remove("fa-volume-mute");
-                icon.classList.add("fa-volume-up"); // Ikon Unmute
-                video.volume = 1; // Pastikan volume penuh saat di-unmute
-                video.play(); // Pastikan video berjalan
-            }
-        }
-
-        this.classList.remove("pulse"); // Hapus animasi setelah diklik
-    });
-</script> --}}
-
-<script>
-    document.getElementById("play-video").addEventListener("click", function() {
-        var video = document.querySelector(".jarallax-video video");
-        var audio = document.getElementById("backgroundMusic");
-        var icon = document.getElementById("audio-icon");
-
-        if (video && audio) {
-            var isMuted = video.muted; // Cek apakah video dalam kondisi mute
-
-            // Toggle mute/unmute untuk video dan audio
-            video.muted = !isMuted;
-            audio.muted = !isMuted;
-
-            // Ubah ikon sesuai status suara
-            if (isMuted) {
-                icon.classList.remove("fa-volume-mute");
-                icon.classList.add("fa-volume-up"); // Ikon Unmute
-                video.volume = 1;
-                audio.volume = 0.5; // Atur volume backsound
-                video.play(); // Pastikan video berjalan
-                audio.play(); // Pastikan backsound berjalan
-            } else {
-                icon.classList.remove("fa-volume-up");
-                icon.classList.add("fa-volume-mute"); // Ikon Mute
-            }
-        }
-
-        this.classList.remove("pulse"); // Hapus animasi setelah diklik
-    });
-</script>

@@ -1,68 +1,6 @@
 @extends('user-layouts.master')
 
 <style>
-    /* Halaman Pembuka */
-    .opening-container {
-        background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('{{ asset('user-assets/images/background.jpg') }}') no-repeat center center;
-        /* Ganti dengan gambar latar belakang yang diinginkan */
-        background-size: cover;
-        color: white;
-        text-align: center;
-        padding: 50px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        transition: opacity 0.5s ease;
-        /* Transisi halus */
-    }
-
-    /* Tombol */
-    .opening-container button {
-        padding: 12px 24px;
-        background-color: #f1f1de !important;
-        border: none;
-        border-radius: 5px;
-        color: #000;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 20px;
-        font-size: 16px;
-        /* Ukuran font yang lebih besar */
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        /* Transisi untuk efek hover */
-    }
-
-    .opening-container button:hover {
-        background-color: #e0e0d1 !important;
-        /* Warna saat hover */
-        transform: scale(1.05);
-        /* Efek zoom saat hover */
-    }
-
-    /* Judul dan Teks */
-    .opening-container h1 {
-        font-size: 36px;
-        /* Ukuran font yang lebih besar untuk judul */
-        margin-bottom: 10px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-        /* Bayangan teks untuk kontras */
-    }
-
-    .opening-container p {
-        font-size: 18px;
-        /* Ukuran font yang lebih besar untuk teks */
-        margin-bottom: 20px;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        /* Bayangan teks untuk kontras */
-    }
-
     /* Modal Styles */
     .modal {
         display: none;
@@ -430,11 +368,6 @@
 </style>
 
 @section('content')
-    <div class="opening-container" id="openingContainer">
-        <p>Click the button below to start the experience.</p>
-        <button id="startButton">Start</button>
-    </div>
-
     <!-- Section Started -->
     <div class="section started" id="section-started">
 
@@ -445,12 +378,6 @@
             <div class="video-bg-mask"></div>
             <div class="video-bg-texture" id="grained_container"></div>
         </div>
-
-        {{-- Backsound --}}
-        <audio id="backgroundMusic" loop>
-            <source src="{{ asset('user-assets/audios/backsound.mp3') }}" type="audio/mp3">
-            Your browser does not support the audio element.
-        </audio>
 
         <!-- started content -->
         <div class="centrize full-width">
@@ -664,30 +591,7 @@
         const openModalGroupButton = document.getElementById("openModalGroup");
         const closeBtn = document.querySelector(".close-btn");
         const closeBtnGroup = document.querySelector(".close-btn-group");
-        const openingContainer = document.getElementById('openingContainer');
         const sectionStarted = document.getElementById('section-started');
-
-        // Jika tombol "Start" diklik
-        document.getElementById('startButton').addEventListener('click', () => {
-            openingContainer.style.display = 'none';
-            sectionStarted.style.display = 'block';
-
-            // Memutar video dan mengaktifkan suara
-            // const video = document.querySelector(".jarallax-video video");
-            // if (video) {
-            //     video.muted = false;
-            //     video.volume = 1;
-            //     video.play();
-            // }
-
-            // Memainkan audio MP3 sebagai backsound
-            const audio = document.getElementById("backgroundMusic");
-            if (audio) {
-                audio.volume = 1; // Atur volume awal
-                audio.play().catch(error => console.error("Autoplay error:", error));
-            }
-        });
-
 
         if (openModalGroupButton) {
             openModalGroupButton.addEventListener("click", function(event) {
